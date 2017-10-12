@@ -1,0 +1,97 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Demo_Depression_Pond (04/16/07)</title>
+</head>
+
+<body>
+
+<h3>Demo_Depression_Pond. prj Description.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; The interaction between the modules Soil and Netroute is complex.
+&nbsp; In order to demonstrate the different handling of infiltration, runoff, depression
+and pond storage by the module soil and the routing of HRU's with &quot;lag and route
+technique&quot; instead of using actual meteorological data a macro is used to generate
+synthetic input.&nbsp; This macro called <strong><em>Pond_Sim</em></strong> is able to
+satisfy all the input requirements of the module Soil.&nbsp; Soil in turn is capable of
+supplying all the inputs of the module Netroute.&nbsp; By editing the macro <strong><em>Pond_Sim</em></strong>
+the user is able to generate almost scenario of hydrological events.</p>
+
+<h3>Macro to generate synthetic input.</h3>
+
+<p>Pond_Sim<br>
+&nbsp;&nbsp;&nbsp; declvar, hru_actet, NHRU, &quot;actual evaporation&quot;, (mm/int)<br>
+&nbsp;&nbsp;&nbsp; declvar, hru_cum_actet, NHRU, &quot;cumulativeactual evaporation&quot;,
+(mm)<br>
+&nbsp;&nbsp;&nbsp; declvar, hru_evap, NHRU, &quot;calculated evaporation&quot;, (mm/int)<br>
+&nbsp;&nbsp;&nbsp; declvar, intcp_evap, NHRU, &quot;canopy evaporation&quot;, (mm/int)<br>
+&nbsp;&nbsp;&nbsp; declvar, infil, NHRU, &quot;infiltration&quot;, (mm/int)<br>
+&nbsp;&nbsp;&nbsp; declvar, snowinfil, NHRU, &quot;infiltration from snow&quot;, (mm/int)<br>
+&nbsp;&nbsp;&nbsp; declvar, runoff, NHRU, &quot;runoff&quot;, (mm/int)<br>
+&nbsp;&nbsp;&nbsp; declvar, meltrunoff, NHRU, &quot;melt runoff&quot;, (mm/int)<br>
+command<br>
+&nbsp;&nbsp;&nbsp; if(MONTH == 5)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hru_evap[hh] = .01<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(MONTH == 9)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; hru_evap[hh] = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; if(MONTH == 4 &amp;&amp; DAY == 10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snowinfil[hh] = 1<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(MONTH == 4 &amp;&amp; DAY == 11)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; snowinfil[hh] = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; if(MONTH == 4 &amp;&amp; DAY == 25)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; meltrunoff[hh] = 1<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(MONTH == 4 &amp;&amp; DAY == 26)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; meltrunoff[hh] = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; if(MONTH == 7 &amp;&amp; DAY == 3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; infil[hh] = 1<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(MONTH == 7 &amp;&amp; DAY == 4)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; infil[hh] = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; if(MONTH == 7 &amp;&amp; DAY == 23)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; runoff[hh] = 1<br>
+&nbsp;&nbsp;&nbsp; else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(MONTH == 7 &amp;&amp; DAY ==2 4)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; runoff[hh] = 0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+end<br>
+</p>
+
+<p>This macro module provides the following variable outputs. 
+
+<ol>
+  <li>hru_evap - May through August an interval value of 0.01 (mm/int) otherwise 0.0.</li>
+  <li>snowinfil - all day May 10 an interval value of 1.0 (mm/int) otherwise 0.0. The total
+    for the day is 24 mm.</li>
+  <li>meltrunoff - all day May 25 an interval value of 1.0 (mm/int) otherwise 0.0. The total
+    for the day is 24 mm.</li>
+  <li>infil - all day July 3 an interval value of 1.0 (mm/int) otherwise 0.0. The total for
+    the day is 24 mm.</li>
+  <li>runoff - all day July 23 an interval value of 1.0 (mm/int) otherwise 0.0. The total for
+    the day is 24 mm.</li>
+</ol>
+
+<h3>Example Demo_Depression_Pond.prj &amp; Demo_Depression_Pond2.prj.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; The only difference in the two projects is that the former directs
+the outflow from HRU#1 to HRU#3 which has soil_moisture_max and Sd_max non-zero making it
+depression storage.</p>
+
+<p>The latter project directs the outflow from HRU#1 to HRU#2 which has only Sd_max
+non-zero and soil_moisture_max zero making it pond storage.</p>
+
+<p>&nbsp;</p>
+</body>
+</html>

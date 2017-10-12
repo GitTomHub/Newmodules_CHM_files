@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>Module Variations (05/26/16)</title>
+
+</head>
+
+<body>
+<h3>Module Variations.</h3>
+<p>&nbsp;&nbsp;&nbsp; The original CRHM module is
+very limited in its loading ability and
+could not be made to load in different modes without a lot of
+difficulty and unused
+portions of the module still visible.&nbsp; The input
+variable/observations,
+output/observations variables and required parameters were all fixed
+and always
+visible.&nbsp; An attempt was made to work around this by making
+observations optional and
+modules generating declared observations and the use of the AKA screen.
+This allowed
+modules to perform in different ways as dictated by the available
+driving data.&nbsp;
+However, this was not very easy for the user to use.&nbsp; There
+were also numerous unused
+parameters and variables as these had to be declared for all possible
+uses of the module
+and the user had to know which ones applied to the current module
+application.</p>
+<p>&nbsp;&nbsp;&nbsp; Variations were introduced to
+overcome the limitations outlined
+above.&nbsp; Module names have been extended as follows. &nbsp;
+The original name say
+"longVt" will run as always.&nbsp; However, variations of the
+original module
+will be possible, denoted as "longVt#1", "longVt#2", etc.&nbsp;
+These
+variations are enhanced versions of the original module, with different
+inputs
+requirements, say synthetic short-wave "QsiD_Var" (Annandale)&nbsp;
+instead of
+the measured observation Qsi. The parameters and input/output variables
+can also be
+customised. The module variations can also have different algorithms.
+Descriptions of
+current variation modules follow. Only the most used modules are described below.</p>
+<h3>Annandale - short-wave estimation.</h3>
+<ol>
+<li>Annandale - outputs QsiA#, QsiD# and QsiS# short-wave
+observations (interval, daily and interval on slope) and hru_SunAct
+variable.</li>
+<li>Annandale#1 - outputs QsiA_Var, QsiD_Var, QsiS_Var
+(interval, daily and interval on slope) variables with hru_SunAct
+variable.</li>
+</ol>
+<h3>calcsun - sunshine hours.</h3>
+<ol>
+<li>calcsun - input SunAct Obs or Qsi Obs to calculate Qsitot
+if sunshine hours not available.</li>
+<li>calcsun #1 - input Qsi observation to calculate Qsitot.</li>
+<li>calcsun#2 - input QsiD_obs (W/m^2) observation.</li>
+<li>calcsun#3 - input QsiD_Var (W/m^2) from Annandale.</li>
+</ol>
+<h3>Canopy, CanopyClearing and CanopyClearingGap - calculate
+short, long and all-wave
+radiation components at the snow surface.</h3>
+<ol>
+<li>CanopyClearing&nbsp; - input Qsi and Qli observations.</li>
+<li>CanopyClearing#1&nbsp; - input Qsi observation and
+QliVt_Var from longVtX etc..</li>
+<li>CanopyClearing#2&nbsp; - input Qli observation and
+Qsi_Var from longVtX etc..</li>
+<li>CanopyClearing#3&nbsp; - input Qsi_Var and QliVt_Var
+from longVtX etc..</li>
+</ol>
+<h3>ebsm - energy-budget snowmelt model for the Canadian Prairies.</h3>
+<ol>
+<li>ebsm - no inputs for Brunt. Optional temperature and
+radiation index. QnD can be used with Use_QnD for legacy projects.</li>
+<li>ebsm#1 - input interval variable Qnsn_Var (W/m^2) from
+CanopyClearing etc.. </li>
+<li>ebsm#2 - input interval observation Qnsn (W/m^2).</li>
+<li>ebsm#3 - input daily observation QnD (MJ/m^2*d).</li>
+</ol>
+<h3>longVt - long-wave using terrain view factor.</h3>
+<ol>
+<li>longVt - input Qsi observation.</li>
+<li>longVt#1 - input QsiDObs observation from module Slope_Qsi.</li>
+<li>longVt#2 - input QsiD_Var observation from module
+AnnandaleX#1 etc..</li>
+<li>longVt#3 - input observation Qli (W/m^2)</li>
+</ol>
+<h3>Needleleaf&nbsp; - calculate short, long and all-wave
+radiation components at the snow
+surface.</h3>
+<ol>
+<li>Needleleaf&nbsp; - input Qsi and Qli observations.</li>
+<li>Needleleaf#1&nbsp; - input Qsi observation and
+QliVt_Var from longVtX etc..</li>
+<li>Needleleaf#2&nbsp; - input Qli observation and QsiS_Var
+from longVtX etc..</li>
+<li>Needleleaf#3&nbsp; - input QsiS_Var and QliVt_Var from
+longVtX etc..</li>
+<li>Needleleaf#4&nbsp; - input QsiA_Var and QliVt_Var from
+longVtX etc..</li>
+<li></li>
+</ol>
+<h3>obs - handle driving observations.</h3>
+<ol>
+<li>obs - standard version to handle interval observations. CRHM allocates precipitation p and/or ppt to snow and rain.</li>
+<li>obs#1 - inputs daily t_max and t_min to generate hru_tmax
+and hru_tmin for Annandale.</li><li>obs#2 - inputs rain and snow obseervations (p and ppt not used).</li>
+</ol>
+<h3>pbsm - blowing snow transport.</h3>
+<ol>
+<li>pbsm - input hru_u.</li>
+<li>pbsm#1 - input hru_Uadjust from walmsley_wind etc.</li><li>pbsm#2 - using hru_u and a regression&nbsp;to use daily windspeed.</li><li>pbsm#3 -  using hru_Uadjust and a regression&nbsp;to use daily windspeed.</li>
+</ol>
+<h3>pbsmSnobal - blowing snow transport.</h3>
+<ol>
+<li>pbsmSnobal - input hru_u.</li>
+<li>pbsmSnobal#1 - input hru_Uadjust from walmsley_wind etc.</li><li value="3">pbsmSnobal#2 - using hru_u and a regression&nbsp;to use daily windspeed.</li><li>pbsmSnobal#3 -  using hru_Uadjust and a regression&nbsp;to use daily windspeed.</li></ol>
+<h3>pb</h3><ol>
+</ol>
+<h3>Soil - soil moisture throughout the year.</h3>
+<ol>
+<li>Soil - standard version.</li>
+<li>Soil#1 - runoff is limited by culvert flow.</li>
+</ol>
+<h3>Slope_Qsi - modified short-wave on a slope.</h3>
+<ol>
+<li>Slope_Qsi&nbsp; - output declared observations QsiS#
+and QsiDObs#.</li>
+<li>Slope_Qsi#1&nbsp; - output variables QsiS_Var and
+QsiD_Var.</li>
+</ol>
+<h3>SnobalCRHM - energy balance snowmelt model.</h3>
+<ol>
+<li>SnobalCRHM - input Qsi and Qli observations.</li>
+<li>SnobalCRHM#1 - input variables Qsisn_Var and Qlisn_Var from
+module CanopyClearing.</li>
+<li>SnobalCRHM#2 - input observation Qsi and QliVt_Var from
+module longVtX etc..</li>
+<li>SnobalCRHM#3 - input variables QsiS_Var from Annandale and
+QliVt_Var from module longVtXetc..</li>
+</ol>
+<h3>REW_route - handles the routing of surface and subsurface
+runoff from RBs
+(representative basins).</h3>
+<ol>
+<li>REW_route - uses Muskingum for routing.</li>
+<li>REW_route#1 - uses Clark for routing.</li>
+</ol>
+<h3>REW_route2 - handles the routing of surface and subsurface
+runoff from RBs
+(representative basins).</h3>
+<ol><li>REW_route2 - uses Muskingum for routing.</li><li>REW_route2#1 - uses Clark for routing.</li><li>REW_route2#3 - uses Muskingum and culverts for routing.</li><li>REW_route2#4 - uses Clark and culverts for routing.</li></ol>
+<h3></h3>
+<h3></h3><h3>How to use Module Variations.</h3>
+<p>The variation modules behave like any other module. The only
+difference is that in the
+construct screen there are additional steps to selecting them. In the
+construct screen the
+modules available are displayed in the listbox to the left of the
+screen. The modules
+displayed are determined by the level(s) selected in the "Module Level"
+list.
+When a module is selected in the modules available listbox the
+description of the module
+is displayed in the information area in the bottom left hand side of
+the screen. When the
+module has variations additional lines are displayed giving a list of
+the possible
+variations. Add the module to your project as normal. Now, when the
+module is right
+clicked in the Modules Selected listbox two additional options are
+available, Next
+variation and Last variation. Use these selections to select the
+variation you want. The
+requirements and outputs of the module will automatically be displayed
+in the adjacent
+module description area. At this point proceed as normal using the
+Check/Build/Cancel
+options to develop your project.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body></html>

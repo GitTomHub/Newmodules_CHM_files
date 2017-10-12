@@ -1,0 +1,35 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>term_observationVariable (05/27/05)</title>
+</head>
+
+<body>
+<b>
+
+<h3></b>Observation Variable.<b></h3>
+</b>
+
+<p>&nbsp;&nbsp;&nbsp; Observation climate/meteorological data for the watershed being
+modeled drives the model.&nbsp; The data is normally read from a data file with the file
+extension obs, (*.obs).&nbsp; However,&nbsp; there are many circumstances when the raw
+observation data must be enhanced before use in the model.&nbsp; Examples are when a
+limited number of observations must be interpolated over a basin and adjusted for
+elevation.&nbsp; Another example is when radiation data is not measured and is instead
+synthesized instead other available data.</p>
+
+<p>&nbsp;&nbsp;&nbsp; To handle these circumstances modules can generate Observation
+variables which have the properties of observations and have properties similar to normal
+variables.&nbsp; The most important property being that the heirarchy of the modules
+depends upon observation variables.&nbsp; File observation have no effect on the module
+order.</p>
+
+<p>&nbsp;&nbsp;&nbsp; An important point to remember is that when a file observation is
+available it will override a module generated observation of the same name.</p>
+
+<p>&nbsp;&nbsp;&nbsp; Since Observations are normally satisfied by file Observations no
+check can be made to verify that Observation variables satisfy missing module input
+observation requirements.</p>
+</body>
+</html>

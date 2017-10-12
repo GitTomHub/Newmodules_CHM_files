@@ -1,0 +1,58 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>module_slope_Qsi (04/08/08)</title>
+</head>
+
+<body>
+
+<h3><b><font face="Arial">Slope_Qsi.</font></b></h3>
+
+<p>This module estimates Qsi for a slope from the measured incoming short-wave Qsi on the
+level.&nbsp; The ratio of measured Qsi and the calculated clear sky direct and diffuse on
+a horizontal plane is used to adjust the calculated clear sky value on the slope.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>Qsi (W/m^2) - incident short-wave measured on a level plane.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>Short (W/m^2) - Calculated Qsi for the slope equal to Qdro + Qdfo.</li>
+  <li>ShortC (W/m^2) - Qsi corrected for slope from the ratio of (measured Qsi)/Qdflat.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>none.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>Qdro (global) (W/m^2).</li>
+  <li>Qdfo (global) (W/m^2).</li>
+  <li>Qdflat&nbsp; (global)(W/m^2).</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_observationVariable.htm">Observation Variables</a></h3>
+
+<ul>
+  <li>Qsi# (W/m^2) - Qsi corrected for slope.</li>
+</ul>
+
+<h3>Truncation note.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; In this implementation there is truncation at either sunrise or
+sunset since the alogorithm is only active when the incoming net short wave radiation on
+the level is positive. This means that any incoming radiation due to the slope at before
+dawn and after dusk is ignored unless the incoming is positive on the level. </p>
+
+<p>&nbsp;</p>
+</body>
+</html>

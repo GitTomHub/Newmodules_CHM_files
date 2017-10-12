@@ -1,0 +1,39 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>function_DepthofSnow (01/25/01)</title>
+</head>
+
+<body>
+
+<h3>DepthofSnow(SWE)</h3>
+
+<p>Calculates the Depth of Snow from Snow Water Equivalent (SWE).</p>
+
+<h3>Units</h3>
+
+<ul>
+  <li>(m)</li>
+</ul>
+
+<h3>Inputs</h3>
+
+<ul>
+  <li>SWE (mm) - Snow Water Equivalent.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<blockquote>
+  <p>if (SWE &gt; 2.05) </p>
+  <p>&nbsp;&nbsp;&nbsp; if(SWE &lt;= 145.45) // SWE 145.45 mm equivalent to 60 cm</p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Snow_Depth = (SWE -2.05)/2.39</p>
+  <p>else</p>
+  <p>&nbsp;&nbsp;&nbsp; Snow_Depth = (SWE +128.06)/4.5608</p>
+  <p>else</p>
+  <p>&nbsp;&nbsp;&nbsp; Snow_Depth = 0</p>
+  <p>return (Snow_Depth/100.0)</p>
+</blockquote>
+</body>
+</html>

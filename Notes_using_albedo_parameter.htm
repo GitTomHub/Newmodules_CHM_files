@@ -1,0 +1,55 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Using_Albedo_parameter (10/13/06)</title>
+</head>
+
+<body>
+
+<h3>Using Albedo parameter instead of Albedo Input in Netall.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; The module netall was used as a test of being able to satisfy an
+unsatisfied variable input with a parameter of the same name.&nbsp; The variable Albedo
+was chosen for the test.</p>
+
+<p>An additional feature was added to the BUILD/CONSTRUCT screen to allow models to be
+built with unsatisfied inputs.&nbsp; If the ALT key is held down when Build is clicked,
+&nbsp; the model will be successfully built despite the unsatisfied input.&nbsp; When this
+model containing <em>netall</em> but no <em>Albedo</em> module is run,&nbsp; the <em>Albedo</em>
+variable will link to the <em>netall</em> Albedo parameter.</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;&nbsp;&nbsp; A better method is to add the following macro.&nbsp; It has the
+additional advantage that the Albedo value can be programmed to change with the season.</p>
+
+<p>Albedo_Change<br>
+declparam, Albedo_change, NHRU,0.001, 0.0, 1.0, description, (m)<br>
+declparam, Albedo_min, NHRU,0.1, 0.01, 1.0, description, (m)<br>
+declparam, Albedo_max, NHRU,0.1, 0.01, 1.0, description, (m)<br>
+declparam, Albedo_Julian, NHRU,195, 1, 366, description, ()<br>
+declvar, Albedo, NHRU, &quot;vegetation Albedo&quot;, (m)<br>
+declvar, Albedo_Start, NHRU, &quot;vegetation Albedo&quot;, ()<br>
+command<br>
+if(STEP == 1)<br>
+&nbsp;&nbsp;&nbsp; Albedo[hh] =Albedo_min[hh]<br>
+endif<br>
+<br>
+if(JULIAN &gt;= Albedo_Julian)<br>
+&nbsp;&nbsp;&nbsp; Albedo_Start[hh] = JULIAN<br>
+<br>
+&nbsp;&nbsp;&nbsp; if(LASTINT)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Albedo[hh] = Albedo[hh] + Albedo_change[hh]<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+<br>
+&nbsp;&nbsp;&nbsp; if(Albedo[hh] &gt; Albedo_max[hh])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Albedo[hh] = Albedo_max[hh]<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+endif<br>
+end<br>
+</p>
+
+<p>See examples BadSummer.prj and BadSummerD.prj</p>
+</body>
+</html>

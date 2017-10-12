@@ -1,0 +1,88 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>walmsley_wind&nbsp; (09/12/07)</title>
+</head>
+
+<body>
+
+<p>&nbsp;<b><font FACE="Arial" SIZE="4"></p>
+
+<p>walmsley_wind </font><font SIZE="4">(Walmsley et al., 1989)</font></b></p>
+
+<p>This module is defined in Classwalmsley_wind and is parametric version of windflow
+model of Mason and Sykes (1979), referred as MS. The MS windflow model is a computational
+routine for estimating windflow over three-dimensional topography and is based on Fourier
+transform techniques and has a division of the inner and outer flow regions. The MS
+windflow model is linearized and thus only applies to low hills; the model assumes neutral
+thermal stratification and uniform surface roughness within the simulation region. The MS
+model is potentially computational costly and Walmsley et al. (1989) derived a simple
+parametric version of the MS model for estimating wind speed variation induced by
+small-scale topographic features. These topographical features include 2D hills (ridges),
+3D hills, 2D escarpments, 2D rolling terrain, 3D rolling terrain, and flat terrain. Users
+can define their simulation topographic features from coefficients &#145;A&#146; and
+&#145;B&#146;.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>hru_Uadjust (m/s) - adjusted wind speed due to topography. </li>
+  <li>hru_Uchange (m/s) - amount of change in wind speed due to topography. </li>
+  <li>WR () - wind ratio between adjusted wind speed and reference wind speed. </li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>Zwind (m) - wind instrument height. </li>
+  <li>A () - coefficient for wind speed change due to topography. Values: 0.0 &#150; flat
+    terrain, 2.5 &#150; 2D escarpments, 3.0 &#150; 2D hills, 3.5 &#150; 2D rolling terrain,
+    4.0 &#150; 3D hills, 4.4 &#150; 3D rolling terrain. </li>
+  <li>B () - coefficient for wind speed change due to topography. Values: 0.0 &#150; flat
+    terrain, 0.8 &#150; 2D escarpments, 1.1 &#150; 3D rolling terrain, 1.55 &#150; 2D rolling
+    terrain, 1.6 &#150; 3D hills, 2.0 &#150; 2D hills. </li>
+  <li>L (m) - upwind half-width at half height. It is the length from the centre of a hill
+    with height, h to the slope with half height of the hill, h/2. It is also the length from
+    the centre of a depression with depth, h to the slope with half depth of the depression,
+    h/2.</li>
+  <li>obs_elev (m) - measurement altitude.</li>
+  <li>hru_elev (m) - altitude.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_u (m/s) (obs) </li>
+</ul>
+
+<h3>Notes</h3>
+
+<p>Parameter <i>L</i> is upwind half-width at half height. It is the length from the
+centre of a hill with height, <i>h</i> to the slope with half height of the hill, <i>h/2</i>.
+It is also the length from the centre of a depression with depth, <i>h</i> to the slope
+with half depth of the depression, <i>h/2</i>.</p>
+
+<p><img src="walmsl1.jpg" width="513" height="184" alt="wpe2.jpg (6658 bytes)"></p>
+<b><font SIZE="4">
+
+<p>Reference</font></b></p>
+
+<p>Mason, P.J. and Sykes, R.I. 1979. Flow over an isolated hill of moderate slope. </p>
+<i>
+
+<p>Quarterly Journal of the Royal Meteorological Society</i> <b>105</b>: 383-395.</p>
+
+<p ALIGN="JUSTIFY">Walmsley, J.L., Taylor, P.A. and Salmon, J.R. 1989. Simple guidelines
+for estimating windspeed variations due to small-scale topographic features &#150; an
+update. <i>Climatological Bulletin</i> <b>23</b>: 3-14.</p>
+
+<p ALIGN="JUSTIFY">&nbsp;</p>
+</body>
+</html>

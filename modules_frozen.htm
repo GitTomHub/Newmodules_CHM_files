@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>modules_frozen 05/17/13)</title>
+
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+<body>
+<h3><font face="Arial"><b>frozen</b></font></h3>
+<p>This module defined in Classfrozen calculates the 'Limited'
+infiltration into soils
+where the infiltrability is governed by the soil moisture content
+(water + ice) and soil
+temperature at the start of snow ablation and the infiltration
+opportunity time.</p>
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>t0_inhibit () - optional. If its value is &gt; 0.0 the
+incrementing of t0_Acc during the calibration cycle is
+inhibited.&nbsp; This input may be controlled using a macro.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>infil (mm/int) - depth of infiltration in time step, <font face="Symbol" size="2">D</font>t &#8211; expressed as
+an average depth of water on an HRU.</li>
+<li>cuminfil (mm) - cumulative infiltration - expressed as an
+average depth of water on an HRU.</li>
+<li>snowinfil (mm/int) - amount of daily infiltration &#8211;
+expressed as an equivalent depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+<li>cumsnowinfil (mm) - cummulative infiltration.</li>
+<li>meltrunoff (mm/int) - amount of interval runoff &#8211; expressed
+as an equivalent depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+<li>cummeltrunoff (mm) - cummulative runoff.</li>
+<li>runoff (mm/int) - amount of interval runoff &#8211; expressed as
+an equivalent depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+<li>cumrunoff (mm) - cummulative runoff.</li>
+<li>t0_Var (h) - value of t0 calculated by the model.</li>
+<li>t0_Acc (h) - infiltration opportunity time accumulator.</li>
+<li>Inf&nbsp; (mm) -&nbsp; infiltration into a frozen
+soil calculated from parametric relationship.</li>
+<li>Julian_window () - currently in Julian window handling
+frozen infiltration.</li>
+<li>Julian_lockout () - lockout next frozen cycle until after
+this Julian date when t0_Julian is not set (i.e. 0).</li>
+<li>infiltype() - infiltration type.
+PREMELT/RESTRICTED/LIMITED/UNLIMITED/SATURATED - 0/1/2/3/4 respectively.</li>
+<li>snowmeltD_last(mm/d) - yesterday's snowmelt. Used to
+determine the formation of ice lens.</li>
+<li>SWEPk (mm) - peak snow water equivalent. Used to calculate
+t0 when parameter t0 is equal to zero.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>t0 (h) - Infiltration opportunity time. If &lt; 0 -
+calculate opportunity time by running forward (not reccommended), == 0
+- calculate t0 from '0.65*SWE-5.0',&nbsp; &gt; 0 - use as
+opportunity time. The
+values are saved in t0_var for reference.</li>
+<li>t0_Julian&nbsp;() -value &gt; 0 - inhibit frozen
+algorithm till
+after this Julian date, 0 - enable frozen algorithm immediately when
+melt criteria is met.</li>
+<li>S0 (m^3/m^3) - surface saturation.</li>
+<li>Si (m^3/m^3) - initial soil saturation.</li>
+<li>C () - coefficient.</li>
+<li>hru_tsoil (ºK) - soil average temperature at start of
+frozen infiltration.</li>
+<li>t_ice_lens(ºC) - overnight minimum to cause ice lens after
+major melt.</li>
+<li>soil_moisture_max (mm) - soil moisture maximum. Common to
+module <em>smbal</em>.</li>
+<li>basin_area (km^2) - area of watershed.</li>
+<li>hru_area(km^2) - area of HRUs.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>snowmeltD&nbsp; (*) (mm/d).</li>
+<li>hru_tmin (obs) (°C).</li>
+<li>SWE (*) (mm).</li>
+<li>net_rain (*) (mm/int).</li>
+<li>soil_moist (*) (mm).</li>
+</ul>
+<h3>Calculation</h3>
+<ul>
+<li>c*pow(S0, 2.92)*pow(1.0-Si,
+1.64)*pow((273.15-tmean)/273.15, -0.45)*pow(t0, 0.44) *10</li>
+</ul>
+<h3>Reference</h3>
+<ul>
+<li>Zhao and Gray (1999)</li>
+</ul>
+<h3>Notes.</h3>
+<ol>
+<li>Calibration.&nbsp; Since the opportunity time is not
+known until the model is run through the complete frozen infiltration
+period,&nbsp; the model has to be run twice. &nbsp; The user,
+by setting t0[HRU 1] to &lt;= 0.0 causes the module to calculate
+the infiltration opportunity time. During this run the module
+forces all HRUs to ignore snowmelt, i.e. snow infiltration and runoff
+are zero.&nbsp; At the end of the model run
+the newly calculated opportunity times are transferred to the
+parameter and saved in t0_Var for future reference.&nbsp;
+If the run is terminated early the partially
+calculated values will be used.&nbsp; The calculated infiltration
+opportunity times saved in t0_Var may be manually transferred to t0 to
+eliminate the need for calculation in subsequent runs.</li>
+<li>Maximum infiltration is limited to the lesser of Inf
+calculated from the equation above and the available storage in the
+module smbal, i.e. (soil_moist - soil_moist_max).</li>
+<li>Accumulation of the opportunity time when calculating.
+Normally 24 hours is added for every day when melt occurs. However,
+this may be refined by using the observation input
+t0_inhibit.&nbsp; When this input is not connected or its value is
+zero,&nbsp; the interval is added to the infiltration opportunity
+time. When t0_inhibit is greater than 0.0 the interval is not added.</li>
+<li>When
+the average SWE is &gt; 2.0 mm the&nbsp;module exits the
+unfrozen
+infiltration mode and enters the frozen infiltration cycle. While the
+daily snow melt (snowmeltD) is less than &nbsp;2.0 mm</li>
+<li>Rainfall precipitation is always allowed to
+infiltrate("infil". "runoff" is always zero.</li>
+<li>Snowmelt occurring before snowmeltD exceeds 2.0 mm is
+handled as premelt. During this period, if the parameter "Si" is 1.0
+the early snowmelt is handled as "meltrunoff" otherwise it is
+"snowinfil".</li>
+<li>After the snowmelt is greater than 2 mm the snowmelt is
+handled as follows; Si &gt;= 1.0 -&gt; RESTRICTED,
+&nbsp;1.0 &gt; Si &gt; 0.0 -&gt; LIMITED and Si
+&lt;= 0.0 -&gt; LIMITED.</li>
+<li>The rate of infiltration and the maximum amount of
+infiltration during LIMITED infiltration is controlled by the method
+described in&nbsp;'Frozen soil infiltration Zhao and Gray (1999)'.</li>
+<li>The Opportunity Time is calculated as the period beginning
+from when the snowmelt exceeds 2 mm per day until the average of all
+HRU SWE is less then 2 mm.</li>
+</ol>
+</body></html>

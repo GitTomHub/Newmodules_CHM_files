@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_obs (05/17/16)</title>
+
+</head>
+<body>
+<b><font face="Arial">
+</font></b>
+<h3><b><font face="Arial">obs</font></b></h3>
+<p>Defined in Classobs. This module reads the climatic data from
+the observation
+data&nbsp; file(s) into the model. The time step is determined by
+the observation file
+interval.&nbsp; For normal use, the interval will be half or one
+hour. The
+module copies the observations to the HRU's with the requested
+corrections for redirection, height and climate change.&nbsp;One
+of the precipitation observations "p" and "ppt" must be present.
+&nbsp; If both are used (e.g. "p" for rainfall and "ppt" for
+snowfall)
+they are&nbsp; merged to generate "hru_p".&nbsp; When both "p"
+and
+"ppt" are used together, both must be present in every interval and set
+to zero
+when not used. "ppt" can also be in a separate "daily" file containing
+the daily rainfall. When "ppt" is combined with the interval data only
+the first
+interval value of every day is read and used as the total precipitation
+for the day.
+&nbsp; All other values are ignored.</p>
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>u (m/s) - average wind speed over time step.</li>
+<li>p (mm/int) - interval precipitation. Optional if ppt
+available. p and ppt values are merged.</li>
+<li>ppt (mm/d) - daily precipitation. Optional if p available.
+p and ppt values are merged.</li>
+<li>t_max (°C) - variation #1 daily maximum temperature. Only
+used in Variation #1 for daily 24 hour time step.</li>
+<li>t_min (°C) - variation #1 daily minimum temperature. Only
+used in&nbsp;Variation #1  for daily 24 hour time step.</li>
+<li>t (°C) - air temperature using the INTVL declobs function
+to read the entire days temperature data. Then modified in buffer by
+parameters lapse rate and ClimChng_t.</li>
+<li>rh (%) - relative humidity using the INTVL declobs function
+to read the entire days relative humidity data. </li>
+<li>ea (kPa) - vapour pressure using the INTVL declobs function
+to read the entire days vapour pressure data.</li><li>obs_snow (mm) - snow observation&nbsp; in Variation #2.</li><li>obs_rain (mm) - rain observation&nbsp; in Variation #2.</li>
+</ul>
+<p>N.B. Either rh or ea are used. If both are available only rh
+is used. The other is
+calculated from the array of rh or ea values, using the adjusted
+temperature (lapse rate
+and climate change) and the parameter ElevChng_flag (maintain rh or ea
+with temperatue
+change).<br>
+</p>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<p>The following are interval observation for internal use onlys.
+</p>
+<ul>
+<li>tday_intvls (°C) - temperature array holding&nbsp;
+interval values. Values have Dimensioned [interval][dim].</li>
+<li>rhday_intvls&nbsp; (%) -RH array holding&nbsp;
+interval values. Dimensioned [interval][dim].</li>
+<li>eaday_intvls&nbsp; (kPa) - ea array holding&nbsp;
+interval values. Values are calculated from above t and RH. Dimensioned
+[interval][dim].</li>
+<li>t_obs (°C) - temperature array holding the original
+observation interval values before adjustment for lapse rate and
+climate warming. Note that HRU_OBS redirection have been applied.
+Access t-obs [period in day, dim].</li>
+</ul>
+<p>The following variables are derived for each HRU from the
+observations.
+</p>
+<ul>
+<li>hru_t (°C) - temperature</li>
+<li>hru_rh (%) - relative humidity.</li>
+<li>hru_ea (kPa) - vapour pressure</li>
+<li>hru_u (m/s) - wind speed.</li>
+<li>hru_p (mm/int) - precipitation. Calculated from the
+interval precipitation (p) and/or (daily precipitation (ppt)
+/frequency) or all the daily precipitation (ppt) during the first daily
+interval of the day as determined by the parameter "ppt_daily_distrib".</li>
+<li>hru_rain (mm/int) - rain.</li>
+<li>cumhru_rain (mm) - cumulative rain</li>
+<li>hru_snow (mm/int) - snow.</li>
+<li>cumhru_snow (mm) - cumulative snow.</li>
+<li>cumhru_snow_meas (mm) - cumulative snow before catch
+adjustment.</li>
+<li>hru_newsnow () - 0/1 for no/yes in the last interval.</li>
+<li>hru_tmean (°C) - daily mean temperature.</li>
+<li>hru_tmax (°C) - daily maximum temperature.</li>
+<li>hru_tmin (°C) - daily minimum temperature.</li>
+<li>hru_umean (m/s) - daily mean wind speed.</li>
+<li>hru_rhmean (%) - daily mean RH.</li>
+<li>hru_eamean (kPa) - daily mean vapour pressure.</li>
+<li>Pa (kPa) - atmospheric pressure.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>basin_area (km^2) - basin area.</li>
+<li>hru area (km^2) - HRU area.</li>
+<li>hru_elev (m) - HRU altitude.</li>
+<li>obs_elev (m) - Measurement altitude.</li>
+<li>HRU_OBS () - array[5][dim] of values indexing observations
+to HRUs. The order is 1) t, rh and ea; 2) p and ppt; 3) u; 4) Q; and 5)
+for special use.</li>
+<li>snow_rain_determination() - snow/rain determination: 0 -
+air temperature, 1 - ice bulb temperature, 2 - Harder. </li>
+<li>tmax_allrain (°C) - precipitation is all rain when the
+temperature is greater or equal to this value. Not used in Harder method.</li>
+<li>tmax_allsnow (°C) - precipitation is all snow when the
+temperature is less or equal to this value. Not used in Harder method.</li>
+<li>catchadjust () - none - 0/Nipher - 1/MacDonald-Alter (not
+recommended) - 2/Smith-Alter - 3.</li>
+<li>ppt_daily_distrib () - 0/1 - daily precip all in first
+interval /equally divided over the day. </li>
+<li>lapse_rate (°C/100m) - temperature lapse rate correction.</li>
+<li>ElevChng_flag () - Elevation change control; 0 - maintain
+RH, 1 - keep Vp within Vsat maximum.</li>
+<li>precip_elev_adj () - precipitation height adjustment
+{adjusted p(or ppt) = p(or ppt)*(1.0 +
+precip_elev_adj*elev_difference/100)}.</li>
+<li>ClimChng_t (°C) - Climate change additive temperature
+change.</li>
+<li>ClimChng_flag () - Climate change control; 0 - maintain RH,
+1 - keep Vp within Vsat maximum</li>
+<li>ClimChng_precip () - Climate change multiplative p/ppt
+change {adjusted p(or ppt) = p(or ppt)*ClimChng_precip}.</li>
+<li>Use_Observations_As_Supplied
+() - 0 -&gt; CRHM handles observation corrections for lapse
+rate/allocation etc., 1 -&gt; Externally corrected observation
+dataset.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>none</li>
+</ul>
+<h3>Notes</h3>
+<p>&nbsp;&nbsp;&nbsp; The parameter HRO_OBS applies
+to all observations. E.g t, rh, u, ea,
+Qsi, Qli, Tg etc.. </p>
+<p>&nbsp;&nbsp;&nbsp; The parameter HRO_OBS is
+normally defined in the module
+"obs".</p>
+<p>&nbsp;&nbsp;&nbsp; The parameter HRO_OBS has a
+default value of 1 for every HRU. &nbsp;
+This implies that there is only one set of observations and that all
+HRUs use this set of
+values.&nbsp; However, if the observation file had six sets of
+temperature data, the
+observation has "t 6 (°C)" in its header then the following HRU_OBS
+settings
+are possible.</p>
+<p>HRU_OBS = 1, 2, 3, 4, 5, 6 then the HRU1, HRU2 ... use
+temperatures T1, T2, T3 ... as
+driving inputs.</p>
+<p>HRU_OBS = 4, 5, 6,1, 2, 3&nbsp; then the HRU1, HRU2 ...
+use temperatures T4, T5, T6,
+T1, T2, T3 as driving inputs.</p>
+<p>HRU_OBS = 4, 4, 4, 4, 4, 4&nbsp; then the HRU1, HRU2 ...
+use only temperatures T4 as
+the driving input.</p>
+<p>However, if the observation file has only three sets of
+temperature data, i.e. "t
+3 (°C)" in its header, the last defined observation is duplicated for
+the higher
+values.</p>
+<p>HRU_OBS = 4, 5, 6,1, 2, 3&nbsp; then the HRU1, HRU2 ...
+use temperatures T3, T3, T3,
+T1, T2, T3 as driving inputs.</p>
+<p>&nbsp;&nbsp;&nbsp; When the observation variables
+are displayed in CRHM they are
+displayed in the same order as in the observation file.&nbsp; When
+the observations are
+displayed from the HRU, e.g. hru_t, the order will be determined by the
+HRU_OBS values.</p>
+</body></html>

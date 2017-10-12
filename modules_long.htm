@@ -1,0 +1,77 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_long (03/06/08)</title>
+</head>
+
+<body>
+<font face="Arial"><b>
+
+<h3>long</b></font></h3>
+
+<p>This module defined in Classlong calculates long-wave radiation. Incoming Longwave
+radiation to Melting Snow: Observations, Sensitivity and Estimation in Northern
+Environments (Sicart et al., 2005?).</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>Qsi (W/m^2) - incident short-wave.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observation Functions</a></h3>
+
+<ul>
+  <li>QsiDtot(W/m^2*d) - daily total (cumulative) of average interval incident short-wave
+    fluxes, Qsi.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_observationVariable.htm">observationVariables</a></h3>
+
+<ul>
+  <li>Qli# (W/m^2) - calculated incoming long-wave.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>tau () - atmospheric transmissivity.</li>
+  <li>Long&nbsp; (W/m^2) - calculated incoming long-wave. Same as generated observation.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>none.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_t (°C) - air temperature.</li>
+  <li>hru_ea (kPa) - vapour pressure.</li>
+  <li>hru_rh (%) - relative humidity.</li>
+  <li>QdroDext (global)(MJ/m^2*d) - daily extraTerrestial direct.</li>
+  <li>QdroD (global) (MJ/m^2*d) - daily clear-sky direct.</li>
+</ul>
+
+<h3>Notes</h3>
+
+<p>tau = QsiDtot*(864000/10E6)/QdroDext.</p>
+
+<p>Qli = 1.24*(e/T)^(1/7) (1 + 0.44*RH - 0.18*tau)sbcT^4 where RH lie in the range of 0
+and 1 and T is °K.</p>
+
+<p>The declared observation, Qsi# cannot be used as input as the daily total cannot be
+calculated.&nbsp; If an attempt is made by the module to use a declared observation it
+will be automatically converted to the simple observation, i.e. Qsi# converted to Qsi.</p>
+
+<p>&nbsp;</p>
+
+<h3>History.</h3>
+
+<p>March 2008 - temperature, vapour pressure and relative humidity changed from using
+observations to the HRU variables.</p>
+</body>
+</html>

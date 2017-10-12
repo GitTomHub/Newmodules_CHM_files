@@ -1,0 +1,164 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_crack (08/19/09)</title>
+</head>
+
+<body>
+<font FACE="Arial"><b>
+
+<h3>crack </b></font>(Granger et al. 1984; Gray et al., 1986)</h3>
+
+<p>This module is defined in Classcrack and handles frozen soil infiltration during the
+spring snow melt. This module is based upon 15 years of study of the snow hydrology of the
+Prairie region and results reported in the former USSR. </p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>snowinfil (mm/d) - amount of daily infiltration &#150; expressed as an equivalent depth
+    (m<sup>3</sup>/m<sup>2</sup>).</li>
+  <li>cumsnowinfil (mm) - cummulative infiltration.</li>
+  <li>runoff (mm/d) - amount of daily runoff &#150; expressed as an equivalent depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+  <li>cumrunoff (mm) - cummulative runoff.</li>
+  <li>infil (mm/int) - infiltration in time step, <font SIZE="2" FACE="Symbol">D</font>t
+    &#150; expressed as an average depth of water on an HRU.</li>
+  <li>cuminfil (mm) - cumulative infiltration - expressed as an average depth of water on an
+    HRU.</li>
+  <li>crackstat () - HRO infiltration status. Values:&nbsp; 0 - not started,&nbsp; 1 to 6 -
+    #events, &gt;6 - <em>Limited</em> ended and 10 - ice lens.</li>
+  <li>crackon () - indicates when the crack frozen soil routine is enabled for an HRU. 0 -
+    disabled/1 - enabled.</li>
+  <li>RainOnSnow (mm) - cumulative rain on snow.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>fallstat () - fall status &lt;= 0.0 or -1 for unlimited/cracked,&nbsp; &gt;= 100.0 for
+    restricted and &lt; 0.0 limited &lt; 100.0. Pore saturation as a percentage.</li>
+  <li>basin_area (km2) - area of watershed.</li>
+  <li>hru_area(km2) - area of HRUs.</li>
+  <li>major (mm) - threshold for major melt.&nbsp; Default is 5 mm/day.</li>
+  <li>PriorInfiltration () - allow 'limited&quot; melt to infiltrate prior to first major melt
+    event. 0 - No/1 - Yes.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_tmax (obs)</li>
+  <li>snowmeltD (mm/d) (*)</li>
+  <li>SWE (mm) (*)</li>
+  <li>net_rain (mm/int) (*)</li>
+</ul>
+
+<h3>Notes</h3>
+
+<p>The Division of Hydrology at the University of Saskatchewan (Granger et al. 1984; Gray
+et al., 1985), postulated that the infiltration potential of frozen soils may be grouped
+in three broad categories, namely: restricted, limited and unlimited.</p>
+
+<p><em>Restricted</em> - Infiltration is impeded by an impermeable layer, such as an ice
+lens on the soil surface or within the soil close to the surface. For all practical
+purposes, the amount of meltwater infiltration can be assumed to be negligible and that
+the melt goes directly to runoff and to evaporation.</p>
+
+<p><em>Limited</em> - Infiltration is governed primarily by the snow-cover water
+equivalent and the frozen water content of the top 30 cm. of soil.</p>
+
+<p><em>Unlimited</em> - A soil with a high percentage of large, air-filled macropores at
+the time of melt. Examples of soils having these properties are dry, heavily cracked clays
+and coarse, dry sands, organics and others.</p>
+
+<p>Within the model there is not sufficient information to determine these classifications
+automatically and as a result the user is required to specify these properties for each
+HRU every fall and input this information to the model as a parameter. The one case the
+model does handle is when there is an early melt and the subsequent re-freezing causing an
+ice lens to form. This will change both Limited to Restricted. Implementation of the
+infiltration to frozen soils routines is described below.</p>
+<i>
+
+<p>Definitions</p>
+</i>
+
+<p>1. Index = INF/SWE where INF=5(1-<font FACE="Symbol">q</font> p)*SWE^0.584.</p>
+
+<p>2. Potential = INF/6.</p>
+
+<p>3. MELT_THRESHOLD = 5 mm. Minimum daily meltwater at which the melt routine is enabled.
+Lower meltwater levels are not counted as one of the six major melt events.</p>
+
+<p>4. A major melt is a day when the amount of meltwater generated is greater than the
+MELT_THRESHOLD.</p>
+
+<p>5. Six major daily melts are allowed before the limited infiltration category is
+changed to Restricted.</p>
+
+<p>The Frozen Soil Infiltration routine</p>
+
+<p>1. The Frozen Infiltration routine is enabled in an HRU when its SWE is greater than
+50mm.&nbsp; Each HRU is handled independently.</p>
+
+<p>2. Limited infiltration is triggered into operation by the first major melt. At this
+time, Index and Potential are calculated from the soil moisture (<font FACE="Symbol">q</font>
+p) and the SWE of the snowpack. </p>
+
+<p>3. The Frozen Infiltration routine is disabled in an HRU when its SWE reaches zero.</p>
+
+<p>The three frozen soil categories are described below.</p>
+
+<p><em>LIMITED</em></p>
+
+<p>1. Only six major over-winter snowmelt events are possible before the infiltration
+potential becomes Restricted.</p>
+
+<p>2. Meltwater amounts less than the MELT_THRESHOLD is handled as runoff unless the
+parameter <em>PriorInfiltration</em>are is set,&nbsp; then all of the melt is permitted to
+infiltrate into the soil. Once the&nbsp; MELT_THRESHOLD has been exceeded it is assumed
+that spring snowmelt has begun and only an amount of meltwater equal to MELT*Index will
+infiltrate and the remainder will be handled as runoff.</p>
+
+<p>3. Index and Potential are recalculated if another major melt occurs with a greater
+SWE.</p>
+
+<p>4. If the temperature the day following a major melt event is colder than -10ºC, the
+category is changed from Limited to Restricted assuming an ice lens has formed.</p>
+
+<p>5. When the SWE of the snowpack is zero,&nbsp; the model returns to the module that
+handles unfrozen infiltration.</p>
+
+<p><em>UNLIMITED</em></p>
+
+<p>1. All meltwater is allowed to infiltrate.</p>
+
+<p>2. If the temperature the day after a major melt event is less than -10ºC, the
+category remains unchanged and all the melt water still infiltrates into the soil.</p>
+
+<p>3. When the SWE of the snowpack is zero,&nbsp; the model returns to the module that
+handles unfrozen infiltration.</p>
+
+<p><em>RESTRICTED</em></p>
+
+<p>1. No meltwater is allowed to infiltrate.</p>
+
+<p>2. When the SWE of the snowpack is zero,&nbsp; the model returns to the module that
+handles unfrozen infiltration.</p>
+
+<h3>Rain on Snow.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; The energy component of Rain on Snow was not handled when the Rain
+on Snow occurs before melt.&nbsp; All the Rain on Snow is accumulated before melt and
+released when the first melt occurs, i.e. snowmelt is greater than zero.&nbsp; This is can
+be seen by an inspection of RainOnSnow as it remains at zero until there is melt in the
+HRU.&nbsp; The Rain on Snow is accumulated before melt in an internal variable RainOnSnowA
+which is not accessible to the user.</p>
+</body>
+</html>

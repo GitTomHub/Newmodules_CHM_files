@@ -1,0 +1,924 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Notes_Units (10/18/06)</title>
+</head>
+
+<body>
+
+<h3>Units.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; All observation, parameters and variables have assigned units.&nbsp;
+These are checked at run-time and any errors logged.</p>
+
+<p>A sample observation file header follows.</p>
+
+<h3>Observation header file format</h3>
+
+<p>t 1 (°C) comment. e.g. air temperature.</p>
+
+<p>rh 1 (%)&nbsp;&nbsp;&nbsp; comment. e.g. relative humidity.</p>
+
+<p>u 1 (m/s) comment etc.</p>
+
+<p>SunAct 1 (h)</p>
+
+<p>ppt 1 (mm/d)</p>
+
+<p>Qsi 1 (W/m^2)</p>
+
+<p>Qso 1 (W/m^2)</p>
+
+<p>Qn 1 (W/m^2)</p>
+
+<p>$Qsi mul(Qsi\t 277.8) unit conversion</p>
+
+<p>$Qso mul(Qso\t 277.8)</p>
+
+<p>$Qn mul(Qn\t 277.8)</p>
+
+<p>$ea ea(t\t rh) (kPa) vapour pressure</p>
+
+<p>&nbsp;</p>
+
+<p>Note that there is one or more spaces or tabs between the number of observations and
+the units and after.&nbsp; The remainder of the line is treated as a comment.</p>
+
+<p>Units must be enclosed in parentheses.&nbsp;</p>
+
+<p>Case is significant in all units and multipliers..</p>
+
+<p>° (degree) is not required but may be constructed using&nbsp; ALT key and Num Lock and
+0176 or 0186 entered on the numeric key pad.</p>
+
+<p>% (percentage) is ignored.</p>
+
+<h3>Multipliers.</h3>
+
+<p>&nbsp;</p>
+
+<table border="1" width="202">
+  <tr>
+    <td width="42">Y&nbsp;&nbsp; </td>
+    <td width="71">Yotta&nbsp;&nbsp; </td>
+    <td width="71">1e+24&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">Z&nbsp;&nbsp; </td>
+    <td width="71">Zetta&nbsp;&nbsp; </td>
+    <td width="71">1e+21&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">E&nbsp;&nbsp; </td>
+    <td width="71">Exa&nbsp;&nbsp; </td>
+    <td width="71">1e+18&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">P&nbsp;&nbsp; </td>
+    <td width="71">Peta&nbsp;&nbsp; </td>
+    <td width="71">1e+15&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">T&nbsp;&nbsp; </td>
+    <td width="71">Tera&nbsp;&nbsp; </td>
+    <td width="71">1e+12&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">G&nbsp;&nbsp; </td>
+    <td width="71">Giga&nbsp;&nbsp; </td>
+    <td width="71">1e+9&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">M&nbsp;&nbsp; </td>
+    <td width="71">Mega&nbsp;&nbsp; </td>
+    <td width="71">1e+6&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">k&nbsp;&nbsp; </td>
+    <td width="71">kilo&nbsp;&nbsp; </td>
+    <td width="71">1e+3&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">K&nbsp;&nbsp; </td>
+    <td width="71">Kilo&nbsp;&nbsp; </td>
+    <td width="71">1e+3&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">h&nbsp;&nbsp; </td>
+    <td width="71">hecto&nbsp;&nbsp; </td>
+    <td width="71">1e+2&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">H&nbsp;&nbsp; </td>
+    <td width="71">Hecto&nbsp;&nbsp; </td>
+    <td width="71">1e+2&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">D&nbsp;&nbsp; </td>
+    <td width="71">Deka&nbsp;&nbsp; </td>
+    <td width="71">1e+1&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">d&nbsp;&nbsp; </td>
+    <td width="71">deci&nbsp;&nbsp; </td>
+    <td width="71">1e-1&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">c&nbsp;&nbsp; </td>
+    <td width="71">cent&nbsp;&nbsp; </td>
+    <td width="71">1e-2&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">m&nbsp;&nbsp; </td>
+    <td width="71">mili&nbsp;&nbsp; </td>
+    <td width="71">1e-3&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">u&nbsp;&nbsp; </td>
+    <td width="71">micro&nbsp;&nbsp; </td>
+    <td width="71">1e-6&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">µ&nbsp;&nbsp; </td>
+    <td width="71">micro&nbsp;&nbsp; </td>
+    <td width="71">1e-6&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">n&nbsp;&nbsp; </td>
+    <td width="71">nano&nbsp;&nbsp; </td>
+    <td width="71">1e-9&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">p&nbsp;&nbsp; </td>
+    <td width="71">pico&nbsp;&nbsp; </td>
+    <td width="71">1e-12&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">f&nbsp;&nbsp; </td>
+    <td width="71">femto&nbsp;&nbsp; </td>
+    <td width="71">1e-15&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">a&nbsp;&nbsp; </td>
+    <td width="71">atto&nbsp;&nbsp; </td>
+    <td width="71">1e-18&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">z&nbsp;&nbsp; </td>
+    <td width="71">zepto&nbsp;&nbsp; </td>
+    <td width="71">1e-21&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="42">y&nbsp;&nbsp; </td>
+    <td width="71">yocto&nbsp;&nbsp; </td>
+    <td width="71">1e-24&nbsp;&nbsp; </td>
+  </tr>
+</table>
+
+<h3>Units.</h3>
+
+<table border="1" width="100%">
+  <tr>
+    <td>A&nbsp;&nbsp; </td>
+    <td>Ampere&nbsp;&nbsp; </td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>Bq&nbsp;&nbsp; </td>
+    <td>becquerel&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>l/s</td>
+  </tr>
+  <tr>
+    <td>Btu&nbsp;&nbsp; </td>
+    <td>InternationalTableBtu&nbsp;&nbsp; </td>
+    <td>1055.05585262&nbsp;&nbsp; </td>
+    <td>Kg*m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>C&nbsp;&nbsp; </td>
+    <td>Coulomb&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>A*s</td>
+  </tr>
+  <tr>
+    <td>Ci&nbsp;&nbsp; </td>
+    <td>Curie&nbsp;&nbsp; </td>
+    <td>3.7*1010&nbsp;&nbsp; </td>
+    <td>l/s</td>
+  </tr>
+  <tr>
+    <td>F&nbsp;&nbsp; </td>
+    <td>Farad&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>A^2*s^4/Kg*m^2</td>
+  </tr>
+  <tr>
+    <td>Fdy&nbsp;&nbsp; </td>
+    <td>Faraday&nbsp;&nbsp; </td>
+    <td>96487&nbsp;&nbsp; </td>
+    <td>A*s</td>
+  </tr>
+  <tr>
+    <td>Gy&nbsp;&nbsp; </td>
+    <td>Gray&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>H&nbsp;&nbsp; </td>
+    <td>Henry&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg*m^2/A^2*s^2</td>
+  </tr>
+  <tr>
+    <td>Hz&nbsp;&nbsp; </td>
+    <td>Hertz&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>s^-1</td>
+  </tr>
+  <tr>
+    <td>J&nbsp;&nbsp; </td>
+    <td>Joule&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg*m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>K&nbsp;&nbsp; </td>
+    <td>Kelvin&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>&quot;),</td>
+  </tr>
+  <tr>
+    <td>Knot&nbsp;&nbsp; </td>
+    <td>NauticalMilesPerHour&nbsp;&nbsp; </td>
+    <td>463.0/900.0&nbsp;&nbsp; </td>
+    <td>m/s</td>
+  </tr>
+  <tr>
+    <td>N&nbsp;&nbsp; </td>
+    <td>Newton&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg*m/s^2</td>
+  </tr>
+  <tr>
+    <td>Ohm&nbsp;&nbsp; </td>
+    <td>Ohm&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg*m^2/A^2*s^3</td>
+  </tr>
+  <tr>
+    <td>OzUK&nbsp;&nbsp; </td>
+    <td>UKFluidOunce&nbsp;&nbsp; </td>
+    <td>2.8413075e-5&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>P&nbsp;&nbsp; </td>
+    <td>Poise&nbsp;&nbsp; </td>
+    <td>0.1&nbsp;&nbsp; </td>
+    <td>Kg/m*s</td>
+  </tr>
+  <tr>
+    <td>Pa&nbsp;&nbsp; </td>
+    <td>Pascal&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg/m*s</td>
+  </tr>
+  <tr>
+    <td>Pdl&nbsp;&nbsp; </td>
+    <td>Poundal&nbsp;&nbsp; </td>
+    <td>0.13825495376&nbsp;&nbsp; </td>
+    <td>Kg*m/s^2</td>
+  </tr>
+  <tr>
+    <td>Pica&nbsp;&nbsp; </td>
+    <td>Pica&nbsp;&nbsp; </td>
+    <td>1.0/72.0&nbsp;&nbsp; </td>
+    <td>in</td>
+  </tr>
+  <tr>
+    <td>R&nbsp;&nbsp; </td>
+    <td>Roentgen&nbsp;&nbsp; </td>
+    <td>0.000258&nbsp;&nbsp; </td>
+    <td>A*s/Kg</td>
+  </tr>
+  <tr>
+    <td>S&nbsp;&nbsp; </td>
+    <td>Siemens&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>A^2*s^3/Kg*m^2</td>
+  </tr>
+  <tr>
+    <td>St&nbsp;&nbsp; </td>
+    <td>Stokes&nbsp;&nbsp; </td>
+    <td>0.0001&nbsp;&nbsp; </td>
+    <td>m^2/s</td>
+  </tr>
+  <tr>
+    <td>Sv&nbsp;&nbsp; </td>
+    <td>Sievert&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>T&nbsp;&nbsp; </td>
+    <td>Tesla&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg/A*s^2</td>
+  </tr>
+  <tr>
+    <td>U&nbsp;&nbsp; </td>
+    <td>UnifiedAtomicMass&nbsp;&nbsp; </td>
+    <td>1.6605402e-27&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>V&nbsp;&nbsp; </td>
+    <td>Volt&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg*m^2/A*s^2</td>
+  </tr>
+  <tr>
+    <td>W&nbsp;&nbsp; </td>
+    <td>Watt&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg*m^2/s^3</td>
+  </tr>
+  <tr>
+    <td>Wb&nbsp;&nbsp; </td>
+    <td>Weber&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>Kg*m^2/A*s^2</td>
+  </tr>
+  <tr>
+    <td>acre&nbsp;&nbsp; </td>
+    <td>Acre&nbsp;&nbsp; </td>
+    <td>4046.87260987&nbsp;&nbsp; </td>
+    <td>m^2</td>
+  </tr>
+  <tr>
+    <td>arcmin&nbsp;&nbsp; </td>
+    <td>ArcMinute&nbsp;&nbsp; </td>
+    <td>2.9088820866e-4&nbsp;&nbsp; </td>
+    <td>r</td>
+  </tr>
+  <tr>
+    <td>arcs&nbsp;&nbsp; </td>
+    <td>ArcSecond&nbsp;&nbsp; </td>
+    <td>4.848136111e-6&nbsp;&nbsp; </td>
+    <td>r</td>
+  </tr>
+  <tr>
+    <td>atm&nbsp;&nbsp; </td>
+    <td>Attmosphere&nbsp;&nbsp; </td>
+    <td>101325&nbsp;&nbsp; </td>
+    <td>Kg/m*s^2</td>
+  </tr>
+  <tr>
+    <td>au&nbsp;&nbsp; </td>
+    <td>AstronomicalUnit&nbsp;&nbsp; </td>
+    <td>1.495979*1011&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>b&nbsp;&nbsp; </td>
+    <td>Barn&nbsp;&nbsp; </td>
+    <td>1e-28&nbsp;&nbsp; </td>
+    <td>m^2</td>
+  </tr>
+  <tr>
+    <td>bar&nbsp;&nbsp; </td>
+    <td>Bar&nbsp;&nbsp; </td>
+    <td>100000&nbsp;&nbsp; </td>
+    <td>Kg/m*s^2</td>
+  </tr>
+  <tr>
+    <td>bbl&nbsp;&nbsp; </td>
+    <td>Barrel&nbsp;&nbsp; </td>
+    <td>0.158987294928&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>bu&nbsp;&nbsp; </td>
+    <td>Bushel&nbsp;&nbsp; </td>
+    <td>0.03523907&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>c&nbsp;&nbsp; </td>
+    <td>LightSpeed&nbsp;&nbsp; </td>
+    <td>299792458&nbsp;&nbsp; </td>
+    <td>m/s</td>
+  </tr>
+  <tr>
+    <td>cal&nbsp;&nbsp; </td>
+    <td>Calorie&nbsp;&nbsp; </td>
+    <td>4.1868&nbsp;&nbsp; </td>
+    <td>Kg*m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>cd&nbsp;&nbsp; </td>
+    <td>Candela&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>chain&nbsp;&nbsp; </td>
+    <td>Chain&nbsp;&nbsp; </td>
+    <td>20.1168402337&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>ct&nbsp;&nbsp; </td>
+    <td>Carat&nbsp;&nbsp; </td>
+    <td>0.0002&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>cu&nbsp;&nbsp; </td>
+    <td>USCup&nbsp;&nbsp; </td>
+    <td>2.365882365e-4&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>d&nbsp;&nbsp; </td>
+    <td>day&nbsp;&nbsp; </td>
+    <td>86400&nbsp;&nbsp; </td>
+    <td>s</td>
+  </tr>
+  <tr>
+    <td>dyn&nbsp;&nbsp; </td>
+    <td>Dyne&nbsp;&nbsp; </td>
+    <td>0.00001&nbsp;&nbsp; </td>
+    <td>Kg*m/s^2</td>
+  </tr>
+  <tr>
+    <td>eV&nbsp;&nbsp; </td>
+    <td>ElectronVolt&nbsp;&nbsp; </td>
+    <td>1.60217733e-19&nbsp;&nbsp; </td>
+    <td>Kg*m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>erg&nbsp;&nbsp; </td>
+    <td>Erg&nbsp;&nbsp; </td>
+    <td>0.0000001&nbsp;&nbsp; </td>
+    <td>Kg*m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>fath&nbsp;&nbsp; </td>
+    <td>Fathom&nbsp;&nbsp; </td>
+    <td>1.82880365761&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>fbm&nbsp;&nbsp; </td>
+    <td>BoardFoot&nbsp;&nbsp; </td>
+    <td>0.002359737216&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>fc&nbsp;&nbsp; </td>
+    <td>Footcandle&nbsp;&nbsp; </td>
+    <td>10.7639104167&nbsp;&nbsp; </td>
+    <td>cd*sr/m^2</td>
+  </tr>
+  <tr>
+    <td>fermi&nbsp;&nbsp; </td>
+    <td>Fermi&nbsp;&nbsp; </td>
+    <td>1e-15&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>flam&nbsp;&nbsp; </td>
+    <td>Footlambert&nbsp;&nbsp; </td>
+    <td>3.42625909964&nbsp;&nbsp; </td>
+    <td>cd/m^2</td>
+  </tr>
+  <tr>
+    <td>ft&nbsp;&nbsp; </td>
+    <td>InternationalFoot&nbsp;&nbsp; </td>
+    <td>0.3048&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>ftUS&nbsp;&nbsp; </td>
+    <td>SurveyFoot&nbsp;&nbsp; </td>
+    <td>0.304800609601&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>g&nbsp;&nbsp; </td>
+    <td>Gram&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>ga&nbsp;&nbsp; </td>
+    <td>StandardFreefall&nbsp;&nbsp; </td>
+    <td>9.80665&nbsp;&nbsp; </td>
+    <td>m/s^2</td>
+  </tr>
+  <tr>
+    <td>gal&nbsp;&nbsp; </td>
+    <td>USGallon&nbsp;&nbsp; </td>
+    <td>0.003785411784&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>galC&nbsp;&nbsp; </td>
+    <td>CanadianGallon&nbsp;&nbsp; </td>
+    <td>0.00454609&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>galUK&nbsp;&nbsp; </td>
+    <td>UKGallon&nbsp;&nbsp; </td>
+    <td>0.004546092&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>gf&nbsp;&nbsp; </td>
+    <td>GramForce&nbsp;&nbsp; </td>
+    <td>0.00980665&nbsp;&nbsp; </td>
+    <td>Kg*m/s^2</td>
+  </tr>
+  <tr>
+    <td>grad&nbsp;&nbsp; </td>
+    <td>Grade&nbsp;&nbsp; </td>
+    <td>1.57079632679e-2&nbsp;&nbsp; </td>
+    <td>r</td>
+  </tr>
+  <tr>
+    <td>grain&nbsp;&nbsp; </td>
+    <td>Grain&nbsp;&nbsp; </td>
+    <td>0.00006479891&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>h&nbsp;&nbsp; </td>
+    <td>Hour&nbsp;&nbsp; </td>
+    <td>3600&nbsp;&nbsp; </td>
+    <td>s</td>
+  </tr>
+  <tr>
+    <td>ha&nbsp;&nbsp; </td>
+    <td>Hectare&nbsp;&nbsp; </td>
+    <td>10000&nbsp;&nbsp; </td>
+    <td>m^2</td>
+  </tr>
+  <tr>
+    <td>hp&nbsp;&nbsp; </td>
+    <td>horsepower&nbsp;&nbsp; </td>
+    <td>745.699871582&nbsp;&nbsp; </td>
+    <td>Kg*m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>in&nbsp;&nbsp; </td>
+    <td>Inch&nbsp;&nbsp; </td>
+    <td>0.0254&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>inH2O&nbsp;&nbsp; </td>
+    <td>InchesOfWater&nbsp;&nbsp; </td>
+    <td>248.84&nbsp;&nbsp; </td>
+    <td>Kg/m*s^2</td>
+  </tr>
+  <tr>
+    <td>inHg&nbsp;&nbsp; </td>
+    <td>InchesOfMercury&nbsp;&nbsp; </td>
+    <td>3386.38815789&nbsp;&nbsp; </td>
+    <td>Kg/m*s^2</td>
+  </tr>
+  <tr>
+    <td>int&nbsp;&nbsp; </td>
+    <td>CRHM time step&nbsp;&nbsp; </td>
+    <td>3600&nbsp;&nbsp; </td>
+    <td>s</td>
+  </tr>
+  <tr>
+    <td>kip&nbsp;&nbsp; </td>
+    <td>KilopoundForce&nbsp;&nbsp; </td>
+    <td>4448.22161526&nbsp;&nbsp; </td>
+    <td>Kg*m/s^2</td>
+  </tr>
+  <tr>
+    <td>kph&nbsp;&nbsp; </td>
+    <td>KilometersPerHour&nbsp;&nbsp; </td>
+    <td>5.0/18.0&nbsp;&nbsp; </td>
+    <td>m/s</td>
+  </tr>
+  <tr>
+    <td>l&nbsp;&nbsp; </td>
+    <td>Liter&nbsp;&nbsp; </td>
+    <td>0.001&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>lam&nbsp;&nbsp; </td>
+    <td>Lambert&nbsp;&nbsp; </td>
+    <td>3183.09886184&nbsp;&nbsp; </td>
+    <td>cd/m^2</td>
+  </tr>
+  <tr>
+    <td>lb&nbsp;&nbsp; </td>
+    <td>AvoirdupoisPound&nbsp;&nbsp; </td>
+    <td>0.45359267&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>lbf&nbsp;&nbsp; </td>
+    <td>PoundForce&nbsp;&nbsp; </td>
+    <td>4.44822161526&nbsp;&nbsp; </td>
+    <td>Kg*m/s^2</td>
+  </tr>
+  <tr>
+    <td>lbt&nbsp;&nbsp; </td>
+    <td>TroyPound&nbsp;&nbsp; </td>
+    <td>0.3732417216&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>lm&nbsp;&nbsp; </td>
+    <td>Lumen&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>cd*sr</td>
+  </tr>
+  <tr>
+    <td>lx&nbsp;&nbsp; </td>
+    <td>Lux&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>cd*sr/m^2</td>
+  </tr>
+  <tr>
+    <td>lyr&nbsp;&nbsp; </td>
+    <td>LightYear&nbsp;&nbsp; </td>
+    <td>9.46052840488*1015&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>m&nbsp;&nbsp; </td>
+    <td>Meter&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>mho&nbsp;&nbsp; </td>
+    <td>Mho&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>A^2*s^2/Kg*m^2</td>
+  </tr>
+  <tr>
+    <td>mi&nbsp;&nbsp; </td>
+    <td>InternationalMile&nbsp;&nbsp; </td>
+    <td>1609.344&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>miUS&nbsp;&nbsp; </td>
+    <td>USStatuteMile&nbsp;&nbsp; </td>
+    <td>1609.34721869&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>mil&nbsp;&nbsp; </td>
+    <td>Mil&nbsp;&nbsp; </td>
+    <td>0.0000254&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>min&nbsp;&nbsp; </td>
+    <td>Minute&nbsp;&nbsp; </td>
+    <td>60&nbsp;&nbsp; </td>
+    <td>s</td>
+  </tr>
+  <tr>
+    <td>mmHg&nbsp;&nbsp; </td>
+    <td>MilimeterOfMercury&nbsp;&nbsp; </td>
+    <td>133.322368421&nbsp;&nbsp; </td>
+    <td>Kg/m*s^2</td>
+  </tr>
+  <tr>
+    <td>mol&nbsp;&nbsp; </td>
+    <td>Mole&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>mph&nbsp;&nbsp; </td>
+    <td>MilesPerHour&nbsp;&nbsp; </td>
+    <td>0.44704&nbsp;&nbsp; </td>
+    <td>m/s</td>
+  </tr>
+  <tr>
+    <td>nmi&nbsp;&nbsp; </td>
+    <td>NauticalMile&nbsp;&nbsp; </td>
+    <td>1852&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>oz&nbsp;&nbsp; </td>
+    <td>Ounce&nbsp;&nbsp; </td>
+    <td>0.028349523125&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>ozfl&nbsp;&nbsp; </td>
+    <td>USFluidOunce&nbsp;&nbsp; </td>
+    <td>2.95735295625e-5&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>ozt&nbsp;&nbsp; </td>
+    <td>TroyOunce&nbsp;&nbsp; </td>
+    <td>0.0311034768&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>pc&nbsp;&nbsp; </td>
+    <td>Parsec&nbsp;&nbsp; </td>
+    <td>3.08567818585106&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>ph&nbsp;&nbsp; </td>
+    <td>Phot&nbsp;&nbsp; </td>
+    <td>10000&nbsp;&nbsp; </td>
+    <td>cd*sr/m^2</td>
+  </tr>
+  <tr>
+    <td>pk&nbsp;&nbsp; </td>
+    <td>Peck&nbsp;&nbsp; </td>
+    <td>0.0088097675&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>psi&nbsp;&nbsp; </td>
+    <td>PoundsPerSquareInch&nbsp;&nbsp; </td>
+    <td>6894.75729317&nbsp;&nbsp; </td>
+    <td>Kg/m*s^2</td>
+  </tr>
+  <tr>
+    <td>pt&nbsp;&nbsp; </td>
+    <td>Pint&nbsp;&nbsp; </td>
+    <td>0.000473176473&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>qt&nbsp;&nbsp; </td>
+    <td>Quart&nbsp;&nbsp; </td>
+    <td>0.000946352946&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>r&nbsp;&nbsp; </td>
+    <td>Radian&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>rad&nbsp;&nbsp; </td>
+    <td>Rad&nbsp;&nbsp; </td>
+    <td>0.01&nbsp;&nbsp; </td>
+    <td>m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>rd&nbsp;&nbsp; </td>
+    <td>Rod&nbsp;&nbsp; </td>
+    <td>5.02921005842&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>rem&nbsp;&nbsp; </td>
+    <td>Rem&nbsp;&nbsp; </td>
+    <td>0.01&nbsp;&nbsp; </td>
+    <td>m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>s&nbsp;&nbsp; </td>
+    <td>Second&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>sb&nbsp;&nbsp; </td>
+    <td>Stilb&nbsp;&nbsp; </td>
+    <td>10000&nbsp;&nbsp; </td>
+    <td>cd/m^2</td>
+  </tr>
+  <tr>
+    <td>slug&nbsp;&nbsp; </td>
+    <td>Slug&nbsp;&nbsp; </td>
+    <td>14.5939029372&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>sr&nbsp;&nbsp; </td>
+    <td>Steradian&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>st&nbsp;&nbsp; </td>
+    <td>Stere&nbsp;&nbsp; </td>
+    <td>1&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>t&nbsp;&nbsp; </td>
+    <td>MetricTon&nbsp;&nbsp; </td>
+    <td>1000&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>tbsp&nbsp;&nbsp; </td>
+    <td>Tablespoon&nbsp;&nbsp; </td>
+    <td>1.47867647813e-5&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>therm&nbsp;&nbsp; </td>
+    <td>EECTherm&nbsp;&nbsp; </td>
+    <td>105506000&nbsp;&nbsp; </td>
+    <td>Kg*m^2/s^2</td>
+  </tr>
+  <tr>
+    <td>ton&nbsp;&nbsp; </td>
+    <td>ShortTon&nbsp;&nbsp; </td>
+    <td>907.18474&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>tonUK&nbsp;&nbsp; </td>
+    <td>UKLongTon&nbsp;&nbsp; </td>
+    <td>1016.0469088&nbsp;&nbsp; </td>
+    <td>Kg</td>
+  </tr>
+  <tr>
+    <td>torr&nbsp;&nbsp; </td>
+    <td>Torr&nbsp;&nbsp; </td>
+    <td>133.322368421&nbsp;&nbsp; </td>
+    <td>Kg/m^2</td>
+  </tr>
+  <tr>
+    <td>tsp&nbsp;&nbsp; </td>
+    <td>Teaspoon&nbsp;&nbsp; </td>
+    <td>4.92892159375e-6&nbsp;&nbsp; </td>
+    <td>m^3</td>
+  </tr>
+  <tr>
+    <td>yd&nbsp;&nbsp; </td>
+    <td>InternationalYard&nbsp;&nbsp; </td>
+    <td>0.9144&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>yr&nbsp;&nbsp; </td>
+    <td>Year&nbsp;&nbsp; </td>
+    <td>31556925.9747&nbsp;&nbsp; </td>
+    <td>s</td>
+  </tr>
+  <tr>
+    <td>°&nbsp;&nbsp; </td>
+    <td>Degree&nbsp;&nbsp; </td>
+    <td>1.74532925199e-2&nbsp;&nbsp; </td>
+    <td>r</td>
+  </tr>
+  <tr>
+    <td>°C&nbsp;&nbsp; </td>
+    <td>DegreeCelsius&nbsp;&nbsp; </td>
+    <td>1.0&nbsp;&nbsp; </td>
+    <td>K</td>
+  </tr>
+  <tr>
+    <td>°F&nbsp;&nbsp; </td>
+    <td>DegreesFahrenheit&nbsp;&nbsp; </td>
+    <td>1.0/1.8&nbsp;&nbsp; </td>
+    <td>K</td>
+  </tr>
+  <tr>
+    <td>°R&nbsp;&nbsp; </td>
+    <td>DegreesRankine&nbsp;&nbsp; </td>
+    <td>1.0/1.8&nbsp;&nbsp; </td>
+    <td>K</td>
+  </tr>
+  <tr>
+    <td>µ&nbsp;&nbsp; </td>
+    <td>Micron&nbsp;&nbsp; </td>
+    <td>1e-6&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>Å&nbsp;&nbsp; </td>
+    <td>Angstrom&nbsp;&nbsp; </td>
+    <td>1e-10&nbsp;&nbsp; </td>
+    <td>m</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_intcp (05/17/16)</title>
+
+</head>
+
+<body>
+<h3><b><font face="Arial">intcp</font></b></h3>
+<p>This module will handle summer and winter interception when
+the algorithms are
+finalized. At present it is included to handle the change of names
+required across the
+canopy&nbsp; because of canopy storage and evaporation. It is in
+effect a <em>null</em>
+module.</p>
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>none</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>net_rain (mm/int) - the amount of rainfall received by the
+ground surface under the canopy in time step, int. It is equal to the
+amount of rain received at the top of the canopy less the amount
+intercepted by the vegetation. </li>
+<li>cumnet_rain (mm) - cummulatve rainfall.</li>
+<li>net_snow (mm/int) - the amount of snowfall received by the
+ground surface under the canopy in time step, int. It is equal to the
+amount of snowfall received at the top of the canopy less the amount
+intercepted by the vegetation.</li>
+<li>cumnet_snow (mm) - cumulative hru_snow minus interception.</li>
+<li>net_p (mm/int) - the total amount of preciptitation (rain +
+snow) received by the ground surface under the canopy in time step,
+int. It is equal to the amount of precipitation the top of the canopy
+less the amount intercepted by the vegetation.</li>
+<li>intcp_evap (mm/int) - HRU Evaporation from interception.
+Always zero.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>basin_area (km^2) - basin area.</li>
+<li>hru area (km^2) - HRU area.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>hru_rain (mm/int) - HRU rain from module obs.</li>
+<li>hru_snow (mm/int) - HRU snow from module obs.</li>
+<li>hru_p (mm/int) - HRU precipitation from module obs.</li>
+</ul>
+<h3>Similar Modules.</h3>
+<ul>
+<li>brushintcp.</li>
+<li>rutter.</li>
+</ul>
+<h3>Notes</h3>
+</body></html>

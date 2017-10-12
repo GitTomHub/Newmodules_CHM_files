@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Ht_obs (11/23/06)</title>
+</head>
+
+<body>
+
+<h3>Ht_obs.</h3>
+
+<p>This module is defined in ClassHtobs. It reads a series of vegetation height
+observations into the parameter Ht.&nbsp; Parameters are normally constant during a model
+run.&nbsp; This module makes the parameter Ht follow the current value of the height in
+the observation file.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>Ht_obs (m) - average vegetation height over the time interval.&nbsp; Optional, when not
+    available the&nbsp;parameter value Ht retains its initial.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>Ht_var (m) - Observation values as a variable for monitoring.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>Ht (m) - has initial default value.&nbsp; The initial value is used if no observations
+    are available or until the first available observation is read.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>none.</li>
+</ul>
+
+<h3>Notes.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; The variable Ht_var is provided for debugging.&nbsp; Since
+parameters cannot be displayed by CRHM (assumed to be constant),&nbsp; Ht may be monitored
+by displaying the variable Ht_var.</p>
+
+<p>&nbsp;</p>
+</body>
+</html>

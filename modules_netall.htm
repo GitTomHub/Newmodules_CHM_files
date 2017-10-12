@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_netall (04/25/12)</title>
+</head>
+
+<body>
+
+<h3><font FACE="Arial"><b>netall</b></font></h3>
+
+<p>This module defined in Classnetall, models net all-wave radiation from the calculated
+short-wave radiation and the Brunt equation. Climatic data required are temperature,
+vapour pressure and actual sunshine hours.</p>
+
+<p>Classnetall is an enhancement of the original class which provides interval radiation
+for the the day to allow modules to partition calculated daily evaporation over the day to
+intervals with positive net radiation.&nbsp; These calculations must be done at the
+beginning of the day to be available throughout the day.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<h3>none</h3>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>net (MJ/m<sup>2</sup> <font SIZE="2"><font FACE="Symbol">D</font>t</font>) - average
+    all-wave net over time step.</li>
+  <li>Rn (mm/m<sup>2</sup> <font SIZE="2"><font FACE="Symbol">D</font>t</font>) - average
+    all-wave net over time step.</li>
+  <li>netD (MJ/m<sup>2</sup> day) - average all-wave net over time day.</li>
+  <li>RnD (mm/m<sup>2</sup> day) - average all-wave net over time day.</li>
+  <li>RnD_Pos (mm/m<sup>2</sup> day) - sum of positive all-wave net over time day.</li>
+  <li>cum_net (MJ/m<sup>2</sup>) - cummulative all-wave net.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>Albedo () - areal albedo. // pseudo</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_t (obs)</li>
+  <li>hru_ea (obs)</li>
+  <li>Tday (obs)&nbsp; t interval values for entire day.</li>
+  <li>EAday (obs)&nbsp; ea interval values for entire day.</li>
+  <li>hru_SunAct (obs)</li>
+  <li>SunMax (global)</li>
+  <li>Qdro (global)</li>
+  <li>Qdfo (global)</li>
+  <li>pQdro (global)</li>
+  <li>pQdfo (global)</li>
+  <li>albedo (albedo)</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+  <li>returns (netlongwave + netshortwave*(1-hru_alb))/Freq</li>
+</ul>
+
+<blockquote>
+  <p>where:</p>
+  <p>netlongwave = -0.85 + 0.97*SB*pow(hru_t+273.0,
+  4)*(-0.39+0.093*sqrt(hru_ea)*(0.26+0.81*(hru_SunAct/SunMax))</p>
+  <p>if(hru_SunAct)</p>
+  <blockquote>
+    <p>netshortwave = (0.024+0.974*pow(hru_SunAct/SunMax, 1.35))*Qdro*0.0864
+    +(2.68+2.2*(hru_SunAct/SunMax)-3.85*sqr(hru_SunAct/SunMax))*Qdfo*0.0864</p>
+  </blockquote>
+  <p>else</p>
+  <blockquote>
+    <p>netshortwave = (0.024*Qdro + 2.68*Qdfo)*0.0864</p>
+  </blockquote>
+  <p>Freq is the number of intervals in the day.</p>
+</blockquote>
+</body>
+</html>

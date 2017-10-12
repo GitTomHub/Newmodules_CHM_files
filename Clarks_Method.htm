@@ -1,0 +1,56 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Clark's Method (01/16/03)</title>
+</head>
+
+<body>
+<i>
+
+<h3>Clark's Method</h3>
+</i><u>
+
+<p></u>Development of Routing Equation<u></p>
+</u>
+
+<p>Clark (1945) showed that routing a flood wave through a reach of a stream channel could
+be accomplished within practical limits of accuracy. This is done by shifting the wave a
+time equal to the travel time of the reach, and then routing it through an amount of
+reservoir storage that gives the equivalent &quot;action&quot; as the channel storage in
+the reach. This procedure is referred to as the &quot;lag and route technique&quot;.
+Hypothetically, the practice visualises a reservoir that has storage characteristics, S =
+KO, at the outlet of a watershed. Substituting this relation for storage into the
+continuity equation gives:</p>
+
+<p><img src="Route1.jpg" width="210" height="46" alt="Route1.jpg (4833 bytes)"></p>
+
+<p>which can be reduced to: </p>
+
+<p><img src="Route2.jpg" width="211" height="151" alt="Route2.jpg (10786 bytes)"></p>
+
+<p>I<sub>1</sub>, I<sub>2</sub>, O<sub>1</sub> and O<sub>2</sub> are respectively inflow
+and outflow rates at the beginning and end of routing interval, <font FACE="Symbol">D</font>
+t. K, the storage constant would have to be determined by calibration for individual
+HRU&#146;s. A &quot;bulk&quot; estimate for the basin probably can be obtained from the
+hydrograph.</p>
+
+<h3>Calculation of Storage Residual.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; To complete a budget at the end of a model run it is neccessary to
+determine the quanitity still in storage .&nbsp; This can be calculated from the infinite
+series starting from the last model output value and the last input to the storage
+component.</p>
+
+<p>Storage = (Output<sub>n</sub> + C<sub>1</sub>*I<sub>n</sub>)*(1 + C<sub>2</sub>&nbsp; +
+C<sub>2</sub>* C<sub>2</sub> + C<sub>2</sub>* C<sub>2</sub>* C<sub>2</sub> + C<sub>2</sub>*
+C<sub>2</sub>* C<sub>2</sub>* C<sub>2</sub> + C<sub>2</sub>* C<sub>2</sub>* C<sub>2</sub>*
+C<sub>2</sub>* C<sub>2</sub> ...</p>
+
+<p>&nbsp;&nbsp;&nbsp; using 1/(1-x) = 1 + x + x*x + x*x*x + x*x*x*x ... &nbsp;&nbsp;&nbsp;
+for |x| &lt; 1</p>
+
+<p>Storage = (Output<sub>n</sub> + C<sub>1</sub>*I<sub>n</sub>)*1/(1-C<sub>2</sub>)
+&nbsp;&nbsp; for |C<sub>2</sub>| &lt; 1</p>
+</body>
+</html>

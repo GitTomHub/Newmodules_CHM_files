@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>calcsun (02/05/08)</title></head>
+
+<body>
+
+<h3>calcsun</h3>
+
+<p>This module is defined in Classcalcsun and can estimate sunshine hours from the the
+incoming short-wave observation Qsi and the values QdroD, QdfoD and SunMax calculated by
+the module global using the HRU's latitude.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>Qsi (W/m^2) - average incident short-wave flux for time interval (optional). Used only
+    if sunshine hours are not available.</li>
+  <li>SunAct (h) - sunshine hours&nbsp;optional in basic module.&nbsp; When not available the sunshine hours are
+    estimated from Qsi.</li><li>QsiD_Obs (W/m^2) - daily mean short-wave. Used in Variation #2.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observation Functions</a></h3>
+
+<ul>
+  <li>Qsitot(W/m^2*d) - daily total (cumulative) of average interval incident short-wave
+    fluxes used in basic module when sunshine hours are not available</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>hru_SunAct (h) - calculated sunshine hours.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>QdfoD (global) (MJ/m^2*d)</li>
+  <li>QdflatD (global) (MJ/m^2*d)</li>
+  <li>SunMax (global) (h)</li><li>QsiD_Var (W/m^2) - daily mean short-wave. Used in Variation #3.</li>
+</ul>
+
+<h3>Notes.</h3>
+
+<p>When the actual sunshine hours are not available as an observation,&nbsp; an estimate
+is made from the following,</p>
+
+<p>hru_SunAct = (daily sum of Qsi*WtoMJ_D/Freq - QdfoD) * (theoretical maximum sunshine
+hours)/(QdflatD - QdfoD) where WtoMJ_D = 86400/10^6 and Freq is intervals/day,</p>
+
+<p>otherwise the observation SunAct is used.</p>
+
+<p>&nbsp;</p>
+</body></html>

@@ -1,0 +1,41 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Using_Daily_Values (10/13/06)</title>
+</head>
+
+<body>
+
+<h3>Using Daily Values as Inputs. !!!jumble of ideas</h3>
+
+<p>Daily values can be generated in several different ways.&nbsp; Depending upon the input
+data used the daily value can be available from the beginning of the day or if an
+accumulated interval value may not be finalised to the very last interval of the day.
+&nbsp; 
+
+<ol>
+  <li>The usual daily output derived from HRU interval values&nbsp; is not complete until the
+    last interval of the day.&nbsp; This type of output is used during the next day.</li>
+  <li>The more rare case is a module using raw observations.&nbsp; In this case observations
+    are available for the entire day.&nbsp; The daily value is calculated in the first
+    interval and is available throughout the current day.</li>
+</ol>
+
+<p>Daily values are accumulated during the day.&nbsp; There value cannot only be used
+during the last interval of the day.</p>
+
+<p>&nbsp;&nbsp;&nbsp; The AKA screen allows daily variables to be linked to interval
+inputs.&nbsp; This never works.&nbsp; When the value is used as an interval input it is
+only correct for the first interval of the day. Every interval after the first, the value
+for the first interval will be repeatedly added.&nbsp; There is no solution.&nbsp; One
+obvious solution is to divide by Freq (number of intervals in the day). This is not
+correct either and under estimates.</p>
+
+<p>&nbsp;&nbsp;&nbsp; A daily value can be used constructively by buffering it - in effect
+delaying its use to the next day.&nbsp; At the end of the day the variable is transferred
+to another variable and then every interval of the next day using an amount equal to
+Accum_daily/Freq every interval.&nbsp; This is a very effective way of smoothing out
+spikes caused by transient inputs like rainfall.&nbsp; However, it introduces a lag.</p>
+</body>
+</html>

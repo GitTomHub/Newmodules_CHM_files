@@ -1,0 +1,151 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_evapX (12/18/12)</title>
+</head>
+
+<body>
+
+<h3><b><font FACE="Arial">evap</font></b>X - Evaporation calculated using Granger and
+Pomeroy, 1997, Priestley-Taylor and Penman-Monteith methods.</h3>
+
+<p>This module defined in ClassevapX, calculates the evapotranspiration from after
+snowmelt to fall snow cover.</p>
+
+<p>It calculates the daily evapotranspiration using Granger and partitions it over the day
+to interval values using intervals with positive net radiation. </p>
+
+<p>The&nbsp; interval values are calculated for the Priestley-Taylor and Penman-Monteith
+methods.&nbsp; </p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>RnObs (W/m^2) - all-wave net radiation used by Penmon_Monteith and Dalton Bulk transfer
+    method (optional).</li>
+  <li>Qsi (W/m^2) - incident short-wave (optional).</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>hru_evap (mm/int) - average depth of evaporation from an HRU in a time step, <font
+    SIZE="2" FACE="Symbol">D</font>t.&nbsp; </li>
+  <li>hru_cum_evap (mm) - cumulative evaporation &#150; calculated as the sum of interval
+    estimates of hru_evap.&nbsp; </li>
+  <li>hru_evapD (mm/d) - daily evaporation &#150; calculated as the daily sum of interval
+    estimates of hru_evap.&nbsp;Should equal evap_Granger_D etc.</li>
+  <li>hru_actet (mm/int) - actual evapotranspiration over the HRU.&nbsp; Evaporation and
+    evapotranspiration are limited by the amount of soil moisture available.</li>
+  <li>hru_cum_actet (mm) - cumulative actual evapotranspiration over the HRU.</li>
+  <li>Granger_D (mm/d) - daily evaporation calculated from daily means of t, u and vapour
+    pressure using Granger_D method.</li>
+  <li>Priestley_Taylor_D (mm/d) - daily evaporation calculated from daily means of t, u and
+    vapour pressure using Priestley_Taylor method.</li>
+  <li>rc (s/m) - stomatal resistance (used by Penman-Monteith and Dalton).</li>
+  <li>Pa (kPa) - Atmospheric pressure.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>evap_type (flag) - Evaporation method for HRU, 0 = Granger, 1 = Priestley-Taylor, 2 =
+    Penman-Monteith.</li>
+  <li>Ht (m) - crop height.</li>
+  <li>hru_elev (m) - altitude.</li>
+  <li>basin_area (km^2) - basin area.</li>
+  <li>hru area (km^2) - HRU area.</li>
+  <li>F_Qg () - fraction to ground flux.&nbsp; Qg = F_Qg*Rn.</li>
+  <li>inhibit_evap (flag) - 0/1 enable/inhibit.</li>
+  <li>Zwind () - wind measurement height (used by Penman-Monteith).</li>
+  <li>rcs (s/m) - stomatal resistance (used by Penman-Monteith).</li>
+  <li>soil_type () - HRU soil type (used by Penman-Monteith) [1-&gt;11]:
+    sand/loamsand/sandloam/loam/siltloam/sasclloam/clayloam/siclloam/sandclay/siltclay/clay.</li>
+  <li>soil_Depth (m) - depth of soil column (used by Penman-Monteith).</li>
+  <li>Htmax (m) - maximum vegetation height (used by Penman-Monteith).</li>
+  <li>LAImax (m^2/m^2) - maximum leaf area index (used by Penman-Monteith).</li>
+  <li>LAImin (m^2/m^2) - minimum leaf area index (used by Penman-Monteith).</li>
+  <li>s () - seasonal growth index (used by Penman-Monteith).</li>
+  <li>PM_method () - Penman-Monteith method (used by Penman-Monteith), 0 = RC min, 1 = LAI, 2
+    = bulk.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<p>&nbsp;&nbsp;&nbsp; The source of the variable is given in brackets after the name.
+&nbsp; A full description of the variable may be found there.
+
+<ul>
+  <li>hru_t (obs) (°C)</li>
+  <li>hru_tmean (obs) (°C)</li>
+  <li>hru_u (*) (m/s)</li>
+  <li>hru_umean (*) (m/s)</li>
+  <li>hru_ea (obs) (kPa)</li>
+  <li>hru_eamean (obs) (kPa)</li>
+  <li>Rn (*) (mm/m^2*int)</li>
+  <li>RnD (*) (mm/m^2*d)</li>
+  <li>RnD_Pos (*) (mm/m^2*d)</li>
+</ul>
+
+<h3>Evaporation calculations Daily/Interval.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Interval observations or daily mean observations can be used in
+Priestley-Taylor and&nbsp; Penman-Monteith methods. The selection is made by the
+parameters PT_Daily, PM_Daily and DB_Daily. When</p>
+
+<h4>Daily calculation of Granger.</h4>
+
+<blockquote>
+  <ul>
+    <li>Ea =<a href="Modules_new.chm::/function_fdaily.htm"> fdaily</a>(u,
+      Ht)*(e*-ea)</li>
+    <li>D = Ea/(Ea+(Rn-Qg-Qs))</li>
+    <li>G = 1/(0.793 + 0.2*exp(4.902*D) + 0.006*D</li>
+    <li>E = (delta(t)*G*(Rn-Qg-Qs) + gamma(Pa, t)*G*Ea)/( delta(t)*G +&nbsp; gamma(Pa, t))</li>
+  </ul>
+  <blockquote>
+    <p>where t, u and ea are the mean of interval values and e* is calculated using the mean
+    daily temperature t.</p>
+  </blockquote>
+</blockquote>
+
+<p>&nbsp;&nbsp;&nbsp; The Granger daily evaporation is partitioned over the daily
+intervals when Rn is positive.
+
+<ul>
+  <li>hru_evap = hru_evapD*Rn[<font SIZE="2">t<sub>n</sub></font>] / RnD_POS,</li>
+</ul>
+
+<blockquote>
+  <blockquote>
+    <p>where&nbsp; RnD_POS is the sum of daily intervals when Rn[<font SIZE="2" FACE="Symbol">D</font>t]
+    is positive.</p>
+  </blockquote>
+</blockquote>
+
+<h4>Priestley Taylor</h4>
+
+<blockquote>
+  <ul>
+    <li>1.26*delta(t)*(Rn-Qg-Qs)/(( delta(t) +&nbsp; gamma(Pa, t)) for positive incoming net
+      radiation,</li>
+  </ul>
+  <blockquote>
+    <p>where values are interval.&nbsp; Evaporation is zero when&nbsp; incoming net radiation
+    is &lt;= 0.0.</p>
+  </blockquote>
+</blockquote>
+
+<h4>Atmospheric Pressure</h4>
+
+<blockquote>
+  <ul>
+    <li>P = P0*exp((293.0-0.0065*elevation)/293.0, 5.26),</li>
+  </ul>
+  <blockquote>
+    <p>where P0 = 101.3.</p>
+  </blockquote>
+</blockquote>
+</body>
+</html>

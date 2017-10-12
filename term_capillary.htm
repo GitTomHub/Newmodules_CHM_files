@@ -1,0 +1,50 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>capillary (09/21/04)</title>
+</head>
+
+<body>
+
+<h3>capillary (m)</h3>
+
+<p>Variable in the module <em>Quinton</em>.&nbsp; Capillary water is the depth of water
+(m) held in an HRU layer by surface tension as calculated from the Van Genuchten
+expression.&nbsp; It is used to determine the maximum amount of water that can be held in
+an HRU layer.&nbsp; Any excess is transferred to <a
+href="modules_new.chm::/term_layerwater.htm">layerwater</a>.</p>
+
+<p>It is assumed that when the soil tension is less than the bubbling pressure the soil
+drains by gravity.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font SIZE="2" FACE="Symbol">q</font><font
+SIZE="2"> <sub>f</sub><font FACE="Symbol"> </font></font><font SIZE="2" FACE="Symbol">= (f</font><font
+SIZE="2"><font FACE="Symbol"> - q</font> <sub>r</sub> )*(2<sup>n</sup></font> )<font
+SIZE="2"><sup>-m </sup><font FACE="Symbol">+ q</font> <sub>r </sub></font>&nbsp; where <font
+SIZE="2" FACE="Symbol">y </font><font SIZE="2"><sub>b</sub></font> = 1/<font SIZE="2"
+FACE="Symbol">a</font></p>
+
+<p>Above the bubbling pressure the volumetric soil moisture is</p>
+
+<blockquote>
+  <font SIZE="2"><p></font><font SIZE="2" FACE="Symbol">q = (f</font><font SIZE="2"><font
+  FACE="Symbol"> - q</font> <sub>r</sub> )*((1 + ( <font FACE="Symbol">a</font></font><font
+  SIZE="2" FACE="Symbol">|y|</font><font SIZE="2"><font FACE="Symbol">)</font><sup>n</sup></font>
+  )<font SIZE="2"><sup>-m</sup></font> <font SIZE="2"><font FACE="Symbol">+ q</font> <sub>r</sub></font></p>
+</blockquote>
+
+<blockquote>
+  <p>where <font SIZE="2" FACE="Symbol">q</font> = volumetric soil moisture content,</p>
+  <p><font SIZE="2" FACE="Symbol">f</font> =&nbsp; porosity or volume of soil pores,</p>
+  <p><font SIZE="2" FACE="Symbol">y</font> = soil moisture tension (m) equal to <a
+  href="modules_new.CHM::/term_Depth.htm">Depth</a> -</p>
+  <p>n = constant,</p>
+  <p>m = 1 - 1/n </p>
+  <p><font SIZE="2" FACE="Symbol">a</font> =&nbsp; a*m - 1, a =&nbsp; 25 for above 0.1 m and
+  a =&nbsp; 15 for greater depths.</p>
+</blockquote>
+
+<p>&nbsp;</p>
+</body>
+</html>

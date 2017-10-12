@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_glacier_org (04/15/15)</title></head>
+<body>
+<b>
+</b>
+<h3><b>glacier_org</b> </h3>
+<p>This module is defined in Classglacier and is an energy-budget
+snowmelt model loosely based on work done by&nbsp; (Gray and
+Landine, 1987) for the Canadian Prairies. However, it has variations
+allowing it to input the melt input energy from other CRHM modules.</p><p>Use
+with module "pbsmCRHM". Normally uses internal melt model based upun
+&nbsp;module "ebsm" but by using variations 1 use "Qnsn_Var
+(variable)", variation 2 use "Qnsn (observation)" and&nbsp; with basic
+and variation 3 use "QnD (observation)".</p><h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>QnD (MJ/m^2 day) - net radiation. Basic module glacier and
+glacier#3. Always optional.</li>
+<li>Qnsn (W/m^2 day) - net all-wave at snow surface. Variation
+#2.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>ice (m) - water equivalent of ice. State variable.</li>
+<li>SWE (mm) - snow water equivalent.</li>
+<li>SWEmelt (mm/d) - daily&nbsp;snowmelt.</li>
+<li>SWEmelt_delayed (mm/d) - daily&nbsp;snowmelt delayed by
+Clark.</li>
+<li>cumSWEmelt (mm/d) - cummulative firn snowmelt.</li>
+<li>icemelt (mm/d) - daily ice&nbsp;melt.</li>
+<li>icemelt_delayed (mm/d) - daily ice&nbsp;melt delayed by
+Clark.</li>
+<li>cumicemelt (mm/) - cummulative ice&nbsp;melt.</li>
+<li>infil (mm/int) - depth of infiltration in time step, <font face="Symbol" size="2">D</font>t &#8211; expressed as
+an average depth of water on an HRU.</li>
+<li>cuminfil (mm) - cumulative infiltration - expressed as an
+average depth of water on an HRU.</li>
+<li>runoff (mm/int) - amount of daily runoff &#8211; expressed as an
+equivalent depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+<li>cumrunoff (mm) - cummulative runoff.</li>
+<li>meltrunoff (mm/int) - amount of interval melt runoff. . </li>
+<li>cummeltrunoff (mm) - cumulative interval melt runoff. </li>
+<li>snowinfil (mm/int) - not used. Satisfies module 'Netroute
+etc.</li>
+<li>LW_ebsm (mm/d) - liquid water in snowpack. State variable.</li>
+<li>u_ebsm (MJ/m^2*d) - snowpack energy deficit. State variable.</li>
+<li>Gmelt (MJ/m^2*d) - Gmelt = Qn+Qh+Qe+Qp..</li>
+<li>Qn_ebsm (MJ/m^2*d) - net radiation.</li>
+<li>Qh_ebsm (MJ/m^2*d) - sensible heat.</li>
+<li>Qe_ebsm (MJ/m^2*d) - latent heat.</li>
+<li>Qp_ebsm (MJ/m^2*d) - input from rainfall..</li>
+<li>LWmax&nbsp;(mm) -maximum liquid water in snowpack.</li>
+<li>net_rainD (mm/d) - daily net rain calculated from net_rain.</li>
+<li>Qnsn_Acc (W/m^2) - accumulator for Qnsn_Var/Qnsn.
+Variation &nbsp;glacier#1</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>delay_melt () - inhibits any melt before this date. Only
+used when tfactor and nfactor are both zero. Default value not suitable
+for Southern Hemisphere</li>
+<li>basin_area (km^2) - basin area.</li>
+<li>hru area (km^2) - HRU area.</li>
+<li>ice_init (mm) - Initial water equivalent of glacier ice.</li>
+<li>ice_Albedo () - Initial glacier ice albedo.</li>
+<li>SWEstorage (d) - Storage constant for SWE.</li>
+<li>SWElag (h) - Lag constant for SWE.</li>
+<li>icestorage (d) - Storage constant for ice.</li>
+<li>icelag (h) - Ice&nbsp; constant for SWE.</li>
+<li>SWE_to_infilK</li>
+<li>ice_to_infilK</li>
+<li>rain_to_infilK</li>
+<li>tfactor (mm/d*/ºC) - degree day melt factor. Basic module.</li>
+<li>nfactor (mm*m^2/MJ*d) - net radiation factor. Basic module.</li>
+<li>Use_QnD () - Use QnD if available. Basic module.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>net_snow (*) (kg/m^2)&nbsp;</li>
+<li>net_rain (*) (kg/m^2)</li>
+<li>net_hru_drift (*) (kg/m^2)</li>
+<li>net_subl (*) (kg/m^2)</li>
+<li>hru_tmean (obs) (ºC)</li>
+<li>hru_tmax (obs) (ºC)</li>
+<li>hru_tmin (obs) (ºC)</li>
+<li>hru_umean (obs) (m/s)</li>
+<li>hru_rhmean (obs) (%)</li>
+<li>hru_Sun_Act (obs) (hr)</li>
+<li>QdroD (global) (MJ/m^2)</li>
+<li>QdfoD (global) (MJ/m^2)</li>
+<li>SunMax (global) (h)</li>
+<li>Albedo (albedo) ()</li>
+<li>meltflag (albedo) ()</li>
+<li>Qnsn_Var (W/m^2 day) - net all-wave at snow surface.
+Variation &nbsp;glacier#1.</li>
+</ul>
+<p><i>Useage.</i></p>
+<h3>tfactor and nfactor NOT equal to zero</h3>
+<p>For comparison there is an option to use the simplified energy
+budget method proposed
+by Kustas et al.(1994). In this degree-day algorithm the increased
+melting later in the
+season is simulated using a net radiation term.</p>
+<p>Melt = tfactor*t<sub>max</sub> + nfactor*Q<sub>n</sub>D,&nbsp;&nbsp;&nbsp;&nbsp;
+where
+the observation Q<sub>n</sub>D is the net all-wave
+radiation calculated from a module.</p>
+<h3>tfactor and nfactor equal to zero</h3>
+<p>If both parameters tfactor and nfactor are set equal to zero
+for an HRU, the module
+uses the original ebsm.f algorithm otherwise the simplified degree-day
+algorithm is used
+using the values set in tfactor and nfactor.</p>
+<p>Observation QnD is used if available,&nbsp; otherwise Qn
+is calculated as in the
+original algorithm.</p>
+<p>Over snow during melt;</p>
+<p>&nbsp;&nbsp;&nbsp; Qn =
+-0.53+0.47*(QdroD+QdfoD)*(0.52+0.52*sunact/sunmax)*(1.0-Albedo)</p>
+<p>An external observation QnD may be generated using modules
+long, NeedleLeaf and macro
+modules Slope_Qsi.mcr and Convert_Qsn_QnD.mcr.</p>
+</body></html>

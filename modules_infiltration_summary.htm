@@ -1,0 +1,119 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_frozen (10/07/10)</title>
+</head>
+
+<body>
+
+<h3><font face="Arial"><b>Infiltration module summary.</b></font></h3>
+
+<table border="1" width="98%">
+  <tr>
+    <td width="21%">&nbsp;</td>
+    <td width="24%" colspan="2"><p align="center">Winter Infiltration (frozen ground).</td>
+    <td width="55%" colspan="3" align="center">Summer and Winter (unfrozen ground)
+    Infiltration.</td>
+  </tr>
+  <tr>
+    <td width="21%">&nbsp;</td>
+    <td width="11%" align="center">Crack</td>
+    <td width="13%" align="center">Frozen</td>
+    <td width="15%" align="center">Everything </td>
+    <td width="18%" align="center">Ayers</td>
+    <td width="22%" align="center">GreenAmpt</td>
+  </tr>
+  <tr>
+    <td width="21%">&nbsp;</td>
+    <td width="11%" align="center">&nbsp;</td>
+    <td width="13%" align="center">&nbsp;</td>
+    <td width="15%" align="center">&nbsp;</td>
+    <td width="18%" align="center">&nbsp;</td>
+    <td width="22%" align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="21%">Classcrack (&quot;crack&quot;)</td>
+    <td width="11%" align="center">*</td>
+    <td width="13%" align="center">&nbsp;</td>
+    <td width="15%" align="center">*</td>
+    <td width="18%" align="center">&nbsp;</td>
+    <td width="22%" align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="21%">ClassPrairieInfil (&quot;PrairieInfiltration&quot;)</td>
+    <td width="11%" align="center">*</td>
+    <td width="13%" align="center">&nbsp;</td>
+    <td width="15%" align="center">&nbsp;</td>
+    <td width="18%" align="center">*</td>
+    <td width="22%" align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="21%">ClassAyers (&quot;Ayers&quot;)</td>
+    <td width="11%" align="center">&nbsp;</td>
+    <td width="13%" align="center">&nbsp;</td>
+    <td width="15%" align="center">&nbsp;</td>
+    <td width="18%" align="center">Summer and Winter (unfrozen )</td>
+    <td width="22%" align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="21%">ClassFrozenAyers (&quot;FrozenAyers&quot;)</td>
+    <td width="11%" align="center">&nbsp;</td>
+    <td width="13%" align="center">*</td>
+    <td width="15%" align="center">&nbsp;</td>
+    <td width="18%" align="center">*</td>
+    <td width="22%" align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="21%">ClassGreenAmpt (&quot;GreenAmpt&quot;)</td>
+    <td width="11%" align="center">&nbsp;</td>
+    <td width="13%" align="center">&nbsp;</td>
+    <td width="15%" align="center">&nbsp;</td>
+    <td width="18%" align="center">&nbsp;</td>
+    <td width="22%" align="center">Summer and Winter (unfrozen )</td>
+  </tr>
+  <tr>
+    <td width="21%">ClassGreencrack (&quot;Greencrack&quot;)</td>
+    <td width="11%" align="center">*</td>
+    <td width="13%" align="center">&nbsp;</td>
+    <td width="15%" align="center">&nbsp;</td>
+    <td width="18%" align="center">&nbsp;</td>
+    <td width="22%" align="center">*</td>
+  </tr>
+  <tr>
+    <td width="21%">Classfrozen (&quot;frozen&quot;)</td>
+    <td width="11%" align="center">&nbsp;</td>
+    <td width="13%" align="center">*</td>
+    <td width="15%" align="center">*</td>
+    <td width="18%" align="center">&nbsp;</td>
+    <td width="22%" align="center">&nbsp;</td>
+  </tr>
+</table>
+
+<h2>Comments.</h2>
+
+<h3>ClassAyers (&quot;Ayers&quot;) for unfrozen soil.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Attempts to infiltrate snowmelt before handling rainfall.</p>
+
+<h3>ClassGreenAmpt (&quot;GreenAmpt&quot;) for unfrozen soil.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; This module immediately combines snowmelt and net_rain before using
+the GreenAmpt method. It is not recommended.</p>
+
+<h3>Classcrack (&quot;crack&quot;) and Classfrozen (&quot;frozen&quot;) for frozen soil.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; These module were developed for the Canadian prairies.&nbsp; During
+the summer it is assumed that everything infiltrates.</p>
+
+<h3>ClassPrairieInfil (&quot;PrairieInfiltration&quot;) and ClassAyers
+(&quot;FrozenAyers&quot;) for frozen soil.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; These modules can limit summer infiltration using soil
+texture/groundcover and maximum permissible infitration rates.</p>
+
+<h3>ClassGreencrack (&quot;Greencrack&quot;) for frozen soil.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; GreenAmpt controls summer infiltration and is not recommended.</p>
+</body>
+</html>

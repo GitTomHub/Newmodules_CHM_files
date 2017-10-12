@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_pbsm_snobal (08/14/14)</title>
+
+</head>
+
+<body>
+<h3><b><font face="Arial">pbsm</font></b>Snobal
+(Pomeroy and Li, 1999) </h3>
+<p>Defined in Classpbsm. This module calculates snow transport
+and sublimation. The
+snowfall observation can be a daily total or the actual interval
+snowfall.&nbsp; The
+former case&nbsp; is handled by assuming that the snowfall is
+uniformly distributed over
+every interval of the day. The transport and sublimation of blowing
+snow are calculated
+every interval using the interval wind speed, air temperature and
+relative humidity. The
+model has been extended to handle the transport of snow between HRUs.
+At the end of a day
+when snow transport has occurred,&nbsp; snow transported from HRUs
+with low roughness is
+distributed over the HRUs with greater roughness according to the
+fractions specified in
+the distribution parameter. No transported snow enters the HRU with the
+lowest roughness.
+When HRUs with lower vegetative height fill to their maximum,&nbsp;
+the excess is
+distributed over the remaining unfilled HRUs. This is a modification of
+the original PBSM.
+&nbsp; SWE is now a state variable of Snobal accessed by pbsmSnobal
+using a PUT.</p>
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>none</li>
+</ul>
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>hru_subl (mm <font size="2"><font face="Symbol">D</font>t</font>) - the mass of
+snow lost from an HRU by sublimation in time step,&nbsp; <font face="Symbol" size="2">D</font>t &#8211; expressed as
+an equivalent average depth of water over an HRU.</li>
+<li>cumSubl (mm) - cumulative sublimation.</li>
+<li>hru_drift (mm <font size="2"><font face="Symbol">D</font>t</font>) - the mass of
+snow lost from an HRU by snow transport in time step,&nbsp; <font face="Symbol" size="2">D</font>t &#8211; expressed as
+an equivalent average depth of water over an HRU. </li>
+<li>Drift_out (mm <font size="2"><font face="Symbol">D</font>t</font>) - the mass of
+snow lost from an HRU by snow transport in time step,&nbsp; <font face="Symbol" size="2">D</font>t &#8211; expressed as
+an equivalent</li>
+<li>Drift_in (mm <font size="2"><font face="Symbol">D</font>t</font>) - the mass of
+snow gained from an HRU by snow transport in time step,&nbsp; <font face="Symbol" size="2">D</font>t &#8211; expressed as
+an equivalent</li>
+<li>cumDrift (mm) - cumulative transport.</li>
+<li>cumSno (mm) - snow (net_snow) accumulation from beginning
+of winter.</li>
+<li>Prob () - interval probability of blowing snow.</li>
+<li>BasinSnowLoss (mm <font size="2"><font face="Symbol">D</font>t</font>) - transport out
+of basin.</li>
+<li>cumBasinSnowLoss (mm) - cumulative transport out of basin.</li>
+<li>cumBasinSnowGain (mm) - cumulative transport into basin.</li>
+<li>snowdepth (m) - calculated snow depth from SWE
+(Gray/Pomeroy).</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>fetch (m) - fetch distance.</li>
+<li>Ht (m) - crop height.</li>
+<li>distrib () - distribution fractions.&nbsp; Value for
+HRU 1 controls snow transport into the basin.</li>
+<li>N_S (1/m^2) - vegetation number density.</li>
+<li>A_S (m) - stalk diameter or silhouette.</li>
+<li>basin_area (km2) - basin area.</li>
+<li>hru_area (km2) - hru_area.</li>
+<li>inhibit_evap (flag) - an output parameter set true when the
+SWE is greater than zero. It is used to inhibit evaporation from the
+evaporation modules.</li>
+<li>inhibit_bs (flag) - an input inhibiting blowing snow when
+set equal to 1. &nbsp; Inhibited HRU is still able to receive drift
+from other HRUs.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>hru_t (°C) - air temperature from module obs.</li>
+<li>hru_ea (kPa) - vapour pressure from module obs.</li>
+<li>hru_u (m/s) - wind speed from module obs.</li>
+<li>net_snow (mm <font size="2"><font face="Symbol">D</font>t</font>) - snow fall from
+wild module - intcp, brushintcp etc.</li>
+<li>SWE (mm) - snow water equivalent. Put.</li>
+<li>z_s (m) - snowcover depth. Put.</li>
+<li>rho (kg/m^3) - snow density. Put.</li>
+</ul>
+<h3>Notes</h3>
+<ol>
+<li>The parameter <em>fetch</em> cannot be less
+than 300m.</li>
+<li>The parameter <em>distrib</em> for the first
+HRU is used differently from all the other HRUs.&nbsp; It
+determines the drift into the model basin based upon the drift out of
+the first HRU.&nbsp; BasinSnowGain is equal to
+distrib[HRU1]*Drift[HRU1].</li>
+<li>The first HRU, i.e. the lowest vegetation height. When the
+snow is redistributed,&nbsp; the <em>distrib</em>
+values for the HRU's not filled to their vegetation height are summed
+and each HRU receives its share.&nbsp; The sum of distributions
+need not add to 1.0.</li>
+</ol>
+<p>E.g. if the transport D is redistributed over HRUs: A, B and C
+with their <em>distrib</em>
+parameter having values of a, b and c respectively.&nbsp; The snow
+transport would be
+distributed as:</p>
+<p>a*D/(a + b +c),&nbsp; b*D/(a + b +c) and c*D/(a + b
++c).&nbsp; Note that any excess
+from a HRU filling to its vegetation height is deposited in the last
+HRU, i.e. the one
+having the tallest vegetation.</p>
+
+<p>&nbsp;&nbsp;&nbsp; 3.&nbsp; If the value of <em>distrib</em>
+is less than 0 for an HRU,
+all snow transport to its capacity is assumed to be caught by this HRU.
+The next HRU is
+the beginning of a new blowing snow regime&nbsp;&nbsp;</p><p>&nbsp;&nbsp;&nbsp; 4.&nbsp; Cumulative drift
+from the last HRU is handled as follows:</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+distrib &gt; 0.0 -&nbsp;the drift is handled as described
+above. Any excess after the vegetation is full is transported out of
+the basin - i.e. added to 'BasinSnowLoss'.</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+distrib &lt; 0.0 - all drift is deposited in the hru.</p>
+<p>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+distrib == 0.0 - all driftt is transported out of the basin -&nbsp;
+i.e. added to 'BasinSnowLoss'.</p>
+<p></p>
+</body></html>

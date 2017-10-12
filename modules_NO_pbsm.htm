@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_NO_pbsm (05/17/16)</title>
+
+</head>
+
+<body>
+<h3><b><font face="Arial">NO_pbsm</font></b>.</h3>
+<p>Defined in ClasspNO_bsm. This module calculates snow water
+equivalent from snow fall.
+Sublimation will be added later.&nbsp; It is intended to be used
+instead of the Prairie
+Blowing Snow Model when there is no blowing snow.&nbsp; An example
+would be in a forest.</p>
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>none</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>SWE (mm) - snow water equivalent. State variable.</li>
+<li>cumSno (mm) - snow (net_snow) accumulation from beginning
+of winter.</li>
+<li>snowdepth (m) - depth of snow using Gray/Pomeroy.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>basin_area (km2) - basin area.</li>
+<li>hru_area (km2) - hru_area.</li>
+<li>inhibit_evap (flag) - an output parameter set true when the
+SWE is greater than zero. &nbsp; It is used to inhibit evaporation
+from the evaporation modules.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>newsnow () - 0/1 for no/yes from module obs.</li>
+<li>net_snow (mm <font size="2"><font face="Symbol">D</font>t</font>) - snow fall from
+wild module - intcp, brushintcp etc.</li>
+</ul>
+<h3>Notes</h3>
+</body></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_Qmelt (03/02/16)</title>
+
+</head>
+
+<body>
+<b><font face="Arial">
+</font></b>
+<h3><b><font face="Arial">Qmelt</font></b></h3>
+<p>This module defined in Classqmelt to calculate the ground flux
+for hummuck-covered
+hillslopes in the Artic tundra.</p>
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>ta(°C) - average air temperature during time step. In
+original version was t but was changed to prevent conflict with CRHM.</li>
+<li>ts(°C) - average surface/skin temperature during time step.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_observation.htm">Function
+Observations</a></h3>
+<ul>
+<li>tmean (°C) - mean daily air temperature.</li>
+<li>tpos (°C) - sum of interval air temperatures above 0°C
+during a day.</li>
+<li>tsmean (°C) -&nbsp; mean daily surface/skin temperature.</li>
+<li>tspos (°C) - sum of interval&nbsp; surface/skin
+temperatures above 0°C during a day.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>Qm (MJ/m2 <font face="Symbol" size="2">D</font>t)
+- snow melt during the time step, calculated&nbsp; using the mean
+daily air temperature.</li>
+<li>cum_Qm (MJ/m2 <font size="2"><font face="Symbol">D</font>t</font>) - cumulative
+snow melt (from daily mean air temperature) over time.</li>
+<li>Qg (MJ/m2) -ground heat flux during the time step,
+calculated using the mean daily surface/skin temperature.</li>
+<li>cum_Qg (MJ/m2) - cumulative ground heat flux (from daily
+mean surface/skin temperature) over time.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>TIa0Mn (°C) - offset in temperature - index model in
+calculating QmD.</li>
+<li>TIa1Mn (MJ/day/°C) - coefficient for estimating QmD.</li>
+<li>TIs0Mn (°C) - offset in temperature - index model in
+calculating QgD.</li>
+<li>TIs1Mn (MJ/day/°C) - coefficient for estimating QgD.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>none</li>
+</ul>
+<h3>Notes</h3>
+<p>Snow melt from mean daily air temperature . </p>
+<ol>
+<li>if (tmean - TIa0Mn &gt; 0.0) QmD = (tmean -
+TIa0Mn)*TIa1Mn,</li>
+<li>if time step t &gt; 0.0 Qm = t*QmD/tpos else Qm = 0.0.</li>
+<li>cum_Qm = cum_Qm + Qm.</li>
+</ol>
+<p>&nbsp;</p>
+<p>Ground heat flux from mean daily surface/skin temperature </p>
+<ol>
+<li>if (tsmean - TIs0Mn &gt; 0.0) QgD = (tsmean -
+TIs0Mn)*TIs1Mn,</li>
+<li>if time step ts &gt; 0.0 Qg = ts*QgD/tspos else Qg =
+0.0.</li>
+<li>cum_Qg = cum_Qg + Qg.</li>
+</ol>
+</body></html>

@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>function_SWE_prob (09/21/04)</title>
+</head>
+
+<body>
+
+<h3>SWE_prob (SWEpeak, Melt, CV)</h3>
+
+<p>Calculates the probability of the snow water equivalent exceeding Melt,&nbsp; for a
+snowpack having an average areal snow water equivalence of SWEpeak at the beginning of
+melt.</p>
+
+<h3>Units</h3>
+
+<ul>
+  <li>()</li>
+</ul>
+
+<h3>Inputs</h3>
+
+<ul>
+  <li>SWEpeak (m) - average areal SWE at the beginning of melt.</li>
+  <li>Melt (mm) - amount of SWEpeak melted this interval.</li>
+  <li>CV () - coefficient of variation of SWE.</li>
+</ul>
+
+<h3>Return P</h3>
+
+<blockquote>
+  <p>if(Melt&lt;= 1.0) return 1.0; // handle log(0) error</p>
+  <p>float K = (Melt-SWEpeak)/(CV*SWEpeak)</p>
+  <p>float Sy = sqrt(log(CV*CV+1.0))</p>
+  <p>float Ky = (log(K*sqrt(exp(Sy*Sy)-1.0)+1.0) + Sy*Sy/2.0)/Sy</p>
+  <p>float t = 1 /(1+little_p * Ky)</p>
+  <p>float P = (exp(-Ky*Ky/2)/sqrt(2*M_PI)) * (a1*t + a2*t*t + a3*t*t*t)</p>
+  <p>if(P &gt; 1.0 || P &lt; 0.001) P = 1.0 // handle discontinuity</p>
+  <blockquote>
+    <p>where:</p>
+    <p>K = frequency factor</p>
+    <p>Sy = standard deviation of the transformed variable.</p>
+    <p>Ky = the frequency factor for the transformed data having an exceedence probability
+    equal to K.</p>
+    <p>t, a1, a2, a3 coefficients for the interval-halving method using&nbsp; the
+    approximation by Abramowitz and Stegun, 1965.</p>
+  </blockquote>
+</blockquote>
+
+<h3>Notes</h3>
+
+<blockquote>
+  <p>The Abramowitz and Stegun interval halving approximation is not continuous and emits
+  extraneous values when the ratio of SWE to SWEpeak is low. It can generate values greater
+  than one and less than 0.0 in this range.&nbsp; If either condition occurs the probability
+  is made equal to 1.0.&nbsp; The five term approximation is only marginally better than the
+  three term approximation used here.</p>
+</blockquote>
+
+<h3>Coefficient of Variation sample values.</h3>
+
+<table border="1" width="43%">
+  <tr>
+    <td width="33%">Fallow</td>
+    <td width="33%">0.3</td>
+    <td width="34%">0.58</td>
+  </tr>
+  <tr>
+    <td width="33%">Stubble</td>
+    <td width="33%">0.33</td>
+    <td width="34%">0.33</td>
+  </tr>
+  <tr>
+    <td width="33%">Pasture</td>
+    <td width="33%">0.41</td>
+    <td width="34%">0.57</td>
+  </tr>
+  <tr>
+    <td width="33%">Brush</td>
+    <td width="33%">0.42</td>
+    <td width="34%">0.52</td>
+  </tr>
+  <tr>
+    <td width="33%">Yards</td>
+    <td width="33%">0.5</td>
+    <td width="34%">0.5</td>
+  </tr>
+</table>
+</body>
+</html>

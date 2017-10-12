@@ -1,0 +1,183 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_SetSoil (01/04/13)</title>
+</head>
+
+<body>
+
+<h3>SetSoil</h3>
+<b><font FACE="Arial">
+
+<p></font></b>Defined in ClassSetSoil. This module contains no active code. It performs
+the same functions as the original Classbasin but adds the capability of setting ClassSoil
+parameters from soil type and volumetric water content.&nbsp; It declares general
+parameters for the model. Examples of the parameters declared are: basin area, <a
+href="Modules_new.chm::/introduction_terminology.htm">HRU</a> area, latitude,
+elevation, ground slope (GSL) and aspect angle (ASL).</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>run_ID () - run identification.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>basin_area (km^2) - basin area.</li>
+  <li>hru area (km^2) - HRU area.</li>
+  <li>hru_lat (°) - latitude.</li>
+  <li>hru_elev (m) - altitude.</li>
+  <li>hru_GSL (°) - ground slope.</li>
+  <li>hru_ASL (°) - aspect.</li>
+  <li>basin_name - text string.</li>
+  <li>hru_names - text strings.</li>
+  <li>RUN_ID - integer number. Used to uniquely identify &quot;CRHM_output&quot; log files
+    when RUN_ID is positive.</li>
+  <li>RUN_START (d) - run start day. Only used on batch execution.</li>
+  <li>RUN_END (d) - run end day. Only used on batch execution.</li>
+  <li>INIT_STATE - initial state file (Automation).</li>
+  <li>Vol_h2o_content () - fractional volumetric water content. </li>
+  <li>soil_Depth_rechr (m) - recharge depth.</li>
+  <li>soil_Depth (m) - soil column depth.</li>
+  <li>soil_type_rechr () - recharge layer soil type. 0 - 12,
+    water/sand/loamsand/sandloam/loam/siltloam/sasclloam/clayloam/siclloam/sandclay/siltclay/clay/pavement.</li>
+  <li>soil_type () - soil column. 0 - 12,
+    water/sand/loamsand/sandloam/loam/siltloam/sasclloam/clayloam/siclloam/sandclay/siltclay/clay/pavement.</li>
+</ul>
+
+<p>&nbsp;&nbsp;&nbsp; The following parameters are set by this module from the above
+information and need not be set.
+
+<ul>
+  <li>soil_rechr_max = soil_Depth_rechr*SetSoilproperties[soiltype][field capacity - wilt].</li>
+  <li>soil_rechr_init =
+    soil_Depth_rechr*(Vol_h2o_content*SetSoilproperties[soiltype_rechr][field] -
+    SetSoilproperties[soiltype_rechr][wilt]).</li>
+  <li>soil_moist_max = soil_Depth*SetSoilproperties[soiltype][field capacity - wilt].</li>
+  <li>soil_moist_init = soil_Depth*(Vol_h2o_content*SetSoilproperties[soiltype][field] -
+    SetSoilproperties[soiltype][wilt]).</li>
+  <li>soil_rechr_init is limited to the range &gt;= 0 and &lt;= soil_rechr_max.</li>
+  <li>soil_moist_init is limited to the range &gt;= 0 and &lt;= soil_moist_max.</li>
+  <li>soil_rechr_init cannot be &gt; soil_moist_init.</li>
+  <li>When the two soil layers are of different types the values are only approximate.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3>Notes</h3>
+
+<ol>
+  <li>This module only executes once as an initialization routine before the model execution..</li>
+</ol>
+
+<p>&nbsp;</p>
+
+<table border="1" width="648">
+  <tr>
+    <td width="101">available (mm)</td>
+    <td width="87">wilt (mm)</td>
+    <td width="104">field capacity (mm)</td>
+    <td width="41">pore space ()</td>
+  </tr>
+  <tr>
+    <td width="101">1000.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 0.0</td>
+    <td width="104">&nbsp; 1000.0</td>
+    <td width="41">1000.0</td>
+    <td width="111">&nbsp;&nbsp; 0 water</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp;&nbsp;&nbsp; 84.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 40.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 124.0</td>
+    <td width="41">395.0 </td>
+    <td width="111">&nbsp;&nbsp; 1 sand</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp;&nbsp;&nbsp; 80.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 60.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 140.0</td>
+    <td width="41">410.0 </td>
+    <td width="111">&nbsp;&nbsp;&nbsp; 2 loamsand</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 130.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 100.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 230.0</td>
+    <td width="41">435.0 </td>
+    <td width="111">&nbsp;&nbsp;&nbsp; 3 sandloam</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 157.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 110.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 267.0</td>
+    <td width="41">451.0 </td>
+    <td width="111">&nbsp;&nbsp;&nbsp; 4 loam</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 162.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 130.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 292.0</td>
+    <td width="41">485.0 </td>
+    <td width="111">&nbsp;&nbsp;&nbsp; 5 siltloam</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 170.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 140.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 310.0</td>
+    <td width="41">420.0 </td>
+    <td width="111">&nbsp;&nbsp;&nbsp; 6 saclloam</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 167.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 150.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 317.0</td>
+    <td width="41">476.0 </td>
+    <td width="111">&nbsp;&nbsp;&nbsp; 7 clayloam</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 150.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 190.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 340.0</td>
+    <td width="41">477.0 </td>
+    <td width="111">&nbsp;&nbsp;&nbsp; 8 siclloam</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 150.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 200.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 350.0</td>
+    <td width="41">426.0 </td>
+    <td width="111">&nbsp;&nbsp;&nbsp; 9 sandclay</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 150.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 210.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 360.0</td>
+    <td width="41">492.0 </td>
+    <td width="111">&nbsp;&nbsp; 10 siltclay</td>
+  </tr>
+  <tr>
+    <td width="101">&nbsp; 145.0</td>
+    <td width="87">&nbsp;&nbsp;&nbsp; 215.0</td>
+    <td width="104">&nbsp;&nbsp;&nbsp; 360.0</td>
+    <td width="135">482.0&nbsp; </td>
+    <td width="111">&nbsp;&nbsp; 11 clay</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+</body>
+</html>

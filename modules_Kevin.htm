@@ -1,0 +1,150 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_Kevin( 08/11/11)</title>
+</head>
+
+<body>
+
+<h3><b><font face="Arial">Kevin</font></b> </h3>
+
+<p>This module is defined in ClassKevin. Snow accounting is handled in PBSM using snow
+fall, transport and sublimation.</p>
+
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>hru_Qn (obs) - net radiation (W/m^2). Optional.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>albedo () - areal albedo.</li>
+  <li>snowmelt (mm/int) - depth/amount of snowmelt in time step, <font SIZE="2"><font
+    FACE="Symbol">D</font>t</font>. </li>
+  <li>snowmeltD (mm/d) - daily snowmelt.</li>
+  <li>cumsnowmelt (mm) - index day melt.</li>
+  <li>sca () - snow covered fraction. State variable.</li>
+  <li>winter () - winter = 0/1 - false/true. State variable.</li>
+  <li>SnowStat () - EARLY/MATURE/HOLD 0/1/2. State variable.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>Asnow1 () - early snow albedo,. fresh snow,&nbsp; newly-fallen snow, snow at the start
+    of ablation or &#147;active melt&#148;.</li>
+  <li>Asnow2 () - mature snow albedo, wet snow,&nbsp; metamorphosed snow. </li>
+  <li>Asoil () - soil albedo.</li>
+  <li>cv () - coefficient of variation.</li>
+  <li>tfactor (mm/d*/ºC) - degree-day melt factor. </li>
+  <li>nfactor (mm*m^2/MJ*d) - net radiation factor. Converts daily net radiation flux (MJ/m2)
+    to an equivalent average depth of water</li>
+  <li>meltthresh(mm/d) - amount of daily melt that must be exceeded in order for a snowcover
+    to become a mature pack.</li>
+  <li>hru_lat (°) - latitude. Adjusts empirical Julian constants for Northern/Southern
+    Hemisphere.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_t (obs) - air temperature (°C) from module obs.</li>
+  <li>hru_tmean (obs) - air temperature (°C) from module obs.</li>
+  <li>hru_eamean (obs) - mean daily vapour pressure (kPa) from module obs.</li>
+  <li>hru_SunAct(obs) - actual sunshine hours (h).</li>
+  <li>SunMax (global) - maximum sunshine hours (h).</li>
+  <li>Qdro (global) - calculated clear-sky direct (W/m^2).</li>
+  <li>Qdfo (global) - calculated clear-sky diffuse (W/m^2).</li>
+  <li>SWE (pbsm) - Snow water equivalent (mm).</li>
+</ul>
+
+<h3>Internal Variables</h3>
+
+<ul>
+  <li>SWEpeak (mm) - maximum SWE before melt.</li>
+  <li>SWElast (mm) - last SWE before new snow fall during melt.</li>
+  <li>daymelt (mm) - cumulated melt during a day. Used to determine when to go from the Early
+    to the Mature phase.</li>
+</ul>
+
+<h3>Melt Algorithms</h3>
+
+<ul>
+  <li>tfactor OR nfactor greater than zero.</li>
+</ul>
+
+<blockquote>
+  <p>melt (mm/int) = (hru_t*tfactor + hru_Qn*nfactor*WtoMJ_D)/Freq&nbsp; individual terms
+  used when positive.</p>
+</blockquote>
+
+<ul>
+  <li>tfactor AND nfactor both equal to zero.</li>
+</ul>
+
+<blockquote>
+  <p>netlong = -0.85 + 0.97*SB*pow(hru_tmean+273.0,
+  4)*(-0.39+0.093*sqrt(hru_eamean))*(0.26+0.81*(hru_SunAct/SunMax))</p>
+  <p>if(hru_SunAct &gt; 0.0)</p>
+  <blockquote>
+    <p>shortw = (0.024+0.974*pow(hru_SunAct/SunMax, 1.35))*Qdro*WtoMJ_D
+    +(2.68+2.2*(hru_SunAct/SunMax)-3.85*sqr(hru_SunAct/SunMax))*Qdfo*WtoMJ_D</p>
+  </blockquote>
+  <p>else</p>
+  <blockquote>
+    <p>shortw = (0.024*Qdro + 2.68*Qdfo)*WtoMJ_D</p>
+  </blockquote>
+  <p>net = (shortw*(1.0-albedo) + netlong)/Freq; // MJ/day to MJ/interval.</p>
+  <blockquote>
+    <p>where albedo = asnow1 for EARLY and = asnow2 for MATURE</p>
+  </blockquote>
+  <p>melt (mm/int) = net/Hf&nbsp; //&nbsp; Hf&nbsp; = 0.3336&nbsp; Latent heat of fusion,
+  MJ/kg.</p>
+</blockquote>
+
+<h3>Snow Covered Area (SCA)</h3>
+
+<blockquote>
+  <p>This is calculated by a routine <a href="modules_new.chm::/function_SWE_prob.htm">SWE_prob</a>
+  from Shook 1995.&nbsp; The lognormal probability density function is used to describe the
+  frequency distribution of the snow water equivalent. The routine calculates the exceedence
+  probability for a value of&nbsp;SWE (Melt), i.e., it is the probability of a given
+  SWE-value being exceeded.&nbsp; The value SWEpeak is the arithmetic mean of the snow pack
+  before the onset of melt.</p>
+</blockquote>
+
+<h3>Model Flow Structure</h3>
+
+<blockquote>
+  <p>The season is handled as three separate states</p>
+</blockquote>
+
+<ol>
+  <li>EARLY - snow accumulation during early winter.</li>
+  <li>MATURE - snow accumulation in spring after a significant melt.</li>
+  <li>HOLD - occurs during the Mature state when a heavy snow fall occurs causing the snow
+    pack to increase again.</li>
+</ol>
+
+<blockquote>
+  <p>EARLY: is the default state entered in the fall. SCA is 100% and the snow albedo is set
+  to &quot;Asnow1&quot;. After the spring melt it is re-entered when SCA is less than 1%.</p>
+  <p>MATURE: is entered when a melt has exceeded the value of &quot;meltthresh&quot;. The
+  albedo is set to &quot;Asnow2&quot;.&nbsp; The SCA is calculated from the peak SWE
+  (SWEpeak) and the remaining snow water equivalent (SWEpeak - SWElast).</p>
+  <p>HOLD: is entered from the Mature state when the SWE has exceeded the last interval SWE
+  (SWElast).&nbsp; It will stay in this state until the SWE becomes less than value when the
+  state was entered (SWElast) or SWE becomes greater than SWEpeak.&nbsp; SCA is 100% and the
+  snow albedo is set to &quot;Asnow1&quot;</p>
+</blockquote>
+
+<h3>Status</h3>
+
+<ul>
+  <li>incomplete</li>
+</ul>
+</body>
+</html>

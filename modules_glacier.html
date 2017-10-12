@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_glacier (04/19/16)</title>
+
+</head>
+<body>
+<b>
+</b>
+<h3><b>glacier</b> </h3>
+<p>This module is defined in Classglacier and is an energy-budget firn
+and ice melt model loosely based on work done by&nbsp; (Gray and
+Landine, 1987) for the Canadian Prairies. However, it has variations
+allowing it to input the melt input energy from other CRHM modules. The
+SWE is handled externally by the module "SnobalCRHM".</p>
+<p>Use
+with module "pbsmCRHM". Normally uses internal melt model based upon
+&nbsp;module "ebsm" but by using variations 1 use "Qnsn_Var
+(variable)",
+variation 2 use "Qnsn (observation)" and&nbsp; with basic and
+variation 3
+use "QnD (observation)".</p>
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>QnD (MJ/m^2 day) - net radiation. Basic module glacier and
+glacier#3. Always optional.</li>
+<li>Qnsn (W/m^2 day) - net all-wave at snow surface. Variation
+#2.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>firn_h (mm) - depths of snow densification layers.</li>
+<li>firn_dens (1000 kg/m^3) - densities of snow densification
+layers.</li>
+<li>ice_init (mm) - Initial water equivalent of glacier ice
+calculated from firn_h and firn_den.</li>
+<li>firn_yr (yr) - years to 'critical density' and age
+of firn.</li>
+<li>ice (mm) - Water equivalent of ice. State variable.</li>
+<li>firn&nbsp;(mm) - Water equivalent of all firn layers.
+State variable.</li>
+<li>glacier_all (mm) -&nbsp;water equivalent of SWE, firn
+layers and ice.</li>
+<li>firn_depth (mm) - depth of all firn layers.</li>
+<li>firn_init (mm) - initial water equivalent of all firn
+layers.</li>
+<li>nfirn () - number of layers used in firn densification.</li>
+<li>snow_ice_firnmeltD&nbsp;(mm/d) - daily snowmelt applied
+to SWE, firn and ice.</li>
+<li>cumsnow_ice_firnmelt (mm) - cummulative snowmelt applied to
+SWE, firn and ice.</li>
+<li>GlacierMode () - 1 - glacier, 0 - tongue (no firn or ice).</li>
+<li>SWEmelt (mm/d) - daily&nbsp;snowmelt.</li>
+<li>SWEmelt_delayed (mm/d) - daily&nbsp;snowmelt delayed by
+Clark.</li>
+<li>cumSWEmelt (mm) - cummulative firn snowmelt.</li>
+<li>firnmelt (mm/d) - daily firn&nbsp;melt.</li>
+<li>firnmelt_delayed (mm/d) - daily firn&nbsp;melt delayed
+by Clark.</li>
+<li>cumfirnmelt (mm) - cummulative firn&nbsp;melt.</li>
+<li>icemelt (mm/d) - daily ice&nbsp;melt.</li>
+<li>icemelt_delayed (mm/d) - daily ice&nbsp;melt delayed by
+Clark.</li>
+<li>cumicemelt (mm) - cummulative ice&nbsp;melt.</li><li>net_rain_org (mm/int) - contents of net_rain saved before the addition of &nbsp;SWE, firn and ice melt to original contents.</li>
+<li>LW_ebsm (mm/d) - liquid water in snowpack. State variable.</li>
+<li>u_ebsm (MJ/m^2*d) - snowpack energy deficit. State variable.</li>
+<li>Gmelt (MJ/m^2*d) - Qmelt = Qn+Qh+Qe+Qp.</li>
+
+<li>Gn_ebsm (MJ/m^2*d) - net radiation. Changed from Gn_ebsm to
+avoid name conflict.</li>
+<li>Gh_ebsm (MJ/m^2*d) - sensible heat.&nbsp;Changed from
+Qn_ebsm to avoid name conflict.</li>
+<li>Ge_ebsm (MJ/m^2*d) - latent heat.&nbsp;Changed from
+Qn_ebsm to avoid name conflict.</li>
+<li>Gp_ebsm (MJ/m^2*d) - input from rainfall.&nbsp;Changed
+from Qn_ebsm to avoid name conflict.</li>
+<li>SWE_2firn (mm) - end of summer SWE transferred to firn.</li>
+<li>SWE_2firn_dens (kg/m^3) - end of summer density of SWE
+transferred to firn</li>
+<li>cumSWE_2firn (mm) - cummulative SWE added to firn..</li>
+<li>LWmax&nbsp;(mm) -maximum liquid water in snowpack.</li>
+<li>net_rainD (mm/d) - daily net rain calculated from net_rain.</li>
+<li>Qnsn_Acc (W/m^2) - accumulator for Qnsn_Var/Qnsn.
+Variation &nbsp;glacier#1 and #2</li>
+<li>topo_elev (m) - topography elevations below glacier.</li>
+<li>hru_elev_value (m) - topography elevations below glacier.</li>
+<li>snowmeltD_to_net_rain (m/d) - snowmelt/firn/ice directed to
+be handled like rain.</li>
+<li>cumsnowmeltD_to_net_rain (m) - cummulative
+snowmelt/firn/ice directed to be handled like rain.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>delay_melt () - inhibits any melt before this date. Only
+used when tfactor and nfactor are both zero. Default value not suitable
+for Southern Hemisphere</li>
+<li>basin_area (km^2) - basin area.</li>
+<li>hru area (km^2) - HRU area.</li>
+<li>Elev_Adj_glacier_surf &nbsp;() - enable add depth of
+glacier to land elevation (hru_elev).</li>
+<li>ice_init (mm) - Initial water equivalent of glacier ice.</li>
+<li>ice_dens (kg/m^3) - density of glacier ice.</li>
+<li>firn_h_init (mm) - initial depths of firn densification
+layers.</li>
+<li>firn_dens_init (1000 kg/m^3) - initial densities of firn
+densification layers.</li>
+<li>firn_Albedo () - Initial glacier firn albedo.</li>
+<li>ice_Albedo () - Initial glacier ice albedo.</li>
+<li>SWEstorage (d) - Storage constant for SWE.</li>
+<li>SWElag (h) - Lag constant for SWE.</li>
+<li>firnstorage (d) - Storage constant for firn.</li>
+<li>firnlag (h) - Lag constant for firn.</li>
+<li>icestorage (d) - Storage constant for ice.</li>
+<li>icelag (h) - Ice&nbsp; constant for SWE.</li>
+<li>TKMA (ºC) - Annual mean annual temperature of glacier.</li>
+<li>SWEAA (mm/yy) - Annual mean accumulation of glacier SWE</li>
+<li>SWE_to_firn_Julian () - convert any SWE to firn on Julian
+day. 0 - inhibit transfer.</li>
+<li>Use_QnD () - Use QnD if available. Basic module.</li>
+<li>tfactor (mm/d*/ºC) - degree day melt factor. Basic module.</li>
+<li>nfactor (mm*m^2/MJ*d) - net radiation factor. Basic module.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>hru_tmean (obs) (ºC)</li>
+<li>hru_tmax (obs) (ºC)</li>
+<li>hru_tmin (obs) (ºC)</li>
+<li>hru_umean (obs) (m/s)</li>
+<li>hru_rhmean (obs) (%)</li>
+<li>hru_Sun_Act (obs) (hr)</li>
+<li>net_rain (*) (mm/int) to simplify interfacing with an infiltration
+routine, glacier adds SWE, firn and ice melt to net_rain. Original
+net_rain contents are save in net_rain_org.</li>
+<li>QdroD (global) (MJ/m^2)</li>
+<li>QdfoD (global) (MJ/m^2)</li>
+<li>SunMax (global) (h)</li>
+<li>SWE (*) (mm)</li>
+<li>snowmeltD (*) (mm/d)</li>
+<li>Qnsn_Var (W/m^2 day) - net all-wave at snow surface.
+Variation &nbsp;glacier#1</li>
+<li>Pa (kPa) - atmospheric pressure.</li>
+</ul>
+<p><i>Useage.</i></p>
+<p>Qn
+is calculated as in the
+original algorithm.</p>
+<p>Over snow during melt;</p>
+<p>&nbsp;&nbsp;&nbsp; Qn =
+-0.53+0.47*(QdroD+QdfoD)*(0.52+0.52*sunact/sunmax)*(1.0-Albedo)</p>
+<p>An external observation QnD may be generated using modules
+long, NeedleLeaf and macro
+modules Slope_Qsi.mcr and Convert_Qsn_QnD.mcr.</p>
+</body></html>

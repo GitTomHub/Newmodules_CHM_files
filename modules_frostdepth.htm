@@ -1,0 +1,118 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_frostdepth (08/11/11)</title>
+</head>
+
+<body>
+
+<h3><font face="Arial"><b>frostdepth</b></font></h3>
+
+<p>This module is defined in Classfrostdepth. The number of soil layers is defined by
+NLAY.&nbsp; The snow cover is handled as a separate layer whose depth is calculated from
+the SWE of the HRU using the function <a href="modules_new.chm::/function_DepthofSnow.htm">depthofsnow</a>.</p>
+
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>frostdepth (m) - frostdepth. State variable.</li>
+  <li>snowdepth (mm) - calculated from SWE.&nbsp; State variable.</li>
+  <li>Findex (°C) - cumulative degrees of frost in (day.°C).&nbsp; State variable.</li>
+  <li>Tfreeze (d) - days of frost.&nbsp; State variable.</li>
+  <li>Lacc (MJ/m3) -&nbsp; cumulative effective latent heat.&nbsp; State variable.</li>
+  <li>Cacc (MJ/(m3.K)) -&nbsp; cumulative effective heat capacity.&nbsp; State variable.</li>
+  <li>Kacc (W/(m K)) -&nbsp; cumulative effective thermal conductivity.&nbsp; State variable.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>Ta (°C) - annual air temperature.</li>
+  <li>soil_type () - 1/sand 2/loam 3/clay 4/organic (only used to differentiate between
+    mineral and organic layers).</li>
+  <li>por (m3/m3) - porosity.</li>
+  <li>theta (m3/m3) - degree of saturation.</li>
+  <li>d (m) - layer depths 1 ... NLAY.</li>
+  <li>hru_lat (°) - latitude. Adjusts empirical Julian constants for Northern/Southern
+    Hemisphere.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_tmean (obs) (°C)</li>
+  <li>SWE (pbsm) (mm)</li>
+</ul>
+
+<h3>Other Constants</h3>
+
+<ul>
+  <li>Lsnow = 0.35*Ci MJ/(m3) - latent heat of snow.</li>
+  <li>csnow = 0.35*ki + 0.65*ka MJ/(m3.°C) - heat capacity of snow.</li>
+  <li>ko = 0.21 W/(m K) organic material </li>
+  <li>km = 0.27 W/(m K) mineral </li>
+  <li>ka = 0.025 W/(m K) air</li>
+  <li>ki = 2.24 W/(m K) ice </li>
+  <li>kw = 0.57 W/(m K) water</li>
+  <li>Cm = 2.000 MJ/(m3.K) mineral</li>
+  <li>Cw = 4.185 MJ/(m3.K) water</li>
+  <li>Ca = 0.001 MJ/(m3.K) air</li>
+  <li>Co = 0.110 MJ/(m3.K) organic</li>
+  <li>Ci = 1.950 MJ/(m3.K) organic<br>
+  </li>
+</ul>
+
+<h3>Returns</h3>
+
+<p>FrostDepth = sqrt((24*Kacc*Findex)/(Lacc + Cacc(Ta + Findex/(2.0*Tfreeze)))) -
+SnowDepth</p>
+
+<p>where for individual layers</p>
+
+<blockquote>
+  <p>Ln = theta*por*333.0 </p>
+  <p>Kn = (1.0 - por) * km +&nbsp; theta*por*kw&nbsp; + ( por - theta*por)*ka</p>
+  <p>Cn = (1.0 - por) * Cm +&nbsp; theta*por*Cw&nbsp; + ( por - theta*por)*Ca</p>
+</blockquote>
+
+<p>for organic material use ko and Co instead of km and Cm.</p>
+
+<p>For snow assuming a snowpack density of (250kg/m3) use</p>
+
+<blockquote>
+  <p>Ln = 0</p>
+  <p>Ks = 0.25*ki + 0.75*ka</p>
+  <p>Cs = 0.25*Ci</p>
+</blockquote>
+
+<p>For the combined layers use</p>
+
+<blockquote>
+  <p>Lacc = (Ls*Ds + L1*D1 + L2*D2 ... Ln*Dn)/Dsum</p>
+  <p>Cacc = (Cs*Ds + C1*D1 + C2*D2 ... Cn*Dn)/Dsum</p>
+  <p>Kacc = Dsum/(Ds/Ks + D1/K1 + D2/K2 ... Dn/Kn)</p>
+</blockquote>
+
+<blockquote>
+  <blockquote>
+    <p>where Ds (m) is SWE/250.0 assuming a snowpack density of (250kg/m3) and D1, D2 .. Dn, 1
+    ...NLAY are the respective layer thicknesses.&nbsp; The last layer only to the depth
+    frozen.</p>
+  </blockquote>
+</blockquote>
+
+<h3>Reference</h3>
+
+<p>Van Wijk W. R., (1963) Physics of Plant Environment. North-Holland Publishing Company -
+Amsterdam, pp.166</p>
+
+<p>&nbsp;</p>
+</body>
+</html>

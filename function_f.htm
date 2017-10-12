@@ -1,0 +1,53 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>function_f (10/01/04)</title>
+</head>
+
+<body>
+
+<h3>f(t, u, Pa, Ht, Zwind, Zref)</h3>
+
+<ul>
+  <li>Calculates the interval Drying Power for modules <em>evap</em> and <em>evap2</em>.</li>
+</ul>
+
+<h3>Units</h3>
+
+<ul>
+  <li>(mm/kPa/Interval)</li>
+</ul>
+
+<h3>Inputs</h3>
+
+<ul>
+  <li>t (°C) - air temperature.</li>
+  <li>Pa (kP) - atmospheric pressure.</li>
+  <li>u (m/s) - wind speed.</li>
+  <li>Ht (m) - crop height.</li>
+  <li>Zwind (m) - wind measurement height.</li>
+  <li>Zref (m) - temperature/humidity measurement height.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+  <li>return( (0.622 * kappa*kappa * rhoa(t, Pa) * u * Interval*3600*24) / (Pa * x1 * x2))</li>
+</ul>
+
+<blockquote>
+  <p>where </p>
+  <p>d0 = 0.67*Ht and Z0 = 0.14*Ht</p>
+  <p>x1 = log( (Zwind-d0)/(Z0))</p>
+  <p>x2 = log( (Zref-0.67*Ht)/(Z0))</p>
+  <p>rhoa(t, Pa) = Density of air at (t, Pa).</p>
+  <p>kappa = 0.4 von Karman constant.</p>
+  <p>Interval = fraction of day.</p>
+</blockquote>
+
+<h3>Reference</h3>
+
+<p>&nbsp;</p>
+</body>
+</html>

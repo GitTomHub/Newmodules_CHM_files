@@ -1,0 +1,388 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_Greencrack (08/19/09)</title>
+</head>
+
+<body>
+<font FACE="Arial"><b>
+
+<h3>Greencrack.</b></font></h3>
+
+<p>This module is derived from two other CRHM modules, crack and Greenampt and is defined
+in ClassGreencrack. It handles frozen soil infiltration during the spring snow melt and
+during the remainder of the year uses Green-Ampt for unfrozen soil infiltration.</p>
+
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>infil (mm/int) - depth of infiltration in time step, <font SIZE="2" FACE="Symbol">D</font>t
+    &#150; expressed as an average depth of water on an HRU.</li>
+  <li>cuminfil (mm) - cumulative infiltration - expressed as an average depth of water on an
+    HRU.</li>
+  <li>snowinfil (mm/int) - amount of daily infiltration &#150; expressed as an equivalent
+    depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+  <li>cumsnowinfil (mm) - cummulative infiltration.</li>
+  <li>runoff (mm/int) - amount of daily runoff &#150; expressed as an equivalent depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+  <li>cumrunoff (mm) - cummulative runoff.</li>
+  <li>meltrunoff (mm/int) - melt runoff.</li>
+  <li>cummeltrunoff (mm) - cummulative melt runoff.</li>
+  <li>crackstat () - infiltration status. Values:&nbsp; 0 - not started,&nbsp; 1 to 6 -
+    #events, &gt;6 - <em>Limited</em> ended and 10 - ice lens. State variable.</li>
+  <li>crackon () - indicates when the crack frozen soil routine is enabled for an HRU. 0 -
+    disabled/1 - enabled.</li>
+  <li>RainOnSnow (mm) - cumulative rain on snow.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>basin_area (km^2) - area of watershed.</li>
+  <li>hru_area(km^2) - area of HRUs.</li>
+  <li>fallstat () - fall status &lt;= 0.0 or -1 for unlimited/cracked,&nbsp; &gt;= 100.0 for
+    restricted and &lt; 0.0 limited &lt; 100.0. Pore saturation as a percentage.</li>
+  <li>major (mm) - threshold for major melt.&nbsp; Default is 5 mm/day.</li>
+  <li>soiltype - 0 through 11 for
+    water/sand/loamsand/sandloam/loam/siltloam/sasclloam/clayloam/siclloam/sandclay/siltclay/clay/pavement.</li>
+  <li>soil_moist_init (mm) - initial soil moisture content --- used to set F1.</li>
+  <li>soil_moist_max (mm) - maximum soil moisture content.</li>
+  <li>PriorInfiltration () - allow limited melt to infiltrate prior to major melt.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_tmax (°C) - from module <em>obs</em>.</li>
+  <li>snowmeltD (mm/d) (*)&nbsp; - from melt module, e.g.&nbsp; <em>ebsm</em>, etc..</li>
+  <li>SWE (mm) (*)&nbsp; - Snow water equivalent from module, e.g.&nbsp; <em>pbsm</em>, etc..</li>
+  <li>net_rain (mm/int) (*) - depth of rain received by the ground surface in time step, <font
+    SIZE="2" FACE="Symbol">D</font>t. Variable available from module <em>intcp</em>,&nbsp; <em>brushintcp</em>
+    etc..</li>
+  <li>soil_moist (mm) - from module <em>smba</em>l, etc.</li>
+</ul>
+
+<h3>Notes on Crack.</h3>
+
+<p>The Division of Hydrology at the University of Saskatchewan (Granger et al. 1984; Gray
+et al., 1985), postulated that the infiltration potential of frozen soils may be grouped
+in three broad categories, namely: restricted, limited and unlimited.</p>
+
+<p><em>Restricted</em> - Infiltration is impeded by an impermeable layer, such as an ice
+lens on the soil surface or within the soil close to the surface. For all practical
+purposes, the amount of meltwater infiltration can be assumed to be negligible and that
+the melt goes directly to runoff and to evaporation.</p>
+
+<p><em>Limited</em> - Infiltration is governed primarily by the snow-cover water
+equivalent and the frozen water content of the top 30 cm. of soil.</p>
+
+<p><em>Unlimited</em> - A soil with a high percentage of large, air-filled macropores at
+the time of melt. Examples of soils having these properties are dry, heavily cracked clays
+and coarse, dry sands, organics and others.</p>
+
+<p>Within the model there is not sufficient information to determine these classifications
+automatically and as a result the user is required to specify these properties for each
+HRU every fall and input this information to the model as a parameter. The one case the
+model does handle is when there is an early melt and the subsequent re-freezing causing an
+ice lens to form. This will change both Limited to Restricted. Implementation of the
+infiltration to frozen soils routines is described below.</p>
+<i>
+
+<p>Definitions</p>
+</i>
+
+<p>1. Index = INF/SWE where INF=5(1-<font FACE="Symbol">q</font> p)*SWE^0.584.</p>
+
+<p>2. Potential = INF/6.</p>
+
+<p>3. MELT_THRESHOLD = 5 mm. Minimum daily meltwater at which the melt routine is enabled.
+Lower meltwater levels are not counted as one of the six major melt events.</p>
+
+<p>4. A major melt is a day when the amount of meltwater generated is greater than the
+MELT_THRESHOLD.</p>
+
+<p>5. Six major daily melts are allowed before the limited infiltration category is
+changed to Restricted.</p>
+
+<p>The Frozen Soil Infiltration routine</p>
+
+<p>1. The Frozen Infiltration routine is enabled in an HRU when its SWE is greater than
+50mm.&nbsp; Each HRU is handled independently.</p>
+
+<p>2. Limited infiltration is triggered into operation by the first major melt. At this
+time, Index and Potential are calculated from the soil moisture (<font FACE="Symbol">q</font>
+p) and the SWE of the snowpack. </p>
+
+<p>3. The Frozen Infiltration routine is disabled in an HRU when its SWE reaches zero.</p>
+
+<p>The three frozen soil categories are described below.</p>
+
+<p><em>LIMITED</em></p>
+
+<p>1. Only six major over-winter snowmelt events are possible before the infiltration
+potential becomes Restricted.</p>
+
+<p>2. Meltwater amounts less than the MELT_THRESHOLD is handled as runoff unless the
+parameter <em>PriorInfiltration</em>are is set,&nbsp; then all of the melt is permitted to
+infiltrate into the soil. Once the&nbsp; MELT_THRESHOLD has been exceeded it is assumed
+that spring snowmelt has begun and only an amount of meltwater equal to MELT*Index will
+infiltrate and the remainder will be handled as runoff.</p>
+
+<p>3. Index and Potential are recalculated if another major melt occurs with a greater
+SWE.</p>
+
+<p>4. If the temperature the day following a major melt event is colder than -10ºC, the
+category is changed from Limited to Restricted assuming an ice lens has formed.</p>
+
+<p>5. When the SWE of the snowpack is zero,&nbsp; the model returns to the module that
+handles unfrozen infiltration.</p>
+
+<p><em>UNLIMITED</em></p>
+
+<p>1. All meltwater is allowed to infiltrate.</p>
+
+<p>2. If the temperature the day after a major melt event is less than -10ºC, the
+category remains unchanged and all the melt water still infiltrates into the soil.</p>
+
+<p>3. When the SWE of the snowpack is zero,&nbsp; the model returns to the module that
+handles unfrozen infiltration.</p>
+
+<p><em>RESTRICTED</em></p>
+
+<p>1. No meltwater is allowed to infiltrate.</p>
+
+<p>2. When the SWE of the snowpack is zero,&nbsp; the model returns to the module that
+handles unfrozen infiltration.</p>
+
+<p>&nbsp;</p>
+
+<h3>Rain on Snow.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; The energy component of Rain on Snow was not handled when the Rain
+on Snow occurs before melt.&nbsp; All the Rain on Snow is accumulated before melt and
+released when the first melt occurs, i.e. snowmelt is greater than zero.&nbsp; This is can
+be seen by an inspection of RainOnSnow as it remains at zero until there is melt in the
+HRU.&nbsp; The Rain on Snow is accumulated before melt in an internal variable RainOnSnowA
+which is not accessible to the user.</p>
+
+<h3>Notes on Green-Ampt.</h3>
+
+<p>This portion of the module replaces the module srunoff which is used to simulate
+prairie infiltration when the assumption is made that unlimited infiltration is possible.</p>
+
+<p>When the surface ponding is negligible,</p>
+
+<blockquote>
+  <p>f (mm/hr)&nbsp; =&nbsp; k*(<font FACE="Symbol">y</font>*<font FACE="Symbol">Dq</font>/F
+  + 1),&nbsp;&nbsp;&nbsp; (eq. 1.)</p>
+</blockquote>
+
+<blockquote>
+  <p>where: </p>
+  <p>k&nbsp;(mm/hr) = saturated hydraulic conductivity.</p>
+</blockquote>
+
+<blockquote>
+  <p><font FACE="Symbol">y</font>&nbsp;(mm)&nbsp;<font FACE="Symbol"> = </font>capillary<font
+  FACE="Symbol"> </font>suction at the wetting front.</p>
+  <p><font FACE="Symbol">Dq</font> = (<font FACE="Symbol">q</font>s -&nbsp; <font
+  FACE="Symbol">q</font>i). change in volumetric soil moisture content.</p>
+</blockquote>
+
+<p>When ponded,</p>
+
+<blockquote>
+  <p>F1 (mm) = k*<font FACE="Symbol">D</font>t + <font FACE="Symbol">y</font>*<font
+  FACE="Symbol">Dq</font> * ln( (F1 + <font FACE="Symbol">y</font>*<font FACE="Symbol">Dq</font>)/(F0
+  + <font FACE="Symbol">y</font>*<font FACE="Symbol">Dq</font>)).
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (eq. 2.)</p>
+  <p>where F0 (mm) = cumulative infiltation at the beginning of the time interval i.e. t,</p>
+  <p>f0 (mm/hr) =&nbsp; infiltration rate at the beginning of the time interval i.e. t,</p>
+  <p>F1 (mm) = cumulative infiltration at the end of the time interval i.e. t+<font
+  FACE="Symbol">D</font>t,</p>
+  <p>f1(mm/hr) =&nbsp; infiltration rate at the end of the time interval i.e. t+<font
+  FACE="Symbol">D</font>t,</p>
+  <p>It (mm/hr) = rainfall intensity during the interval.</p>
+</blockquote>
+
+<p>The cumulative infiltration (Fp) at instant of ponding time is</p>
+
+<blockquote>
+  <p>Fp = k*<font FACE="Symbol">y</font>*<font FACE="Symbol">Dq</font>/(It - k).
+  &nbsp;&nbsp;&nbsp; (eq. 3.)</p>
+</blockquote>
+
+<p>The portion of the interval, after which ponding occurs is&nbsp;<font FACE="Symbol">D</font>t',</p>
+
+<blockquote>
+  <p><font FACE="Symbol">D</font>t' = (Fp - F0)/It.&nbsp;&nbsp;&nbsp; (eq. 4.)</p>
+</blockquote>
+
+<h3>Flow Chart</h3>
+
+<p>Calculate the maximum infiltration rates,&nbsp; f0 and f1 at the beginning and end of
+the time step using equation 1. using F1 = F0+<font FACE="Symbol">D</font>t*It.</p>
+
+<blockquote>
+  <p>Case 1:&nbsp; When f1 is &gt;= rainfall intensity,&nbsp; all the rainfall infiltrates
+  with F1 = F0+<font FACE="Symbol">D</font>t*It.</p>
+  <p>Case 2:&nbsp; When the rainfall intensity &gt; f0,&nbsp; all the rainfall ponds and F
+  is calculated using an iterative solution of equation 2.</p>
+  <p>Case 3:&nbsp; When the rainfall intensity &lt;= f0 but the rainfall intensity &gt; f1,
+  &nbsp; ponding occurs during the interval and the solution consists of&nbsp; solving for
+  Fp using equation 3, then using equation 4 to solve the time into the step during which
+  ponding occurs. Next, using equation 2 with Fp as F0 the cumulative infiltration F1 after
+  the ponding time of (<font FACE="Symbol">D</font>t - <font FACE="Symbol">D</font>t') is
+  calculated.</p>
+</blockquote>
+
+<h3>Assigned Soil Properties</h3>
+
+<p>All, except fcap are specified at 0% saturation from Chow pg 115.</p>
+
+<p>Value for wilt is from Chow.</p>
+
+<p>Values for por, fcap is from Floods in Canada</p>
+
+<p>Soil curves of form K = Ks / (A*Psi^3 + 1 ) </p>
+
+<table border="1" width="542">
+  <tr>
+    <td width="71">&nbsp;</td>
+    <td width="52">psi(mm)</td>
+    <td width="57">k(mm/hr)</td>
+    <td width="44">wilt</td>
+    <td width="42">fcap</td>
+    <td width="45">por</td>
+    <td width="100">A-Soil moist</td>
+    <td width="83">A-Hyd cond</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; water </td>
+    <td width="52">0.0</td>
+    <td width="57">999.9</td>
+    <td width="44">0.000</td>
+    <td width="42">0.00</td>
+    <td width="45">1.100</td>
+    <td width="100">1.000000000</td>
+    <td width="83">1.0000000}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; sand </td>
+    <td width="52">49.5</td>
+    <td width="57">117.8</td>
+    <td width="44">0.020</td>
+    <td width="42">0.10</td>
+    <td width="45">0.437</td>
+    <td width="100">0.000010000</td>
+    <td width="83">0.0002000}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; loamsand </td>
+    <td width="52">61.3</td>
+    <td width="57">29.9</td>
+    <td width="44">0.036</td>
+    <td width="42">0.16</td>
+    <td width="45">0.437</td>
+    <td width="100">0.000006000</td>
+    <td width="83">0.0001000}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; sandloam </td>
+    <td width="52">110.1</td>
+    <td width="57">10.9</td>
+    <td width="44">0.041</td>
+    <td width="42">0.23</td>
+    <td width="45">0.453</td>
+    <td width="100">0.000001124</td>
+    <td width="83">0.0000200}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; loam </td>
+    <td width="52">88.9</td>
+    <td width="57">3.4</td>
+    <td width="44">0.029</td>
+    <td width="42">0.26</td>
+    <td width="45">0.463</td>
+    <td width="100">0.000000900</td>
+    <td width="83">0.0000150}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; siltloam </td>
+    <td width="52">166.8</td>
+    <td width="57">6.5</td>
+    <td width="44">0.045</td>
+    <td width="42">0.38</td>
+    <td width="45">0.501</td>
+    <td width="100">0.000000300</td>
+    <td width="83">0.0000050}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; saclloam </td>
+    <td width="52">218.5</td>
+    <td width="57">1.5</td>
+    <td width="44">0.068</td>
+    <td width="42">0.38</td>
+    <td width="45">0.398</td>
+    <td width="100">0.000000200</td>
+    <td width="83">0.0000030}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; clayloam </td>
+    <td width="52">208.8</td>
+    <td width="57">1.0</td>
+    <td width="44">0.155</td>
+    <td width="42">0.39</td>
+    <td width="45">0.464</td>
+    <td width="100">0.000000150</td>
+    <td width="83">0.0000020}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; siclloam </td>
+    <td width="52">273.3</td>
+    <td width="57">1.0</td>
+    <td width="44">0.039</td>
+    <td width="42">0.40</td>
+    <td width="45">0.471</td>
+    <td width="100">0.000000080</td>
+    <td width="83">0.0000015}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; sandclay </td>
+    <td width="52">239.0</td>
+    <td width="57">0.6</td>
+    <td width="44">0.110</td>
+    <td width="42">0.41</td>
+    <td width="45">0.430</td>
+    <td width="100">0.000000070</td>
+    <td width="83">0.0000010}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; siltclay </td>
+    <td width="52">292.2</td>
+    <td width="57">0.5</td>
+    <td width="44">0.056</td>
+    <td width="42">0.43</td>
+    <td width="45">0.479</td>
+    <td width="100">0.000000010</td>
+    <td width="83">0.0000002}</td>
+  </tr>
+  <tr>
+    <td width="71">clay</td>
+    <td width="52">316.3</td>
+    <td width="57">0.3</td>
+    <td width="44">0.090</td>
+    <td width="42">0.46</td>
+    <td width="45">0.475</td>
+    <td width="100">0.000000006</td>
+    <td width="83">0.0000001} </td>
+  </tr>
+</table>
+</body>
+</html>

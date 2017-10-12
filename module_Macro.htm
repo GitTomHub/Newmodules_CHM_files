@@ -1,0 +1,635 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>module_Macro (12/07/12)</title>
+</head>
+
+<body>
+<b>
+
+<h3 align="left">Macro.</h3>
+</b>
+
+<p align="left"><b>&nbsp;</b>&nbsp;&nbsp; This capability of the CRHM program allows users
+to create simple modules suitable for testing algorithms and for diagnosing CRHM model
+output.</p>
+
+<h3 align="left">Local Variables.</h3>
+
+<p align="left">&nbsp;&nbsp;&nbsp; Local variables are defined using the the keyword
+&quot;var&quot;.&nbsp; For example &quot;var i&quot;, &quot;var i&nbsp; var j&quot; or
+&quot;var i, j&quot;. &nbsp; </p>
+
+<h3 align="left">CRHM variables.</h3>
+
+<p align="left">&nbsp;&nbsp;&nbsp; CRHM variables as those defined in the
+&quot;declreadobs&quot;, &quot;declgetvar&quot;, &quot;declparam&quot;,
+&quot;declvar&quot; and &quot;declobs&quot; declarations. &nbsp; Note that the latter
+three types are defined in the current macro module and the first two types are derived
+from other CRHM modules in the model. The macro commands are enclosed in a for loop which
+is executed NHRU times.&nbsp; A local variable &quot;hh&quot; is defined so that values
+for every iteration may be saved in the CRHM macro module variable output.&nbsp; Note that
+local variables are not accessible outside the macro module except by saving their values
+into CRHM variables.</p>
+
+<h3 align="left"><b>Arithmetical Operators.</b></h3>
+
+<ol>
+  <li><p align="left">+, -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; addition/subtraction</p>
+  </li>
+  <li><p align="left">*. / &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplication/division</p>
+  </li>
+  <li><p align="left">^
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exponentiation</p>
+  </li>
+  <li><p align="left">%&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; modulus</p>
+  </li>
+  <li><p align="left">(...)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; brackets enclosing an
+    arithmetical expression.</p>
+  </li>
+  <li><p align="left">[n]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; array element index.
+    Order for 2-D is [hh][ll], i.e. hru first. Elements are referenced&nbsp; 1, 2, 3, 4 ...
+    Cannot be an expression. Use var i; i = J+k; array[i], not array[j+k].</p>
+  </li>
+</ol>
+
+<h3 align="left"><b>Logical Operators.</b></h3>
+
+<ol>
+  <li><p align="left">||&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR.</p>
+  </li>
+  <li><p align="left">&amp;&amp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AND.</p>
+  </li>
+  <li><p align="left">!=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Not equal.</p>
+  </li>
+  <li><p align="left">==&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Equal.</p>
+  </li>
+  <li><p align="left">&lt;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Less Than or Equal.</p>
+  </li>
+  <li><p align="left">&lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Less Than.</p>
+  </li>
+  <li><p align="left">&gt;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Greater Than or Equal.</p>
+  </li>
+  <li><p align="left">&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Greater Than.</p>
+  </li>
+  <li><p align="left">! &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical
+    Not. (Faulty)</p>
+  </li>
+</ol>
+
+<h3 align="left"><b>Control Statements.</b></h3>
+
+<p align="left">if (condition) ... else ... endif </p>
+
+<ul>
+  <li><p align="left">multiple statements or none are permitted in the TRUE and FALSE fields.</p>
+  </li>
+  <li><p align="left">The &quot;if&quot; statement must always be followed by a closing
+    &quot;endif&quot; statement.</p>
+  </li>
+  <li><p align="left">&quot;else&quot; is optional if there are no FALSE statements to
+    execute.</p>
+  </li>
+  <li><p align="left">Multiple &quot;if&quot; statements are permitted.</p>
+  </li>
+  <li><p align="left">&quot;if&quot; statements can appear within other &quot;if&quot;
+    statements.</p>
+  </li>
+</ul>
+
+<ul>
+  <li><p align="left">Lowercase must be used for &quot;if', &quot;else&quot; and
+    &quot;endif&quot;.</p>
+  </li>
+  <li><p align="left">&quot;else&quot; &quot;if&quot; must always be entered as two separate
+    words.</p>
+  </li>
+  <li><p align="left">Example :-&nbsp; if ... else if ...endif endif.</p>
+  </li>
+</ul>
+
+<p align="left">while(condition) ... endwhile.</p>
+
+<ul>
+  <li><p align="left">while condition is true the code in the body of the while is executed.</p>
+  </li>
+</ul>
+
+<p align="left">for(initialization; condition; increment) ... endfor.</p>
+
+<ul>
+  <li><p align="left">no field may be left empty.</p>
+  </li>
+  <li><p align="left">initialization sets initial value of optional loop counter.</p>
+  </li>
+  <li><p align="left">condition when FALSE terminates the loop.</p>
+  </li>
+  <li><p align="left">condition can be a compound logical statement, e.g. &quot;for (X = 0;
+    lastX - X &gt; 0.01 &amp;&amp; max &lt; 1000; max = max +1)&quot;.</p>
+  </li>
+  <li><p align="left">initialization and increment fields can have multiple statements
+    separated by commas, e.g. &quot;for (i = 0, j = 0; i &lt; 10; i = i+1, j = j+2)&quot;.</p>
+  </li>
+</ul>
+
+<p align="left">&nbsp;</p>
+
+<h3 align="left"><b>Subroutine Library.</b></h3>
+
+<ol>
+  <li><p align="left">sin deg, where deg(°)</p>
+  </li>
+  <li><p align="left">cos deg, where deg (°)</p>
+  </li>
+  <li><p align="left">exp</p>
+  </li>
+  <li><p align="left">log</p>
+  </li>
+  <li><p align="left">log10</p>
+  </li>
+  <li><p align="left">min</p>
+  </li>
+  <li><p align="left">max</p>
+  </li>
+  <li><p align="left">estar t</p>
+  </li>
+  <li><p align="left">patmos Ht, in kPa, where Ht (m) is the height.</p>
+  </li>
+  <li><p align="left">rhoa t, ea, Pa, in (kg/m^3), where t (°C), ea (kPa) and Pa (kPa) is the
+    atmospheric pressure.</p>
+  </li>
+  <li><p align="left">spec_humid ea, Pa, in (kg/kg) where ea (kPa) and Pa (kPa) is the
+    atmospheric pressure.</p>
+  </li>
+  <li><p align="left">PI</p>
+  </li>
+  <li><p align="left">DAY - current day</p>
+  </li>
+  <li><p align="left">MONTH - current month</p>
+  </li>
+  <li><p align="left">YEAR - current year</p>
+  </li>
+  <li><p align="left">JULIAN - Julian day of the year.</p>
+  </li>
+  <li><p align="left">FREQ - number of time intervals in a day.</p>
+  </li>
+  <li><p align="left">STEP - current interval starting at 1.</p>
+  </li>
+  <li><p align="left">GROUP - Current group index. 1 to maximum number of groups.</p>
+  </li>
+  <li><p align="left">STRUCT - Current struct index. 1 to maximum number of structs.</p>
+  </li>
+  <li><p align="left">FIRSTINT - True for the first interval of the day. When STEP % FREQ
+    equals 1.</p>
+  </li>
+  <li><p align="left">LASTINT - True for the last interval of the day. When STEP % FREQ equals
+    0.</p>
+  </li>
+  <li><p align="left">NO_DISPLAY - If variable is set to this value it will not display.
+    &nbsp; When exported creates a sparse file.</p>
+  </li>
+  <li><p align="left">RAND - random numbers between 0.0 and 1.0.</p>
+  </li>
+  <li><p align="left">ReadAheadObs - write to this function to read observations before and
+    after the current interval.&nbsp; Writing -2 will cause all observations referenced by a
+    &quot;declreadobs&quot; declaration in this module, to refer to the interval two periods
+    earlier, +2 to the period two intervals later and 0 will return module read observations
+    to the current interval.&nbsp; Reading from ReadAheadObs returns the status, 1 - error
+    (outside available observation range).&nbsp; HRU_OBS is not used to access the
+    observation. Observations are read in sequence as stored in the file.</p>
+  </li>
+  <li><p align="left">WriteAheadObs - use this function to write the values of the current
+    interval observations to permanent storage. Useage is to read from the desired interval
+    using ReadAheadObs function. Then changing the value of the desired observation and then
+    writing the new values to observation storage using the function WriteAheadObs with the
+    same interval offset.. </p>
+  </li>
+</ol>
+
+<h3>Macro Declarations.</h3>
+
+<p>N.B spaces may be included in text fields if the entire field is enclosed in double
+quotes.</p>
+
+<p align="left">To create a parameter in the module,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declparam, param, NHRU, 0.2, 0.0, 1.0, &quot;my
+description&quot;, &quot;(my units)&quot;[,Int].</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; Parameter macro variables are by default floating
+point.&nbsp; If is necessary to use an existing CRHM integer parameter this can be done by
+adding &quot;Int&quot; to the end of the normall call;</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declparam, inhibit_evap, NHRU, [0], 0, 1, &quot;inhibit
+evapatation, 1 -&gt; inhibit&quot;, &quot;()&quot;, &quot;Int&quot;.</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; To manage 2-D parameters the dimension NDEFN is
+implemented.</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declparam, Distrib, NDEFN, [1.0], 0.0, 100.0,
+&quot;Test 2D parametert&quot;, &quot;()&quot;</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The order of element access to Distrib
+[HRU][LAY].</p>
+
+<p align="left">To change the value of a CRHM parameter declared in another module,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declputparam, module_name, variable_name, (units).</p>
+
+<p align="left">To use a CRHM observation within the module,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declreadobs, t, NOBS, description, (units).&nbsp; N.B.
+access is limited to the available observations.&nbsp; Last available observation is used
+to satisfy any remaining requests.</p>
+
+<p align="left">To use a CRHM observation function within the module,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declobsfunc, t, tfunc, FUNC.&nbsp; N.B. access is
+limited to primitive observations. FUNC from &quot;AVG, MIN, MAX, DTOT, POS, TOT, FIRST,
+LAST, MJ_W and W_MJ&quot;. &nbsp;</p>
+
+<p align="left">To create a new CRHM variable for the module,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declvar, OutVar, NHRU, description, (units) [,Int].</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; decldiag, OutVar, NHRU, description, (units)[,Int].</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; decllocal, OutVar, NHRU, description, (units)[,Int].</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; To manage 2-D parameters the dimension NDEFN is
+implemented.</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declvar, Test_NDEFN, NDEFN, &quot;Test 2D
+variable&quot;, ().</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The order of element access to Test_NDEFN
+[HRU][LAY].</p>
+
+<p align="left">To create a new <strong>state</strong> CRHM variable for the module,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declstatvar, OutVar, NHRU, description, (units).</p>
+
+<p align="left">To create a new CRHM local variable for the module. N.B. this a variable
+local to this module.&nbsp; Not to be confused with a parser local variable.</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; decllocal, OutVar, NHRU, description, (units).</p>
+
+<p align="left">To use a CRHM variable from another module,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declgetvar, module_name, variable_name, (units).</p>
+
+<p align="left">To use a CRHM variable declared in another module and alter its value,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declputvar, module_name, variable_name, (units).</p>
+
+<p align="left">To use a CRHM parameter declared in another module and alter its value,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declputparam, module_name, variable_name, (units).</p>
+
+<p align="left">To create a CRHM observation from existing observations, parameters and
+variables,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; declobs, t2, NHRU, description, (units).&nbsp; N.B. if
+observation is already defined by an observation file - does nothing.</p>
+
+<p align="left">To force modules into a desired loading order,</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; setpeer, PeerVar, PeerRank,&nbsp; where PeerVar is a
+CRHM variable that the current module must be loaded after and the PeerRank is the offset
+at this level.</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; This command is required when a module has no input
+variables to allow CRHM to determine the position of the module in the model order. &nbsp;
+A typical case is a module whose inputs consist of observations. Automatically it will be
+loaded early in the model even if it uses declared observations from other modules because
+all types of observations have the same priority. </p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; To force the module to load after a declared
+observation has been calculated set PeerVar to 'ObsName#'. The # symbol differentiates
+between a variable named 'ObsName' and a declared observation named 'ObsName'. </p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; The PeerVar cannot be a variable that is accessed using
+a declputvar as these variables have no rank value. Examples of these variables are
+&quot;SWE&quot;, Sd, soil_moist, soil_rechr, hru_actet and hru_cum_actet.</p>
+
+<h3 align="left"><b>Macro Structure.</b></h3>
+
+<ol>
+  <li><p align="left">The first line of a Macro is its name.&nbsp; This is the name that it is
+    identified by in the model.&nbsp; Macro and Module names must be unique. Text after the
+    module name is handled as the module description.</p>
+  </li>
+  <li><p align="left">Next follows the declaration section.&nbsp; Each declaration is on a new
+    line.</p>
+  </li>
+  <li><p align="left">The &quot;command&quot; line ends the declaration section and begins the
+    code to be executed.</p>
+  </li>
+  <li><p align="left">The execution code is free format and may be indented and commented.</p>
+  </li>
+  <li><p align="left">The end of the macro definition is indicated by the &quot;end&quot;
+    statement on a new line.</p>
+  </li>
+</ol>
+
+<h3 align="left"><b>Comments.</b></h3>
+
+<p align="left">&nbsp;&nbsp;&nbsp; Code may be documented line using
+&quot;//&quot;.&nbsp;Any text after the &quot;//&quot; is ignored and handled as a
+comment.</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; To use spaces in declaration descriptive(text) fields
+enclose the desired text in double quotes, e.g. declparam, param, NHRU, 0.2, 0.0, 1.0,
+&quot;my description&quot;, &quot;(my units)&quot;</p>
+
+<h3>Array references are in the range of 1 to the maximum number of HRUs.&nbsp;</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Element[0] is illegal.&nbsp; When using a standard observation
+variable the element access is [1], e.g. T[1], u[1] etc.&nbsp; If the array element is not
+specified it will default to [1]. Not recommended.</p>
+
+<p>&nbsp;&nbsp;&nbsp; When accessing observations, the element is limited to the maximum
+defined element for the observation.</p>
+
+<h3>Macro Edit Screen.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; This screen is a simple text editor.&nbsp; At present no
+&quot;smarts&quot; are built in.&nbsp; The screen has the capability to cut and paste to
+and from itself and to and from other applications.&nbsp; Macro modules can be saved from
+the screen using the File menu.&nbsp; The default file extension is &quot;*mcr&quot;.
+&nbsp;These macro files are never used by CRHM and are for the use of the user only.
+&nbsp; The two buttons allow the user to save the screen changes to CRHM or cancel current
+changes and return to the last saved CRHM screen in the model.</p>
+
+<p>&nbsp;&nbsp;&nbsp; To create a new line use CTRL + Enter.</p>
+
+<p>&nbsp;&nbsp;&nbsp; When loading a macro file (*mcr),&nbsp; it will by default insert
+the text into the edit screen at the position of the cursor. However, if the edit screen
+has a selection, it will be replaced by the contents of the file.</p>
+
+<p>&nbsp;&nbsp;&nbsp; When saving a macro, the entire edit screen is saved to the file
+unless there is a selection and in that case only the selected text will be saved.</p>
+
+<h3>Saving Macros.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Macros are automatically saved to the CRHM project file when the
+model is saved as a project in the main screen file menu.&nbsp; A macro may also be saved
+as a file in the Macro Edit Screen for import into another project.&nbsp; The file
+extension used is &quot;.mcr&quot;.&nbsp; Since CRHM loads executable Macros from the
+project file,&nbsp; to utilise code in a &quot;*.mcr&quot; file the file must be loaded
+into CRHM using the Macro Edit Screen and then the project saved.&nbsp; Exit from CRHM and
+then re-run CRHM and load the project file.</p>
+
+<h3>Flow Screen.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Since macro modules used for debugging may not be required to
+satisfy inputs to the current CRHM model,&nbsp; CRHM will detect them as unused.&nbsp; To
+keep the macro modules, always select &quot;NO&quot; in the &quot;Remove module&quot;
+dialogue box.&nbsp; Macro declared observations are labelled with a trailing
+&quot;#&quot;.&nbsp; For example the Macro declared observation &quot;MyObs&quot; will be
+displayed as &quot;MyObs#&quot;.&nbsp; This notation differentiates declared Macro
+Observations from declared Macro Variables.</p>
+
+<h3 align="left"><b>Declared Observation Linking Priority.</b></h3>
+
+<p align="left">&nbsp;&nbsp;&nbsp; When a model is run and an Observation is available
+from a file (field observation) and also from a Macro,&nbsp; CRHM by default will use the
+observation from the file.</p>
+
+<p align="left">&nbsp;&nbsp;&nbsp; When a Macro defines an observation that should have a
+higher priority than the file observation,&nbsp; its name should have a trailing &quot;#'
+sign, e.g. &quot;MyObs#&quot; which will display in the flow screen as &quot;MyObs#&quot;.
+&nbsp; When this convention is used,&nbsp; &quot;hard code&quot; Modules have to contain
+extra code to handle the special name.</p>
+
+<h3 align="left"><b>Macro Example.</b></h3>
+
+<p align="left"><b>&nbsp;&nbsp;&nbsp;</b> The following macro definitions demonstrate the
+following features.</p>
+
+<ol>
+  <li><p align="left">Macros are named by the user.</p>
+  </li>
+  <li><p align="left">Multiple macros may be defined at once.</p>
+  </li>
+  <li><p align="left">Standard CRHM parameters allow macro physical outputs to be easily set
+    and modified like normal CRHM modules.</p>
+  </li>
+  <li><p align="left">Any Observations from the CRHM model&nbsp; may be accessed.</p>
+  </li>
+  <li><p align="left">Any CRHM module/macro output variable&nbsp; may be accessed.</p>
+  </li>
+  <li><p align="left">CRHM variable outputs may be generated to be used by other macro or
+    standard&nbsp; CRHM modules.</p>
+  </li>
+  <li><p align="left">Local variable values are preserved from time interval to time interval.</p>
+  </li>
+  <li><p align="left">Writer should provide a description and units for the variables and
+    parameters used to permit CRHM to supply help information to the user.</p>
+  </li>
+</ol>
+
+<p align="left">MyMacro1&nbsp; optional module description</p>
+
+<p align="left">declparam, param, NHRU, 0.2, 0.0, 1.0, &quot;my description&quot;,
+(my_units)</p>
+
+<p align="left">declreadobs, t, NOBS, description, (units)</p>
+
+<p align="left">declvar, OutVar, NHRU, description, (units)</p>
+
+<p align="left">declvar, XOutVar, NHRU, description, (units)</p>
+
+<p align="left">declgetvar, obs, hru_t, &quot;(°C)&quot;</p>
+
+<p align="left">command // code to be executed</p>
+
+<p align="left">OutVar[1]=param[1]*t[1] OutVar[2]=param[2]*t[1] OutVar[3]=param[3]*t[1] //
+array element access by numeric value (range 1 - # HRUs)</p>
+
+<p align="left">var i i=i+1 XOutVar= sin(i) var j j=i+180 XOutVar[2] = sin(j) XOutVar[3] =
+cos(PI/36*i)</p>
+
+<p align="left">end // end of code and end of module definition</p>
+
+<p align="left">MyMacro2 // beginning of next module definition</p>
+
+<p align="left">declparam, param2, NHRU, 0.2, 0.0, 1.0, description, (units)</p>
+
+<p align="left">declreadobs, t, NOBS, description, (units)</p>
+
+<p align="left">declvar, Z, NHRU, description, (units)</p>
+
+<p align="left">declvar, Y, NHRU, description, (units)</p>
+
+<p align="left">declgetvar, Macro1, OutVar, (units)</p>
+
+<p align="left">command</p>
+
+<p align="left">Z[hh]=param2[hh]*t[1]</p>
+
+<p align="left">Y[hh] = param2[hh]*OutVar[hh]</p>
+
+<p align="left">end</p>
+
+<h3 align="left"><b>Evaporation Example.</b></h3>
+
+<p align="left">Evaporation // module name</p>
+
+<p align="left">declparam, A, NHRU, 0.023, 0.0, 1.0, &quot;description&quot;, (mm/day) //
+declarations</p>
+
+<p align="left">declparam, B, NHRU,17.8, 0.0, 100.0, &quot;description&quot;, (°C)</p>
+
+<p align="left">declparam, Zref, NHRU,1.5, 0.001, 100.0, Zref, (m)</p>
+
+<p align="left">declparam, Zwind, NHRU,10, 0.001, 100.0, Zwinf, (m)</p>
+
+<p align="left">declparam, Z0, NHRU,0.001, 0.001, 100.0, Zo, (m)</p>
+
+<p align="left">declvar, EvapAlg, NHRU, &quot;evaporation_algorithm&quot;, (MJ/(m2/day))</p>
+
+<p align="left">declvar,cum, NHRU, &quot;cum_evaporation_algorithm&quot;, (mm)</p>
+
+<p align="left">declvar,Ra, NHRU,Ra, (s/m)</p>
+
+<p align="left">declgetvar, obs, hru_tmean, &quot;(°C)&quot; // mean air temperature</p>
+
+<p align="left">declgetvar, obs, hru_tmin, &quot;(°C)&quot; // minimum air temperature</p>
+
+<p align="left">declgetvar, obs, hru_tmax, &quot;(°C)&quot; // maximum air temperature</p>
+
+<p align="left">declgetvar, obs, u, &quot;(m/s)&quot; // wind velocity</p>
+
+<p align="left">command // module code</p>
+
+<p align="left">var U U=max(u[0], 0.2) // assume minimum wind velocity to prevent divide
+by zero errors</p>
+
+<p align="left">Ra[hh] = log(Zref[hh]/Z0[hh])* log(Zwind[hh]/Z0[hh])/0.4^2*U</p>
+
+<p align="left">EvapAlg[hh] =-A[hh]*( hru_tmean[1] - B[hh])*Ra[hh]*( hru_tmax[1] -
+hru_tmin[1])^0.5*1/(245*2.501)</p>
+
+<p align="left">cum[hh] = cum[hh] + EvapAlg[hh]</p>
+
+<p align="left">end // end of module</p>
+
+<h3 align="left">Macro Implementation of C++ module.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; To relate to a practical example we will design a macro
+to&nbsp;simulate the module ClassExample described earlier which converts interval net
+radiation in MJ/(m2-Int) calculated by an earlier module to mm/(m2-Int) of water, i.e.
+kg/(m2-Int) of water. The air temperature from an observation is required to carry out the
+conversion. Two other outputs are calculated as a fraction of the module output. These
+fractions are specified by the parameters F_Qg and F_Qs.</p>
+
+<p>&nbsp;&nbsp;&nbsp; Example // name of micro module</p>
+
+<p>&nbsp;&nbsp;&nbsp; declreadtobs(t, OBS, Temperature, (°C))</p>
+
+<p>&nbsp;&nbsp;&nbsp; declgetvar(netall, net, &quot;(MJ/m^2*int)&quot;)</p>
+
+<p>&nbsp;&nbsp;&nbsp; declparam(F_Qg, NHRU, 3*0.2, 0.0, 1.0, Qg=F_Qg*Rn, ())</p>
+
+<p>&nbsp;&nbsp;&nbsp; declparam(F_Qs, NHRU, [0.0], 0.0, 1.0, Qs=F_Qg*Rn, ())</p>
+
+<p>&nbsp;&nbsp;&nbsp; declvar(Rn, NHRU, net, (mm/Int))</p>
+
+<p>&nbsp;&nbsp;&nbsp; declvar(Qg, NHRU, ground_flux, (mm/Int))</p>
+
+<p>&nbsp;&nbsp;&nbsp; declvar(Qs, NHRU, storage_flux, (mm/Int))</p>
+
+<p>// The algorithm code to be executed every time interval and for every NHRU is written
+into the command area<b>.</b> The program code follows:</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;command // code is executed for number of HRUs with hh varying
+between 1 and # HRUs.</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Rn[hh] = net[hh]/(2.501-0.002361*t[1])</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Qg[hh] = Rn[hh]*F_Qg[hh]</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Qs[hh] = Rn[hh]*F_Qs[hh]</p>
+
+<p>&nbsp;&nbsp;&nbsp; end</p>
+
+<p>Since the command code applies to every HRU, it is executed inside a&nbsp; for &nbsp;
+loop.&nbsp; The output variable Rn, is calculated from the observation temperature and an
+output variable net calculated in another module. Outputs Qg and Qs from this module are
+the product of the output Rn and the parameters F_Qg and F_Qs.</p>
+
+<h3>Example of &quot;for&quot; and 2-D arrays.</h3>
+
+<p>Test_declvar</p>
+
+<p>declvar, Test_NDEFN, NDEFN, &quot;Test 2D variable&quot;, ()</p>
+
+<p>declvar, Test_NDEFN2, NDEFN, &quot;Test 2D variable&quot;, ()</p>
+
+<p>declparam, Test_par_NDEFN, NDEFN, [1.0], 0.0, 100.0, &quot;Test 2D parametert&quot;,
+&quot;()&quot;</p>
+
+<p>command</p>
+
+<p>var Fred [NHRU][7]</p>
+
+<p>var ll</p>
+
+<p>ll = 1</p>
+
+<p>for(ll = 1; ll &lt;= NHRU; ll = ll +1)</p>
+
+<p>&nbsp;&nbsp; Fred[hh] [ll] = Test_par_NDEFN[hh][ll]*5</p>
+
+<p>&nbsp;&nbsp; Test_NDEFN[hh][ll] = Test_par_NDEFN[hh][ll]</p>
+
+<p>&nbsp;&nbsp; Test_NDEFN2[hh][ll] = Fred[hh][ll]</p>
+
+<p>endfor</p>
+
+<p>end</p>
+
+<p>Example of accessing variables and parameters from another module, in this case pbsm_M.</p>
+
+<p>Test_getvar </p>
+
+<p>declvar, Test_NDEFN, NDEFN, &quot;Test 2D variable&quot;, () </p>
+
+<p>declvar, Test_NDEFN_P, NDEFN, &quot;Test 2D variable&quot;, () </p>
+
+<p>declgetvar, pbsm_M, Results, () </p>
+
+<p>declparam, distrib, NDEFN, 1.0, 0.0, 100.0, &quot;Test 2D parametert&quot;,
+&quot;()&quot; </p>
+
+<p>command </p>
+
+<p>var ll </p>
+
+<p>for(ll = 1; ll &lt;= NHRU; ll = ll +1) </p>
+
+<p>&nbsp; Test_NDEFN[hh][ll] = Results[hh][ll] </p>
+
+<p>&nbsp; Test_NDEFN_P[hh][ll] = distrib[hh][ll] </p>
+
+<p>endfor </p>
+
+<p>end</p>
+
+<p>As always when sharing a parameter between modules, all values of the parameter should
+be made the same in every module, then the project saved and reloaded when the shared
+parameter should appear only in the &quot;basin&quot; module.</p>
+
+<h3>Known problems.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; If a major change is made to a macro, i.e. insertion or deletion of
+a declaration,&nbsp; the user should exit from the macro entry screen and immediately save
+the project and then exit from CRHM.&nbsp; When CRHM is restarted it will execute
+properly.&nbsp; At present CRHM is not handling some aspects of allocation/deallocation of
+variables correctly.</p>
+
+<p>&nbsp;</p>
+</body>
+</html>

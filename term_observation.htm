@@ -1,0 +1,84 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>term_observation (05/20/04)</title>
+</head>
+
+<body>
+<b>
+
+<h3></b>Observation<b></h3>
+</b>
+
+<p>&nbsp;&nbsp;&nbsp; Climate/meteorological data for the watershed being modeled. This
+input drives the model.&nbsp; The data is read from a data file with the file extension
+obs, (*.obs).</p>
+
+<p>&nbsp;&nbsp;&nbsp; The usual modeling time step is a <b>half hour </b>or<b> one hour</b>.
+Daily data starts at the first interval of the day e.g. 00:30 or 01:00.&nbsp; The end of a
+day is either 24:00 or 00:00 of the next day. Gaps in the data must be filled with
+synthesized data to allow the model to run. </p>
+
+<p>&nbsp;&nbsp;&nbsp; Module driving inputs are Observations or Input Variables.</p>
+
+<h3>Function Observations</h3>
+
+<p>&nbsp;&nbsp;&nbsp; The root observation is indicated by the observation name, e.g. 't'.
+&nbsp; Function observations are denoted by an extension beginning with an underscore to
+the observation name, e.g. 't_Avg'.&nbsp; Available observation functions are:</p>
+
+<table border="1" width="740">
+  <tr>
+    <td width="103">Average </td>
+    <td width="63">_Avg</td>
+    <td width="556">daily average value. </td>
+  </tr>
+  <tr>
+    <td width="103">Minimum </td>
+    <td width="63">_Min</td>
+    <td width="556">daily minimum value. </td>
+  </tr>
+  <tr>
+    <td width="103">Maximum </td>
+    <td width="63">_Max</td>
+    <td width="556">daily maximum value. </td>
+  </tr>
+  <tr>
+    <td width="103">Daily Sum </td>
+    <td width="63">_Sum</td>
+    <td width="556">sum of daily interval values. </td>
+  </tr>
+  <tr>
+    <td width="103">Positive</td>
+    <td width="63">_Pos</td>
+    <td width="556">sum of daily interval values that are greater than zero. </td>
+  </tr>
+  <tr>
+    <td width="103">Total </td>
+    <td width="63">_Tot</td>
+    <td width="556">total of interval values over entire run period </td>
+  </tr>
+  <tr>
+    <td width="103">First </td>
+    <td width="63">_First</td>
+    <td width="556">displays data once at the beginning of the day. </td>
+  </tr>
+  <tr>
+    <td width="103">Last </td>
+    <td width="63">_Last</td>
+    <td width="556">displays data once at the end of the day. </td>
+  </tr>
+  <tr>
+    <td width="103">W_to_MJ </td>
+    <td width="63">_WtoMJ</td>
+    <td width="556">the data is converted from Watts to Mega Joules per time interval. </td>
+  </tr>
+  <tr>
+    <td width="103">MJ_W </td>
+    <td width="63">_MJtoW</td>
+    <td width="556">the data is converted from mega Joules per time interval to Watts. </td>
+  </tr>
+</table>
+</body>
+</html>

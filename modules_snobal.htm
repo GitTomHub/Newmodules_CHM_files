@@ -1,0 +1,311 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_snobal (06/13/08)</title>
+</head>
+
+<body>
+<b><font FACE="Arial">
+
+<h3>snobal</font></b></h3>
+
+<p>This module is defined in Classsnobal.</p>
+
+<p><b>snobal</b> is an interactive point model using the energy balance to calculate
+snowmelt, and to predict runoff, from input data on snow properties, measurement heights
+&amp; depths, and energy exchanges. Similar to the approach used by <i>Anderson (1976)</i>,
+and <i>Morris (1982)</i>, but designed to run on simpler, more generalizable inputs. The
+model was first presented by <i>Marks (1988)</i>, described conceptually by <i>Marks, et.
+al (1992)</i> and <i>Marks and Dozier (1992)</i>, and then described in great detail by <i>Marks,
+et. al (1997)</i>. </p>
+
+<p>The model approximates the snow cover as being composed of two layers, a surface
+fixed-thickness active layer and a lower layer, solving for the temperature (C) and
+specific mass (kg/m^2) or mass per unit area (from density * depth (kg/m^3 * m)) for each,
+and computing total snowcover temperature and specific mass from these. </p>
+
+<p>Melt is computed in either layer when the accumulated energy exceeds the &quot;cold
+content&quot; or when the &quot;cold content&quot; is &gt; 0.0. Cold content is the energy
+required to bring the snow cover temperature up to freezing (0 C). Runoff is estimated
+when the accumulated melt and liquid H2O content exceed a specified threshold. </p>
+
+<p>Trouble with the routine &quot;hle1&quot; iterative solution not converging. After
+ITMAX iterations an attempt is made to solve using a simplified stability function. &nbsp;
+This is tested by constraining the sensible heat to &lt; 600 (W/m^2) and the latent heat
+to &gt; -300. If either is outside the range,&nbsp; both are set to zero.&nbsp; The simple
+stability function can be selected instead of the iterative solution with the parameter
+&quot;M_O_iter&quot;.</p>
+
+<p>The simple stability function is Ustar<sup>2 </sup>t<sub>a</sub>/(kgz<sub>a</sub>(t<sub>a</sub>-t<sub>s</sub>),
+where k = 0.41, g = 9.81 m/s<sup>2</sup>, z<sub>a </sub>is the instrument height and t<sub>a</sub>
+and t<sub>s</sub> are the air and surface temperatures respectively.</p>
+
+<p>If the snowfall is less than 1 (kg/m^2/s),&nbsp; it is immediately melted.&nbsp; This
+amount is accumulated and printed in the log screen as &quot;melt_direct_cum&quot;.</p>
+
+<p>To minimise the amount of snowfall immediately being melted because it was less then
+the 1 mm threshold, the parameter option &quot;ppt_daily_distrib&quot; was added to the
+module &quot;obs&quot; to dump all of the daily snowfall into the first interval of the
+day instead of distributing it evenly over the day.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>layer_count () - number of layers in snowcover.</li>
+  <li>isothermal () - melting: 0/1</li>
+  <li>snowcover () - snow on ground at start of current timestep: 0/1</li>
+  <li>R_n (W/m^2) - net allwave radiation.</li>
+  <li>H (W/m^2) - sensible heat transfer.</li>
+  <li>L_v_E (W/m^2) - latent heat transfer.</li>
+  <li>G (W/m^2) - heat transfer by conduction &amp; diffusion from soil to snowcover.</li>
+  <li>M (W/m^2) - advected heat from precip.</li>
+  <li>delta_Q (W/m^2) - change in snowcover's energy.</li>
+  <li>G_0 (W/m^2) - transfer by conduction &amp; diffusion from soil or lower layer to active
+    layer.</li>
+  <li>delta_Q_0 (W/m^2) - change in active layer's energy.</li>
+  <li>cc_s (J/m^2) - snowcover's cold content.</li>
+  <li>cc_s_0 (J/m^2) - active layer cold content.</li>
+  <li>cc_s_l (J/m^2) - lower layer cold content.</li>
+  <li>E_s_int (kg/m^2*int) - mass of evap into air &amp; soil from snowcover.</li>
+  <li>E_int (kg/m^2*int) - mass flux by evap into air from active layer.</li>
+  <li>melt_int (kg/m^2*int) - specific melt (kg/m^2 or mm.</li>
+  <li>snowmelt_int (kg/m^2*int) - snow melt at bottom of pack.</li>
+  <li>snowmeltD 9mm/d) - daily snow melt at bottom of pack.</li>
+  <li>cumsnowmelt (mm) - cumulative snow melt at bottom of pack.</li>
+  <li>z_s (m) - total snowcover thickness.</li>
+  <li>z_s_0 (m) - active layer depth.</li>
+  <li>z_s_l (m) - lower layer depth.</li>
+  <li>rho (kg/m^3) - average snowcover density.</li>
+  <li>SWE (kg/m^2) - snowcover's specific mass.</li>
+  <li>m_s_0 (kg/m^2) - active layer specific mass.</li>
+  <li>m_s_l (kg/m^2) - lower layer specific mass.</li>
+  <li>T_s (°C) - average snowcover temp.</li>
+  <li>T_s_0 (°C) - active layer temp.</li>
+  <li>T_s _l (°C) - lower layer temp.</li>
+  <li>h2o_sat () -&nbsp; % of liquid H2O saturation (relative water).</li>
+  <li>h2o_vol () - liquid h2o content as volume ratio: V_water/(V_snow - V_ice).</li>
+  <li>h2o_max (kg/m^2) - max liquid h2o content as specific mass.</li>
+  <li>z_snow (m) - depth of snow in precip.</li>
+  <li>h2o_sat_snow () - snowfall's % of liquid H2O saturation.</li>
+  <li>precip_now () - precipitation in current timestep - 0/1.</li>
+  <li>T_rain (°C) - temperature of rain.</li>
+  <li>T_rain (°C) - temperature of snowfall.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>relative_hts () -&nbsp; measurements heights, z_T and z_u, are relative to snow - 0/1.</li>
+  <li>z_g (m) - depth of soil temperature measurement.</li>
+  <li>z_u (m) - height of wind measurement.</li>
+  <li>z_T (m) - height of air temperature &amp; vapour pressure measurements.</li>
+  <li>z_0 (m) - roughness length.</li>
+  <li>max_z_s_0 (m) -maximum active layer thickness.</li>
+  <li>max_h2o_vol () - max liquid h2o content as volume ratio: V_water/(V_snow - V_ice).</li>
+  <li>basin_area (km^2) - basin area.</li>
+  <li>hru area (km^2) - HRU area.</li>
+  <li>hru_elev (m) - altitude.</li>
+  <li>M_O_iter () - Monin-Obukhov stability fuction. 0/1 - simplified/ original iterated
+    solution. </li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_S_n (W/m^2) - net solar radiation.</li>
+  <li>hru_I_lw (W/m^2) - incoming longwave (thermal) radiation.</li>
+  <li>hru_t (°C) - air temperature at height z_T.</li>
+  <li>hru_ea (kPa) - vapour pressure at height z_T.</li>
+  <li>hru_u (m/s) - wind speed at height z_u.</li>
+  <li>hru_T_g(°C) - soil temp at depth z_g.</li>
+  <li>hru_T_pp(°C) - temperature of precipitation.</li>
+  <li>net_p (mm/int) - net precipitation below canopy.</li>
+  <li>net_rain (mm/int) - net rain below canopy.</li>
+  <li>net_snow (mm/int) - net snow below canopy.</li>
+  <li>hru_drift (mm/int) - specific mass of drifting snow.</li>
+  <li>hru_subl(mm/int) - specific mass of drifting snow.</li>
+  <li>hru_rho_snow (kg/m^3) - density of snowfall.</li>
+</ul>
+
+<h3>Notes</h3>
+
+<hr>
+
+<h3>NAME</h3>
+
+<p><b>g_soil</b> - conduction heat flow between snow and soil</p>
+
+<h3>SYNOPSIS</h3>
+
+<pre>double g_soil(</pre>
+
+<pre>     double  rho,    /* snow layer's density (kg/m^3)             */</pre>
+
+<pre>     double  tsno,   /* snow layer's temperature (K)              */</pre>
+
+<pre>     double  tg,     /* soil temperature (K)                      */</pre>
+
+<pre>     double  ds,     /* snow layer's thickness (m)                */</pre>
+
+<pre>     double  dg,     /* dpeth of soil temperature measurement (m) */</pre>
+
+<pre>     double  pa)     /* air pressure (Pa)                         */</pre>
+
+<p>&nbsp;</p>
+
+<h3>DESCRIPTION</h3>
+
+<p><b>g_soil</b> calculates the heat flow between a snow layer and the soil accounting for
+both conduction and vapor transport. See pages 45 - 47 in the reference below. </p>
+
+<h3>RETURN VALUE</h3>
+
+<p>heat transfer between soil and snow (J/m^2) </p>
+
+<h3>HISTORY</h3>
+
+<dl>
+  <dt>Aug 1984 </dt>
+  <dd>written by D. Marks, CSL (GSFC), UCSB; </dd>
+  <dt>May 1995 </dt>
+  <dd>Converted from QDIPS to IPW by J. Domingo, OSU </dd>
+</dl>
+
+<h3>SEE ALSO</h3>
+
+<p>Anderson 1976</p>
+
+<hr>
+
+<h3>NAME</h3>
+
+<p><b>g_snow</b> - conduction heat flow between two snow layers</p>
+
+<h3>SYNOPSIS</h3>
+
+<pre>double g_snow(</pre>
+
+<pre>     double  rho1,  /* upper snow layer's density (kg/m^3)  */</pre>
+
+<pre>     double  rho2,  /* lower  &quot;     &quot;        &quot;    (kg/m^3)  */</pre>
+
+<pre>     double  ts1,   /* upper snow layer's temperature (K)   */</pre>
+
+<pre>     double  ts2,   /* lower  &quot;     &quot;         &quot;       (K)   */</pre>
+
+<pre>     double  ds1,   /* upper snow layer's thickness (m)     */</pre>
+
+<pre>     double  ds2,   /* lower  &quot;     &quot;         &quot;     (m)     */</pre>
+
+<pre>     double  pa)    /* air pressure (Pa)                    */</pre>
+
+<p>&nbsp;</p>
+
+<h3>DESCRIPTION</h3>
+
+<p><b>g_snow</b> calculates the heat flow between two snow layers for both conduction and
+vapor transport. See pages 46 and 47 of the reference below. </p>
+
+<h3>RETURN VALUE</h3>
+
+<p>heat transfer between snow layers (J/m^2) </p>
+
+<h3>HISTORY</h3>
+
+<dl>
+  <dt>Aug 1986 </dt>
+  <dd>written by D. Marks, CSL, UCSB; </dd>
+  <dt>May 1995 </dt>
+  <dd>Converted to IPW by J. Domingo, OSU </dd>
+</dl>
+
+<h3>SEE ALSO</h3>
+
+<p>Anderson 1976</p>
+
+<hr>
+
+<h3>NAME</h3>
+
+<p><b>hle1</b> - sensible and latent heat from data at 1 height</p>
+
+<h3>SYNOPSIS</h3>
+
+<pre>int hle1(</pre>
+
+<pre>      double   press,   /* air pressure (Pa)   		        */</pre>
+
+<pre>      double   ta,      /* air temperature (K) at height za     */</pre>
+
+<pre>      double   ts,      /* surface temperature (K)   	        */</pre>
+
+<pre>      double   za,      /* height of air temp measurement (m)   */</pre>
+
+<pre>      double   ea,      /* vapor pressure (Pa) at height zq     */</pre>
+
+<pre>      double   es,      /* vapor pressure (Pa) at surface       */</pre>
+
+<pre>      double   zq,      /* height of spec hum measurement (m)   */</pre>
+
+<pre>      double   u,       /* wind speed (m/s) at height zu        */</pre>
+
+<pre>      double   zu,      /* height of wind speed measurement (m) */</pre>
+
+<pre>      double   z0,      /* roughness length (m)   		*/</pre>
+
+<pre>   /* output variables */</pre>
+
+<pre>      double  *h,       /* sens heat flux (+ to surf) (W/m^2)   */</pre>
+
+<pre>      double  *le,      /* latent heat flux (+ to surf) (W/m^2) */</pre>
+
+<pre>      double  *e)       /* mass flux (+ to surf) (kg/m^2/s)     */</pre>
+
+<h3>DESCRIPTION</h3>
+
+<p><b>hle1</b> computes sensible and latent heat flux and mass flux given measurements of
+temperature and specific humidity at surface and one height, wind speed at one height, and
+roughness length. The temperature, humidity, and wind speed measurements need not all be
+at the same height. </p>
+
+<h3>RETURN VALUE</h3>
+
+<pre>     0      successful calculation</pre>
+
+<pre>    -1      no convergence</pre>
+
+<pre>    -2      bad input</pre>
+
+<h3>HISTORY</h3>
+
+<dl>
+  <dt>Jun 1987 </dt>
+  <dd>Written as a Qdips program by J. Dozier, CRSEO, UCSB; </dd>
+  <dt>Oct 1990 </dt>
+  <dd>Translated into IPW by K. Longley, OSU, ERLC; </dd>
+</dl>
+
+<h3>SEE ALSO</h3>
+
+<p>Brutsaert 1982</p>
+
+<h3>CRHM implementation.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Trouble experienced with iterative solution not converging. &nbsp;
+Added simplified non-iterative solution. Better,&nbsp; but still blowing up. &nbsp; Added
+check to return h = 0.0 and le = 0.0, if H &gt; 600 or Le &lt; -300. &nbsp; This allows
+the model to complete the run.&nbsp; Values of h, le,t, ts, u, ea and es are output to
+allow for further investigation.</p>
+
+<p>&nbsp;</p>
+
+<hr>
+</body>
+</html>

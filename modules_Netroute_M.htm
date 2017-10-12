@@ -1,0 +1,149 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_Netroute_M (11/15/12)</title>
+</head>
+
+<body>
+<b><font FACE="Arial">
+
+<h3>Netroute_M</font></b></h3>
+
+<p>This module defined in ClassNetroute_M, handles the routing of surface runoff,
+subsurface runoff and HRU routing using Muskingum method. Outflow from a HRU is calculated
+by lagging its inflow by the travel time through the HRU, then routing it through an
+amount of linear storage defined by the storage constant, K. The outflow from a HRU can be
+diverted to the inflow of another HRU or directed to the basin outlet. The parameter
+&#145;order&#146; ensures that the outflows from the various HRUs are calculated in the
+correct order from upstream to downstream. The parameter &#145;whereto&#146; defines the
+destination of an HRU outflow. A non zero value indicates flow to another HRU and a zero
+value specifies to the basin outflow.</p>
+
+<p>The sum of runoff and snowmelt runoff may be delayed using independent Clark routing
+objects before being handled as input to the main HRU Clark object.</p>
+
+<p>Similarly the subsurface runoff may also be delayed using an independent Clark object
+before being handled as input to the main HRU Clark routing object.</p>
+
+<p>The delayed runoff and subsurface runoff are added and applied to the common HRU Clark
+routing object.</p>
+
+<p>The output flow of an HRU may be diverted to another HRU by using the <em>whereto</em>
+parameter.&nbsp; This flow is used to top up the depression storage (Sd in the Soil
+module) and the soil moisture recharge layer (soil_rechr in the Soil module) of the HRU
+during the current time step. Any surplus is returned to the soil module by the <em>put</em>
+variable&nbsp; redirected_residual and is added to the soil_runoff variable during the
+next time step. The parameters soil_rechr_ByPass and Sd_ByPass may be used to prevent
+replenishing the recharge and depressional storage.</p>
+
+<p>The groundwater flow from an HRU may be diverted to another HRU by using the
+'gwwhereto' parameter. The gw flow is added to the input flow of the particular HRU after
+the recharge layer (soil_rechr in the Soil module) and the HRU free depressional storage
+(Sd in the Soil module) has been replenished. The parameters soil_rechr_ByPass and
+Sd_ByPass may be used to prevent replenishing the recharge and depressional storage.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>inflow (mm*km^2/int) - sum of the optional inflow from other HRUs and delayed surface
+    and subsurface runoff from this HRU.</li>
+  <li>cuminflow (mm*km^2) - HRU cumulative inflow.</li>
+  <li>outflow (mm*km^2/int) - HRU outflow after Clark(Kstorage, Lag) delay.</li>
+  <li>cumoutflow (mm*km^2) - HRU cumulative outflow.</li>
+  <li>outflow_diverted (mm*km^2) - HRU outflow diverted to another HRU.</li>
+  <li>cumoutflow_diverted (mm*km^2) - HRU cumulative outflow diverted to another HRU.</li>
+  <li>cum_to_Sd (mm) - cumulative flow from other HRUs to the depression storage of this HRU.</li>
+  <li>cum_to_soil_rechr (mm) - cumulative other HRU to soil_rechr of this HRU.</li>
+  <li>ssrinflow (mm*km^2/int) - subsurface runoff (ssr) to this HRU.</li>
+  <li>ssrcuminflow (mm*km^2) - cumulative ssrinflow.</li>
+  <li>ssroutflow (mm*km^2/int) - ssr outflow after Clark(ssrKstorage, ssrLag) delay.</li>
+  <li>ssrcumoutflow (mm*km^2) - cumulative ssr outflow.</li>
+  <li>runinflow (mm*km^2/int) - sum of snowmelt runoff and runoff to this HRU.</li>
+  <li>runcuminflow (mm*km^2) - cumulative runinflow.</li>
+  <li>runoutflow (mm*km^2/int) - runoff outflow after Clark(runKstorage, runLag) delay.</li>
+  <li>runcumoutflow (mm*km^2) - cumulative runoutflow.</li>
+  <li>gwinflow (mm*km^2) - gw inflow.</li>
+  <li>gwcuminflow (mm*km^2) - cumulative gwinflow.</li>
+  <li>gwoutflow (mm*km^2/int) - gw outflow after Clark(gwKstorage, gwLag) delay.</li>
+  <li>gwcumoutflow (mm*km^2) - cumulative gw outflow.</li>
+  <li>gwoutflow_diverted (mm*km^2/int) - gw outflow diverted to other HRU.</li>
+  <li>gwcumoutflow_diverted (mm*km^2/int) - cumulative gw outflow diverted to other HRU.</li>
+  <li>basinflow (m^3/int) - average outflow rate of surface and subsurface runoff from the
+    basin.</li>
+  <li>basinflow_s (m^3/s) - average outflow rate of surface and subsurface runoff from the
+    basin.</li>
+  <li>cumbasinflow (m^3) - cumulative basinflow.</li>
+  <li>basingw (m^3/int) - average ouflow rate of groundwater from the basin.</li>
+  <li>basingw_s (m^3/s) - average ouflow rate of groundwater from the basin.</li>
+  <li>cumbasingw (m3) - cumulative basingw.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>basin_area (km^2) - basin area.</li>
+  <li>hru area (km^2) - HRU area.</li>
+  <li>Lag (h) - Lag for HRU.</li>
+  <li>route_n () - Manning roughness coefficient.</li>
+  <li>route_R (() -hydraulic radius.</li>
+  <li>route_S0 (() -&nbsp; longitudinal channel slope.</li>
+  <li>route_L (m) - routing length.</li>
+  <li>route_X_M () - dimensionless weighting factor.</li>
+  <li>ssrKstorage (d) - storage constant for subsurface runoff to HRU routing.</li>
+  <li>ssrLag (h) - Lag for subsurface runoff to HRU routing.</li>
+  <li>runKstorage (d) - storage constant runoff to HRU routing.</li>
+  <li>runLag (h) - Lag for runoff to HRU routing.</li>
+  <li>whereto () - '0' for basin outflow or 1..n to be directed toanother HRU.</li>
+  <li>gwwhereto () - 0 - basin gw (basingw), &gt;0 other HRU input. &lt;0 other -HRU gw input,
+    or (&lt; -HRUmax or &gt; +HRUmax) - basin outflow (basinflow),</li>
+  <li>order () - HRU routing process order.</li>
+  <li>Sdmax (mm) - maximum depression storage.</li>
+  <li>soil_rechar_max (mm) - soil recharge maximum.</li>
+  <li>Sd_ByPass () - 0 - normal, 1 - Bypass Pond/Depressional storage (i.e. Sd). Also applies
+    to redirected gw.</li>
+  <li>soil_rechr_ByPass () - 0 - normal, 1 - Bypass recharge layer (i.e. soil_rechr). Also
+    applies to redirected gw.</li>
+  <li>gwKstorage (d) - storage constant for gw to HRU routing.</li>
+  <li>gwLag (h) - Lag for gw to HRU routing.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>soil_ssr (*) (mm/int) - from module Soil etc. Programmed as an interval or daily value.</li>
+  <li>soil_runoff (*) (mm/int) - from module Soil etc. Programmed as an interval or daily
+    value.</li>
+  <li>soil_gw (*) (mm/int) - from module Soil etc. Programmed as a daily value.</li>
+  <li>Sd (*) (mm) - from module Soil etc. Programmed as a state&nbsp; <em>put</em> value. </li>
+  <li>soil_rechr (*) (mm) - from module Soil etc. Programmed as a state&nbsp; <em>put</em>
+    value. </li>
+  <li>soil_moist (*) (mm) - from module Soil etc. Programmed as a state&nbsp; <em>put</em>
+    value. </li>
+  <li>redirected_residual (*) (mm*km^2/int) - to module Soil etc. Programmed as a state&nbsp; <em>put</em>
+    value.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h3>Notes.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; The redistribution of water between HRU's is handled by Netroute.
+The interval outflow from an HRU may be directed to another HRU or designated as basin
+flow using the whereto parameter.&nbsp; When directed to another HRU, any water is first
+used to top up&nbsp;the soil recharge layer if soil_rechr_ByPass is not enabled and then
+any surplus applied to Depression or Pond storage (Sd) if Sd_ByPass is not enabled and
+then the excess is added to the HRU's inflow. If the whereto parameter is 0, the outflow
+is accumulated in basin flow. The last HRU is basin flow, so whereto is always 0.</p>
+</body>
+</html>

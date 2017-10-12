@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_global (05/17/16)</title>
+
+</head>
+
+<body>
+<h3><b><font face="Arial">global</font></b></h3>
+<p>Defined in ClassGlobal. This module calculates the theoretical
+interval short-wave
+direct and diffuse solar radiation. The routine handles GSL and ASL.
+There is an
+adjustment for elevation and transmissivity applicable to the region
+adjacent to the
+triangle, Edmonton, Winnipeg and Bad Lake. The interval and daily
+values are calculated by
+accumulating the 10 minute calculated values. The maximum number of
+daily sunshine hours
+is calculated. The theoretical direct-beam component of solar radiation
+is developed from
+an expression proposed by Garnier and Ohmura (1970).&nbsp; The
+solar angle is output for
+use in other modules.&nbsp; Extra variables have been added to help
+in determining if the
+module is malfunctioning</p>
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>none</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>Qdro (W/m^2) - clear-sky direct.</li>
+<li>Qdfo (W/m^2) - clear-sky diffuse.</li>
+<li>Qdflat (W/m^2) - clear-sky direct + diffuse on a horizontal
+surface. Always independent of slope and aspect.</li>
+<li>QdflatE (W/m^2) - extraterrestrial radiation, i.e. no
+atmosheric attenuation. Always independent of slope and aspect.</li>
+<li>QdroD (MJ/m^2) - daily clear-sky direct.</li>
+<li>QdfoD (MJ/m^2) - daily clear-sky diffuse.</li>
+<li>QdflatD (MJ/m^2) - daily clear-sky direct on a horizontal
+surface.&nbsp; Now includes the diffuse.</li>
+<li>QdroDext (W/m^2) - daily extraterrestial direct. Always
+independent of slope and aspect.</li>
+<li>SolAng (r) - solar angle in radians.</li>
+<li>SunMax (h) - maximum sunshine hours.</li>
+<li>pQdro (MJ/m^2*int) - clear-sky direct.</li>
+<li>pQdfo (MJ/m^2*int) - clear-sky diffuse.</li>
+<li>pQdflat (MJ/m^2*int) - Qdro + Qdfo on horizontal surface.</li>
+<li>pQdflatE (MJ/m^2*int) - Qdro on horizontal surface with no
+atmospheric attenuation.</li>
+<li>pSol(r) - solar angle in radians.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>hru_lat (°) - HRU latitude. Positive value indicates northern
+hemisphere, negative value southern hemisphere.</li>
+<li>hru_elev (m) - HRU altitude.</li>
+<li>hru_GSL (°) - HRU mean ground slope - increasing the slope
+positively, tilts the plane to the north with ASL = 0.</li>
+<li>hru_ASL (°) - HRU aspect. 0/90/180/270 - north/east/south/west
+facing for positive GSL.</li>
+<li>Time_Offset (h) - solar time offset from local time.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>none</li>
+</ul>
+<h3>Notes</h3>
+<h3>Calculation of Diffuse.</h3>
+<p>A simple means of calculating the dffuse clear-sky radiation
+is given by List (1968)
+as:</p>
+<p>diffuse = 0.5((1-aw-ac)Qa - Id) where</p>
+<blockquote>
+<p>aw = radiation absorbed by water vapour (7%)</p>
+<p>ac = radiation absorbed by ozone (2%)</p>
+<p>Qa = extra-terrestrial radiation on a horizontal surface at
+the outer limit of the earth's atmosphere.</p>
+<p>Id = direct clear-sky radiation reaching the earth's surface
+on a horizontal surface.</p>
+</blockquote>
+<h3>Optical airmass.</h3>
+<p><font size="2">The relative path length of the
+direct solar beam radiance through the atmosphere. When
+the sun is directly above a sea-level location the path length is
+defined as airmass 1 (AM
+1.0). AM 1.0 is not synonymous with solar noon because the sun is
+usually not directly
+overhead at solar noon in most seasons and locations. When the angle of
+the sun from
+zenith (directly overhead) increases, the airmass increases
+approximately by the secant of
+the zenith angle. A better calculation <cite>(Kasten, F. and A.
+T. Young (1989). Revised
+optical air mass tables and approximation formula. <b>Applied
+Optics 28</b> (22),
+4735-4738)</cite> follows: </font></p>
+<p align="left"><font size="2">m = 1.0 / [
+cos(Z) + 0.50572 * (96.07995 - Z)<sup>-1.6364</sup>] </font></p>
+<p><font size="2">where Z is the solar zenith angle.</font></p>
+</body></html>

@@ -1,0 +1,133 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_needleleaf (04/13/09)</title>
+</head>
+
+<body>
+<b>
+
+<h3></b>NeedleLeaf.</h3>
+
+<p>This module defined in Classneedleleaf, models net all-wave radiation at the snow
+surface under a needleleaf forest canopy from the observed incoming short-wave radiation
+and the Satterlund (1979) modified form of the Brunt equation. Other climatic data
+required are air temperature, relative humidity/vapour pressure and windspeed.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>Qsi (W/m2) - incident short-wave.</li>
+  <li>Qli (W/m2) - incident long-wave. Optional.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_observationVariable.htm">Observation Variable.</a></h3>
+
+<ul>
+  <li>Ts (°C) - snow surface temperature.</li>
+  <li>Qnsn (W/m2) - net all-wave at snow surface.</li>
+  <li>Qsisn (W/m2) - incident short-wave at snow surface.</li>
+  <li>Qlisn (W/m2) - incident long-wave at snow surface.</li>
+  <li>Qlisn (W/m2) -refected long-wave at snow surface.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>k () - extinction coefficient.</li>
+  <li>Tauc () - short-wave transmissivity through the canopy.</li>
+  <li>ra (s/m) - resistance.</li>
+  <li>Pa (kPa) - atmospheric pressure calculated from the elevation.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>Ht (m) - canopy height.</li>
+  <li>Albedo () - initial average HRU snow cover albedo.</li>
+  <li>hru_elev (m) - HRU mean elevation.</li>
+  <li>Z0snow (m) - roughness length.</li>
+  <li>Zref (m) - temperature measurement height.</li>
+  <li>Zwind (m) - wind measurement height.</li>
+  <li>LAI (m2/m2) - leaf area index.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_t (°C) - (*) air temperature.</li>
+  <li>hru_rh (%) - (*) relative humidity.</li>
+  <li>hru_ea (kPa) - (*) vapour pressure.&nbsp; Often calculated by an observation filter from
+    t and rh.</li>
+  <li>hru_u (m/s) - (*) average wind speed over time step.</li>
+  <li>SWE (mm) - (*) snow water equivalent.</li>
+  <li>albedo (albedo) - (*) </li>
+  <li>SolAng (radians) - (*) from&nbsp; global or similar module.</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h3>Notes.</h3>
+
+<p>Pa[hh] = 101.3*pow((293.0-0.0065*hru_elev[hh])/293.0, 5.26); // kPa </p>
+
+<p>Exposure = Ht[hh] - DepthofSnow(SWE[hh]); /* depths(m) SWE(mm)</p>
+
+<p>&nbsp;&nbsp; if(Exposure &lt; 0.0) Exposure = 0.0</p>
+
+<p>LAI_ = LAI[hh]*Exposure/Ht[hh]</p>
+
+<p>Vf_ = Vf[hh] + (1.0 - Vf[hh])*sin((Ht[hh] - Exposure)/Ht[hh]*M_PI_2)</p>
+
+<p>if(beta[hh] &gt; 0.001) {</p>
+
+<blockquote>
+  <p>k[hh] = 1.081*beta[hh]*cos(beta[hh])/sin(beta[hh]); </p>
+  <p>Tauc[hh] = exp(-k[hh]*LAI_[hh]); </p>
+</blockquote>
+
+<p>} </p>
+
+<p>else { </p>
+
+<blockquote>
+  <p>k[hh] = 0.0; Tauc[hh] = 0.0; </p>
+</blockquote>
+
+<p>} </p>
+
+<p>rho[hh] = Pa[hh]*1000/(Rgas*(t[0] + 273.15)); </p>
+
+<p>float U1 = max(u[0], 1.0e-3); // Wind speed (m/s) </p>
+
+<p>ra[hh] = sqr(log(z1[hh]/z0[hh]))/(sqr(kappa)*U1); </p>
+
+<p>delta[hh] = 0.622*Ls*Qstar[hh]/(Rgas*sqr(t[0] + 273.15)); </p>
+
+<p>float q = (rh[0]/100)*Qs(Pa[hh], T1); // specific humidity (kg/kg)</p>
+
+<p>Ts[hh] = T1 + (emiss*(Qli[Qlimax] - sbc*pow(T1, 4)) + Ls*(q - Qs(Pa[hh],
+T1))*rho/ra[hh])/(4*emiss*sbc*pow(T1, 3) + (Cp + Ls*delta)*rho/ra[hh])</p>
+
+<p>// Canopy temperature is approximated by the air temperature. </p>
+
+<p>Qn[hh] = Vf_[hh]* Qli[Qlimax] + (1.0 - Vf[hh])*emiss_c*sbc*pow(T1, 4.0) -
+emiss*sbc*pow(Ts[hh] + Tm, 4.0) + Qsi[0]*Tauc[hh]*(1-Albedo[hh])</p>
+
+<blockquote>
+  <p>&nbsp;</p>
+  <h3>Constants</h3>
+</blockquote>
+
+<blockquote>
+  <p>sbc = 5.67E-8 (W/m2/k4) Stephan-Boltzmann constant.</p>
+  <p>Ls = 2.845e6 (J/kg) latent heat of sublimation.</p>
+  <p>Lf = 0.334e6 (J/kg) latent heat of fusion.</p>
+  <p>Rgas = 287.0 (J/kg/K) gas constant for dry air.</p>
+  <p>rho = 1.23 (kg/m3) density of dry air.</p>
+  <p>Cp = 1005 (J/kg/K) volumetric heat capacity of dry air.</p>
+  <p>Tm = 273.15 (K) melting point.</p>
+</blockquote>
+</body>
+</html>

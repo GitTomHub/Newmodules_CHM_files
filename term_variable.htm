@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>term_variable (01/20/06)</title>
+</head>
+
+<body>
+<b>
+
+<h3></b>Variable.<b></h3>
+</b>
+
+<p>&nbsp;&nbsp;&nbsp; A variable is the time step output of any of the modules making up a
+model.&nbsp; It has the dimension of the number of HRUs defined in the model.&nbsp;
+Optionally it can have an additional dimension of the number of layers.</p>
+
+<p>&nbsp;&nbsp;&nbsp; The modeling time step is the same as the that of the observation
+dataset driving the model,&nbsp; the first observation file interval.</p>
+
+<p>&nbsp;&nbsp;&nbsp; When the dimension 'mm' depth is used it should be recognized that
+it is actually a volume per unit area, i.e. m<sup>3</sup>/m<sup>2</sup>.&nbsp;</p>
+
+<p>&nbsp;&nbsp;&nbsp; The value of the variable is the average value over the HRU.&nbsp;
+It may vary dramatically over the HRU, e.g. for snow transport it is zero at the beginning
+of the fetch and develops asymptotically to its maximum value.</p>
+
+<p>&nbsp;&nbsp;&nbsp; The value of the variable may be an accumulated value, e.g. the
+amount of rainfall from the beginning of the model run.&nbsp; Alternatively,&nbsp; it
+could be the change of a quality over a time step, <font SIZE="2"><font FACE="Symbol">D</font>t</font>.&nbsp;
+It is not a rate of change as it does not necessarily change at a uniform rate over the
+time interval.</p>
+
+<h3>State Variable.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; A state variable is handled identically to a normal variable. &nbsp;
+However,&nbsp; when the model state is saved it is written to the state file. &nbsp; This
+is necessary as the value of a state variable in the next time interval is a function of
+the value at the end of the last time interval.</p>
+
+<p>&nbsp;&nbsp;&nbsp; Examples of state variables are SWE and soil moisture.
+&nbsp; Variables like albedo can be state variables if their new value is calculated from
+their previous value.&nbsp; Albedo could also be a normal variable if it is calculated
+solely from values of variables in the current interval.&nbsp; Diagnostic variables are
+sometimes made state variables in order that their value continue after the model run is
+broken and restarted by saving the model state.&nbsp; An example is snow accumulation over
+a season.&nbsp; If the snow accumulation is not handled as a state variable its value
+would restart with a value of zero when the model was restarted from the previous model
+state.</p>
+</body>
+</html>

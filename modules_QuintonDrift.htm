@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_QuintonDrift (05/02/16)</title>
+
+</head>
+
+<body>
+<b><font face="Arial">
+</font></b>
+<h3><b><font face="Arial">Qdrift</font></b></h3>
+<p>This module defined in Classqdrift calculates the amount of
+runoff that originates from
+melting of deep snow drifts on hummock-covered hillslopes in the Arctic
+tundra. CRHM compatible. Basic module uses the observation p. Variation #1 uses the variable hru_p from the module obs.</p>
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>p (mm/int)
+- precipitation. Assumed to be rainfall. Basic module.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>SWE (mm) - mean water equivalent of snowcover.</li>
+<li>driftmelt (m3/int) - volume of
+snowmelt released by the drift in the time step.</li>
+<li>driftmeltD (m3) - daily snow melt from drift.</li>
+<li>cumdriftmelt (m3) - cumulative snow melt from drift.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>Type () - HRU land type, 0=NOTUSED/1=DRIFT/2=HUMMOCK. Not used in Variation#1.</li>
+<li>length (m) - length of HRU.</li>
+<li>DrainTo () - the Hummock HRU drained to, 0=NOWHERE or HRU#
+(1 to MAXHRU).</li>
+<li>InitSWE (mm) - initial mean snow water
+equivalent.&nbsp; Assumes drift has a triangular distribution in
+depth (x-section) oriented normal to creek. All exposed area occurs on
+the down slope edge.</li>
+<li>meltLag (hours) - lag inserted into driftmelt.</li>
+<li>meltstorage (days) - storage inserted into driftmelt.</li>
+<li>catchadjust () - precipitation calibration.</li>
+</ul>
+<h3><a href="modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>Qm (MJ/m2/int) - snowmelt from
+module <strong>Qmelt</strong><font size="2"></font>.</li>
+<li>hru_p (mm/int) - precipitation. Variation#1. </li>
+</ul>
+<h3>Notes</h3>
+<p>&nbsp;&nbsp;&nbsp; The snow is assumed to be
+distributed over the length of the HRU as
+a triangular distribution.&nbsp; The altitude of the triangle is
+twice the initial average
+snow water equivalent and the base the length of the HRU.&nbsp; As
+the snow melts, the
+triangle keeps the same proportions with all the melt occurring normal
+to the valley
+bottom,&nbsp; i.e. as the SWE depth decreases the snow covered base
+decreases in
+proportion. </p>
+<p>&nbsp;&nbsp;&nbsp; To avoid round off errors the
+change in SWE is handled as follows:
+&nbsp; Note that the dimension of length (l) of the drift HRU is in
+the units.</p>
+<blockquote>
+<p><code>float lastcumdriftmelt = cumdriftmelt[hh]; //
+following avoids round off error</code></p>
+<p><code>cumdriftmelt[hh] = length[hh]*InitSWE[hh]*(1.0 -
+sqr(SWE[hh]/InitSWE[hh])); // (m3*1E3)</code></p>
+<p><code>driftmelt[hh] = (cumdriftmelt[hh] -
+lastcumdriftmelt)/1E3; // (m3/Interval)</code></p>
+</blockquote>
+<p>&nbsp;</p>
+</body></html>

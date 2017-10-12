@@ -1,0 +1,542 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<meta NAME="GENERATOR" CONTENT="Microsoft FrontPage 3.0">
+<title>INFILTRATION ALGORITHM</title>
+</head>
+
+<body>
+<b>
+
+<p ALIGN="CENTER">FROZEN SOIL INFILTRATION MODULE</p>
+
+<p>Infiltration Algorithm</p>
+</b>
+
+<p>CRHM contains a module for estimating snowmelt infiltration into frozen soils. This
+algorithm, which is described in detail by Gray et al. (2001} divides frozen soils into
+three general <i>&quot;Groups&quot;</i> in terms of their infiltrability for snowmelt
+based on their surface entry condition for meltwater. 
+
+<dir>
+  <i><b><p>Unlimited</b></i> (predominately gravity flow): soils are capable of infiltrating
+  most or all available meltwater. This Group includes:</p>
+</dir>
+
+<ul>
+  <li>Dry, severely cracked colloidal soils &#150; usually fine-textured mineral soils under
+    vegetation during the summer months. </li>
+  <li>Dry, coarse-textured and gravelly soils &#150; deep, relatively-uniform profiles and
+    sand, sandy loam or other permeable material underlying well-drained peat and organic
+    deposits (e.g., forest soils). </li>
+  <li>Sloping, shallow, highly permeable deposits underlain by a relatively impermeable
+    subsurface material (e.g., forest litter and moss on bedrock, tundra peat on permafrost). </li>
+</ul>
+
+<dir>
+  <i><b><p>Restricted</b></i>: soils whose infiltrability is restricted by an impervious
+  surface. This Group includes:</p>
+</dir>
+
+<ul>
+  <li>Mineral and other soils frozen in a wet condition (e.g., &gt;70 &#150;80% pore
+    saturation).</li>
+  <li>Soils in which an impeding layer develops at/near the ground surface. For example, a
+    basal ice lens that forms at the soil surface due to rain that occurs near freeze-up or
+    the freezing of percolating or infiltrating meltwater.</li>
+</ul>
+
+<dir>
+  <i><b><p>Limited</b></i> (predominately capillary flow): soil infiltrability is governed
+  primarily by the soil moisture content (water + ice) and soil temperature at the start of
+  snow ablation and the infiltration opportunity time.</p>
+</dir>
+
+<p>Zhao and Gray (1999) describe an expression for cumulative infiltration into frozen,
+unsaturated soils of <i><b>Limited</b></i> infiltrability, INF (mm) as:
+
+<dir>
+  <dir>
+    <font SIZE="2"><p><img SRC="Image1.gif" WIDTH="294" HEIGHT="42"></font> (1) </p>
+  </dir>
+</dir>
+
+<p>where: C = coefficient,</p>
+
+<p>S<sub>o </sub>= surface saturation - moisture content at the soil surface (mm<sup>3</sup>/mm<sup>3</sup>),
+
+<dir>
+  <dir>
+    <dir>
+      <p>S<sub>I </sub>= average soil saturation (water + ice) of 0-40 cm soil layer at the
+      start of infiltration (mm<sup>3</sup>/mm<sup>3</sup>). S<sub>I</sub> = <font FACE="Symbol">q</font>
+      <sub>I</sub>/<font FACE="Symbol">f</font> , where <font FACE="Symbol">q</font> <sub>I</sub>
+      = average volumetric soil moisture (water + ice) at start of infiltration (mm<sup>3</sup>/mm<sup>3</sup>)
+      and <font FACE="Symbol">f</font> = soil porosity (mm<sup>3</sup>/mm<sup>3</sup>),</p>
+    </dir>
+    <p>T<sub>I</sub> = average temperature of 0-40 cm soil layer at the start of infiltration
+    (K), and</p>
+  </dir>
+</dir>
+
+<p>t<sub>0</sub> = infiltration opportunity time (h).</p>
+
+<p>A brief discussion of the various terms in Eq. 1 and their evaluation in CRHM follows:</p>
+
+<p>Coefficient, C</p>
+<font SIZE="3">
+
+<p>C characterizes the effects of variations in the vertical distribution of soil moisture
+distribution and other factors on infiltration. For example, Eq. 1 assumes a uniform
+distribution in moisture (water + ice) throughout a soil profile; a condition seldom
+encountered in nature due to transpiration, evaporation soil morphology and soil water
+recharge. The effects of the divergences in soil moisture content with depth on frozen
+soil infiltration are taken into account by modifying C according to the expression: </p>
+
+<p>&nbsp;
+
+<dir>
+  <dir>
+    <dir>
+      <dir>
+        <p><img SRC="Image2.gif" WIDTH="73" HEIGHT="21"> (2)</p>
+      </dir>
+    </dir>
+  </dir>
+</dir>
+
+<p>in which V<sub>a</sub>, termed the available storage ( cm<sup>3</sup> /cm2), is the
+average difference in volumetric soil moisture (water + ice) between natural (field) and
+uniform soil moisture profiles over the wetted depth. That is V<sub>a</sub> = average
+difference in volumetric soil moisture between natural and uniform profiles over the
+wetted depth at the start of infiltration multiplied by the depth of wetting. Negative
+values of V<sub>a</sub> represent a profile in which the moisture content increases with
+depth and positive values of V<sub>a</sub> represent a profile in which soil moisture
+content decreases with increasing depth. Drier soil near the surface enhances infiltration
+and values of C &gt; 1; wetter soil near the surface suppress infiltration and C &lt; 1.</p>
+
+<p>Surface Saturation<i>, S<sub>o</sub>: </p>
+</i>
+
+<p>Surface saturation during snow ablation is the surface boundary condition that is
+affected by the rate that meltwater is released by a snowcover, the infiltration rate of
+the frozen ground and the movement of meltwater laterally on the soil surface. Because
+reliable techniques for measuring S<sub>o</sub> have not been developed it is suggested
+(based on field experience and limited measurements) that S<sub>o</sub> = 0. 75~ 1.00. In
+most situations the infiltration rate of a frozen soil is low and a value of S<sub>o</sub>
+= 1 should be assumed, especially under conditions when a snowcover ablates rapidly. An
+average value for S<sub>o</sub> &lt; 1 may be experienced under slow ablation, when there
+are large fluctuations in the melt rate and where the ground surface is highly permeable.
+Fine-tuning of the parameter to simulate the effects of cycling in the melt rate might be
+achieved by varying the parameter according to the melt rate. Where this is attempted, the
+volume of infiltration calculated by the equation should be the same as the amount
+determined by an average value of S<sub>o</sub> over the period in the parametric equation
+(Eq. l). </p>
+
+<p>Initial soil moisture, S<sub>I</sub>, and initial soil temperature, T<sub>I</sub> </p>
+
+<p>These are input variables to the algorithm </p>
+
+<p>Total (cumulative} infiltration opportunity time t<sub>o</sub>. </p>
+
+<p>Total (cumulative) infiltration opportunity time is calculated by CRHM as the total
+(cumulative) elapsed time that meltwater is available at the soil surface for infiltration
+following the start of melt</p>
+</font><b>
+
+<p>Constraints</p>
+</b>
+
+<p>1. Storage: The maximum amount of snow water a frozen soil of <i>Unlimited</i> class
+can infiltrate is constrained by its available soil water storage, which on flat land is
+equal to the air-filled porosity above an impeding or relatively impermeable layer. The
+water storage potential, W<sub>sP </sub>(mm) is calculated from the porosity, <font
+FACE="Symbol">f</font> (mm<sup>3</sup>/mm<sup>3</sup>), the average initial saturation
+(prior to infiltration), S<sub>I</sub> (mm<sup>3</sup>/mm<sup>3</sup>), and the depth (as
+measured from the ground surface), z<sub>p </sub>(mm), of the highly permeable surface
+layer (e.g. thickness of organic layer and depth of surface-connected cracks) as:
+
+<dir>
+  <dir>
+    <p>W<sub>sP</sub> = <font FACE="Symbol">f</font> (1 &#150; S<sub>I</sub>)z<sub>p </sub>(3)
+    </p>
+  </dir>
+</dir>
+
+<p>The product, <font FACE="Symbol">f</font> (1 &#150; S<sub>I</sub>), in Eq. 3 is the
+air-filled porosity. </p>
+
+<p ALIGN="JUSTIFY">A frozen soil of <i>Limited</i> class in which capillary flow
+predominates does not normally become saturated throughout its wetted depth by
+infiltrating meltwater because ice blocks the inter-connectivity of soil pores and the
+wetting front advances ahead of an a overlying layer of higher moisture. Gray et al.
+(1986a) found in frozen mineral agricultural soils of the Canadian Prairies that the upper
+limit of saturation, L (mm<sup>3</sup>/mm<sup>3</sup>) of the soil layer wetted by
+infiltrating meltwater during snow ablation is related to the average initial saturation
+of the layer as: </p>
+
+<dir>
+  <dir>
+    <i><p ALIGN="JUSTIFY">L</i> = 0.6 + 0.4 S<sub>I<i> </i></sub>(4)</p>
+  </dir>
+</dir>
+
+<p>Combining Eqs. 3 and 4 gives:
+
+<dir>
+  <dir>
+    <p>W<sub>sP</sub> = 0.6 <font FACE="Symbol">f</font> (1 &#150; S<sub>I</sub>)z<sub>w </sub>(5)</p>
+  </dir>
+</dir>
+
+<p>in which z<sub>w</sub> is the depth of wetting. Equation 4 suggests that the average
+storage potential of a frozen fine-textured mineral soil is of the order of 60% of its
+air-filled pore space at the start of infiltration. Replacing z<sub>w</sub> in Eq. 5 by
+the depth of frost, z<sub>f, </sub>provides a measure of the potential available storage
+of snowmelt water of a <i>Limited </i>soil in the frozen state.</p>
+
+<p>2. Change to unfrozen condition: CRHM tests INF by Eq. 1 against the limiting value for
+W<sub>sP</sub> Eqs. 2 and 4 at the end of each time step. For soils with <i>Limited </i>infiltrability
+this comparison is used to determine whether a soil had thawed during infiltration.
+Thawing enhances infiltration because of the changes to the thermo- and hydrophysical
+properties of a soil and to the state and gradients that govern coupled heat and mass
+transfers that accompany a phase change. </p>
+
+<p>Komarov and Makarova (1973) suggest that a soil frozen to a depth less than 150 mm
+behaves the same as an unfrozen soil in respect infiltration and once it is frozen to 600
+mm, freezing to greater depth has no further effect on the process. The assignment of a
+specific frozen depth to decide whether a soil remains frozen throughout ablation is
+arbitrary and excludes (directly) many of the factors that affect the transfers of heat
+and mass during infiltration. CRHM proposes that once infiltrating meltwater has satisfied
+the water storage potential of the frozen depth, a soil behaves as an unfrozen soil in
+respect to infiltration. </p>
+<font SIZE="3">
+
+<p>3. Seasonal infiltration. In cases when z<sub>w</sub> &lt;&lt; z<sub>f</sub>, and W<sub>sP</sub>,
+the maximum amount of infiltration of resulting from complete ablation of a seasonal
+snowcover (seasonal infiltration, SINF), calculated by Eq. 1 is constrained by the amount
+calculated as: 
+
+<dir>
+  <dir>
+    <p>SINF = 5(1 -S<sub>I</sub>)SWE<sup>0.584</sup> (6) </p>
+  </dir>
+</dir>
+
+<p>in which SWE is the water equivalent at the start of ablation in mm. </p>
+<b>
+
+<p>Depth of Freezing </p>
+</b>
+
+<p>The infiltration algorithm requires a soil freezing routine in order to establish the
+areal extent of frozen soils and to provide an estimate of the depth of freezing for
+calculating the water storage potential of a frozen soil by Eq. 4. CRHM calculates the
+depth of freezing or frost depth by the semi-theoretical expression (1963): </font>
+
+<dir>
+  <dir>
+    <p><img SRC="Image3.gif" WIDTH="232" HEIGHT="94"> (7) </p>
+  </dir>
+</dir>
+
+<p>in which: z<sub>f</sub> = depth of frost penetration (ft),
+
+<dir>
+  <dir>
+    <p>k<sub>a</sub> = apparent or effective thermal conductivity (Btu/ft&middot;F&middot;hr),
+    </p>
+    <p>F = freezing index (?degree-day of frost), i.e., </p>
+    <p>[mean daily air temperature ( <sup>o</sup>F) -32], </p>
+    <p>L<sub>A</sub> = average latent heat Btu/ft<sup>3</sup>), </p>
+    <p>T<sub>A </sub>= mean annual air temp (<sup>o</sup>F), and </p>
+    <p>C<sub>pA</sub> = average volumetric heat capacity (Btu/ft<sup>3</sup> &middot;F). </p>
+  </dir>
+</dir>
+<i><b>
+
+<p>Single soil or snow layer </p>
+</b></i>
+
+<p>The apparent or effective thermal conductivity, k<sub>l</sub>, the heat capacity, C<sub>pl</sub>,
+and the latent heat, L<sub>l</sub>, for a single layer of material is determined by
+weighting the respective values for the various constituents comprising the layer by the
+volumetric fraction of each of each constituents as: 
+
+<dir>
+  <dir>
+    <p>k<sub>l</sub> = k<sub>o</sub>F<sub>o</sub> + k<sub>m</sub>F<sub>m</sub> + k<sub>a</sub>F<sub>a</sub>
+    + k<sub>j</sub>F<sub>j</sub> + k<sub>w</sub>F<sub>w</sub>, (8)</p>
+    <p>C<sub>pl</sub> = C<sub>po</sub>F<sub>o</sub> + C<sub>mm</sub>F<sub>m</sub> + C<sub>pa</sub>F<sub>a</sub>
+    + C<sub>pj</sub>F<sub>j</sub> + C<sub>pw</sub>F<sub>w</sub>, and (9) </p>
+    <p>L<sub>l</sub> = L<sub>w</sub>F<sub>w</sub>, (10)</p>
+  </dir>
+</dir>
+
+<p>in which F is the volumetric faction and the subscripts represent the constituents: o -
+organic matter, m- mineral (e.g., sand, silt, clay), a- air, i - ice, and w- water,
+respectively. The values for k, C<sub>p</sub> and L for the various constituents used in
+CRHM are listed in Table 1.</p>
+
+<p>Table 1. Thermal properties of various layer constituents used by CRHM.</p>
+<div align="center"><center>
+
+<table BORDER="1" CELLSPACING="1" CELLPADDING="7" WIDTH="458">
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><p ALIGN="CENTER">Material</td>
+    <td WIDTH="33%" VALIGN="TOP"><p ALIGN="CENTER">Thermal conductivity</p>
+    <p>W/m&middot;K</td>
+    <td WIDTH="23%" VALIGN="TOP"><p ALIGN="CENTER">Heat Capacity</p>
+    <p ALIGN="CENTER">MJ/m<sup>3</sup>&middot;K</td>
+    <td WIDTH="20%" VALIGN="TOP"><p ALIGN="CENTER">Latent Heat</p>
+    <p ALIGN="CENTER">kJ/kg</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><p ALIGN="CENTER">Air</td>
+    <td WIDTH="33%" VALIGN="TOP">0.025</td>
+    <td WIDTH="23%" VALIGN="TOP"><p ALIGN="CENTER">0.001</td>
+    <td WIDTH="20%" VALIGN="TOP">&nbsp;</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><p ALIGN="CENTER">Ice</td>
+    <td WIDTH="33%" VALIGN="TOP">2.24</td>
+    <td WIDTH="23%" VALIGN="TOP"><p ALIGN="CENTER">1.95</td>
+    <td WIDTH="20%" VALIGN="TOP">&nbsp;</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><p ALIGN="CENTER">Organic matter</td>
+    <td WIDTH="33%" VALIGN="TOP">0.21</td>
+    <td WIDTH="23%" VALIGN="TOP"><p ALIGN="CENTER">0.110</td>
+    <td WIDTH="20%" VALIGN="TOP">&nbsp;</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><p ALIGN="CENTER">Soil minerals</td>
+    <td WIDTH="33%" VALIGN="TOP">2.50</td>
+    <td WIDTH="23%" VALIGN="TOP"><p ALIGN="CENTER">2.0</td>
+    <td WIDTH="20%" VALIGN="TOP">&nbsp;</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><p ALIGN="CENTER">Water</td>
+    <td WIDTH="33%" VALIGN="TOP">0.57</td>
+    <td WIDTH="23%" VALIGN="TOP"><p ALIGN="CENTER">4.185</td>
+    <td WIDTH="20%" VALIGN="TOP"><p ALIGN="CENTER">335</td>
+  </tr>
+</table>
+</center></div>
+
+<p>The volumetric fractions of the various snow/soil constituents are calculated as
+follows: </p>
+<b>
+
+<p>Snow (ice, air and water)</p>
+</b>
+
+<p>F<sub>w </sub>= 0.02 - 0.05 (for most dry snow use 0.02)</p>
+
+<p>F<sub>i</sub> = 1- F<sub>a</sub> -F<sub>w</sub>, and </p>
+
+<p>F<sub>a</sub> = (1 -BD/l 000 -F<sub>w</sub>), where BD is snow density (kg/m<sup>3</sup>-assumes
+pore volume is reduced by liquid water </p>
+<b>
+
+<p>Inorganic or mineral soils</b> (mineral, air, and water)
+
+<ul>
+  <li>.Assume all water freezes at 0°C<i> </li>
+</ul>
+
+<dir>
+  <dir>
+    </i><p>F<sub>m</sub> = 1 - F<sub>a</sub> - (F<sub>w =</sub> F<sub>i</sub>) -----F<sub>w</sub>
+    is input an variable (volumetric soil moisture), and</p>
+  </dir>
+</dir>
+
+<p>F<sub>a</sub> = 1 -BD/2650, where BD is soil bulk density (kg/m<sup>3</sup>). </p>
+<b>
+
+<p>Organic 
+
+<ul>
+  <ul>
+    </b>
+    <li>.Assume all water freezes at 0°C </li>
+  </ul>
+</ul>
+
+<p>F<sub>o</sub> = 1- F<sub>a</sub>- (F<sub>w</sub> = F<sub>i</sub>) --- F<sub>w</sub> is
+specified input variable (volumetric soil moisture, and </p>
+
+<p>F<sub>a</sub> = <font FACE="Times New Roman"><i>F</i></font> - (F<sub>w</sub> = F<sub>i</sub>)
+----- <font FACE="Times New Roman"><i>F</i></font> = total porosity -a specified input
+variable: for peat in arctic tundra <font FACE="Times New Roman">assume F</font> = 0.90,
+look up appropriate value(s) for forest and subalpine environments (check PAMF, Jane
+Elliot, Janowicz, Quinton}. </p>
+<b>
+
+<p>Vertical Profile </p>
+</b>
+
+<p>CRHM divides the vertical snow/soil profile into a number of layers, the number to be
+decided by the operator. The average apparent thermal conductivity, k<sub>a</sub>, for the
+profile is calculated as:
+
+<dir>
+  <dir>
+    <p><img SRC="Image4.gif" WIDTH="164" HEIGHT="68"> (11)</p>
+  </dir>
+</dir>
+
+<p>in which l<sub>1</sub>, l<sub>2</sub>, and l<sub>n</sub> and k<sub>l1</sub>, k<sub>l2</sub>,
+and k<sub>ln</sub> are the length (depth) and apparent hydraulic conductivity of layers 1
+? n. Since, l<sub>1 </sub>+ l<sub>2</sub> + &#133;&#133;&#133;.+ l<sub>n</sub> is equal to
+the depth of frozen material (snow + soil) that falls above the freezing front, D, Eq.11
+can be expressed as:
+
+<dir>
+  <dir>
+    <p><img SRC="Image5.gif" WIDTH="204" HEIGHT="53"> (12)</p>
+  </dir>
+</dir>
+
+<p>Estimates of the average heat capacity, C<sub>pA</sub>, and average latent energy, L<sub>A</sub>,
+for the combined layers are calculated as:
+
+<dir>
+  <dir>
+    <p>C<sub>pA</sub> = (C<sub>pl1</sub>l<sub>1</sub> + C<sub>pl2</sub>l<sub>2</sub> +
+    &#133;&#133;..C<sub>pln</sub>l<sub>n</sub>)/D, and (13)</p>
+    <p>L<sub>A</sub> = (L<sub>l1</sub>l<sub>1</sub> + L<sub>l2</sub>l<sub>2</sub> +
+    &#133;&#133;..L<sub>ln</sub>l<sub>n</sub>)/D. (14)</p>
+  </dir>
+</dir>
+<b>
+
+<p ALIGN="CENTER">Flow Chart</p>
+</b>
+
+<p>A flow chart showing the implementation an algorithm to determine cumulative areal
+infiltration on a hydrological response unit is shown in Fig. 1... The definitions of
+symbols used in the figure are listed in Table 2. </p>
+
+<p>The first discretization partitions the response unit into landscape units according to
+the distribution of snow water. The infiltration model is then applied to each individual
+landscape unit that is frozen and receives water from melting snow.
+
+<ul>
+  <li>The areas of the landscape having <i>Unlimited, Limited or Restricted </i>infiltrability
+    are identified.</li>
+  <li>If the land unit is <i>Restricted,</i> infiltration is set to zero.</li>
+</ul>
+
+<ul>
+  <li>If the land unit is <i>Unlimited,</i> infiltration is set to the cumulative meltwater
+    release. On flat land the cumulative amount is constrained by the water holding capacity
+    of the frozen soil, W<sub>sP</sub>.</li>
+  <li>All other portions of the landscape unit have <i>Limited </i>infiltrability and
+    infiltration is controlled by the average surface saturation, S<sub>o</sub>, the average
+    initial soil saturation, S<sub>I.</sub> and the average initial temperature, T<sub>I</sub>,
+    of the 0-40 cm soil layer (Eq. 1) and constrained by the available water storage, W<sub>sP</sub>.
+  </li>
+  <li>If the study is a mesoscale application, infiltration is estimated using average values
+    of S<sub>o</sub>, S<sub>I</sub> and T<sub>I </sub>for the landscape.</li>
+  <li>If the study is a microscale application, infiltration is determined at a spatial scale
+    set by the either the spatial distribution of S<sub>I</sub> or the scale of the spatial
+    distribution of snow water, whichever is smallest. At the smaller scale, infiltration is
+    estimated using by Eq. 1 using average values of S<sub>I</sub>, S<sub>o</sub>, and T<sub>I
+    </sub>of the smaller unit.</li>
+  <li>If cumulative infiltration up to the time exceeds the available water holding capacity
+    the soil is considered thawed and the infiltration estimation set to the unfrozen routine.</li>
+</ul>
+
+<p>Table 2. Definitions of symbols used in Fig. 1.</p>
+
+<table BORDER="1" CELLSPACING="1" CELLPADDING="7" WIDTH="590">
+  <tr>
+    <td WIDTH="14%" VALIGN="TOP"><p ALIGN="CENTER">Symbol</td>
+    <td WIDTH="86%" VALIGN="TOP"><p ALIGN="CENTER">Definition</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">INF</td>
+    <td WIDTH="86%" VALIGN="TOP">cumulative infiltration into soils in <i>Limited</i> class</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">INFR</td>
+    <td WIDTH="86%" VALIGN="TOP">cumulative infiltration into soils in <i>Restricted</i> class</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">INFU</td>
+    <td WIDTH="86%" VALIGN="TOP">cumulative infiltration into soils in <i>Unlimited</i> class</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">L </td>
+    <td WIDTH="86%" VALIGN="TOP">fraction of landscape unit in the <i>Limited</i> class</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">R </td>
+    <td WIDTH="86%" VALIGN="TOP">fraction of landscape unit in the <i>Restricted</i> class</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">S<sub>o </sub></td>
+    <td WIDTH="86%" VALIGN="TOP">average surface saturation during time step</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">S<sub>I </sub></td>
+    <td WIDTH="86%" VALIGN="TOP">average initial soil moisture of 0-40 cm soil layer at start
+    of infiltration</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">SWE</td>
+    <td WIDTH="86%" VALIGN="TOP">snow water equivalent</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">t<sub>o</sub></td>
+    <td WIDTH="86%" VALIGN="TOP">cumulative infiltration opportunity time</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">T<sub>I</sub></td>
+    <td WIDTH="86%" VALIGN="TOP">average initial soil temperature of 0-40 cm soil layer at
+    start of infiltration</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">U</td>
+    <td WIDTH="86%" VALIGN="TOP">fraction of landscape unit in the <i>Unlimited</i> class</td>
+  </tr>
+  <tr>
+    <td WIDTH="14%" VALIGN="MIDDLE"><p ALIGN="CENTER">W<sub>sP</sub></td>
+    <td WIDTH="86%" VALIGN="TOP">water holding capacity of frozen soil</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;
+
+<dir>
+  <b><p ALIGN="JUSTIFY">References </p>
+  </b><p ALIGN="JUSTIFY">De Vries, D.A., 1963. Thermal Properties of Soils. In: W.R. Van
+  Wijk, ed., Physics of Plant Environment, North-Holland Publishing Company., Amsterdam,
+  pp.210-235</p>
+  <p ALIGN="JUSTIFY">Granger, R.J., Gray, D.M. and Dyck, G.E., 1984. Snowmelt infiltration
+  to frozen prairie soils. Can. J. Earth Sci., <b>21</b>, 669-677.</p>
+  <dir>
+    <p>Gray, D.M., Toth, Brenda, Zhao, Litong, Pomeroy, J.W.<sup> </sup>and Granger,<b> </b>R.J.
+    2001. Estimating Areal Snowmelt Infiltration into Frozen Soils. J. Hydrological Processes.
+    (in press).</p>
+    <p>Komarov, V.D. and Makarova, T.T. 1973. Effect of the ice content, segmentation and
+    freezing depth of the soil on meltwater infiltration in a basin. Soviet Hydrol.: Selected
+    Papers, Issue No. <b>3</b>: 243-249.</p>
+  </dir>
+  <p ALIGN="JUSTIFY">Zhao, L. and Gray, D.M. 1997. A parametric expressions for estimating
+  infiltration into frozen soils. Hydrological Processes, <b>11</b>, 1761-1775.</p>
+  <p ALIGN="JUSTIFY">Zhao L. and D. M. Gray. 1999. Estimating snowmelt infiltration into
+  frozen soils. Hydrological Processes<i> </i>15(12):1827-1842. </p>
+  <p>&nbsp;</p>
+</dir>
+</body>
+</html>

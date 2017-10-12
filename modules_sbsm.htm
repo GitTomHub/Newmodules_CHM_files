@@ -1,0 +1,330 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_sbsm (06/04/08)</title>
+</head>
+
+<body>
+
+<h3><b><font FACE="Arial">sbsm</font></b> (Richard Essery,&nbsp; Long Li and John Pomeroy,
+1999) </h3>
+
+<p>Defined in Classsbsm. This module is a simplified blowing snow model which can
+reproduce PBSM results very closely with much less computational effort. The snowfall
+observation can be a daily total or the actual interval snowfall.&nbsp; The former
+case&nbsp; is handled by assuming that the snowfall is uniformly distributed over every
+interval of the day. The transport and sublimation of blowing snow are calculated every
+interval using the interval wind speed, air temperature and relative humidity. The model
+has been extended to handle the transport of snow between HRUs. At the end of a day when
+snow transport has occurred,&nbsp; snow transported from HRUs with low roughness is
+distributed over the HRUs with greater roughness according to the fractions specified in
+the distribution parameter. No transported snow enters the HRU with the lowest roughness.
+When HRUs with lower vegetative height fill to their maximum,&nbsp; the excess is
+distributed over the remaining unfilled HRUs.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>SWE (mm) - snow water equivalent. State variable.</li>
+  <li>wet_snow (mm) - wet snow mass</li>
+  <li>Subl (mm <font SIZE="2"><font FACE="Symbol">D</font>t</font>) - the mass of snow lost
+    from an HRU by sublimation in time step,&nbsp; <font SIZE="2" FACE="Symbol">D</font>t
+    &#150; expressed as an equivalent average depth of water over an HRU.</li>
+  <li>cumSubl (mm/day) - daily sublimation.</li>
+  <li>Drift (mm <font SIZE="2"><font FACE="Symbol">D</font>t</font>) - the mass of snow lost
+    from an HRU by snow transport in time step,&nbsp; <font SIZE="2" FACE="Symbol">D</font>t
+    &#150; expressed as an equivalent average depth of water over an HRU. </li>
+  <li>cumDrift (mm/day) - daily transport.</li>
+  <li>cumDriftIn (mm/day) - cumulative transport to HRU. (local variable).</li>
+  <li>cumSno (mm) - snow (net_snow) accumulation from beginning of winter.</li>
+  <li>Prob () - interval probability of blowing snow.</li>
+  <li>snow_age (hr) - snow age. (local variable).</li>
+  <li>BasinSnowLoss (mm <font SIZE="2"><font FACE="Symbol">D</font>t</font>) - transport out
+    of basin.</li>
+  <li>cumBasinSnowLoss (mm) - cumulative transport out of basin.</li>
+  <li>cumBasinSnowGain (mm) - cumulative transport into basin.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>fetch (m) - fetch distance.</li>
+  <li>Ht (m) - crop height.</li>
+  <li>Zr (m) - Ratio of aerodynamic roughness length to vegetation height. See below for
+    typical values.</li>
+  <li>distrib () - distribution fractions.&nbsp; Value for HRU 1 controls snow transport into
+    the basin.</li>
+  <li>basin_area (km2) - basin area.</li>
+  <li>hru_area (km2) - hru_area.</li>
+  <li>inhibit_evap (flag) - an output parameter set true when the SWE is greater than zero. It
+    is used to inhibit evaporation from the evaporation modules.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_t (°C) - air temperature from module obs.</li>
+  <li>hru_rh (%) - relative humidity from module obs.</li>
+  <li>hru_u (m/s) - wind speed from module obs.</li>
+  <li>newsnow () - 0/1 for no/yes from module obs.</li>
+  <li>net_snow (mm <font SIZE="2"><font FACE="Symbol">D</font>t</font>) - snow fall from wild
+    module - intcp, brushintcp etc.</li>
+</ul>
+
+<h3>Notes</h3>
+
+<ol>
+  <li>The parameter <em>fetch</em> cannot be less than 300m.</li>
+  <li>The parameter <em>distrib</em> need not be set for the first HRU, i.e. the lowest
+    vegetation height. When the snow is redistributed,&nbsp; the <em>distrib</em> values for
+    the HRU's not filled to their vegetation height are summed and each HRU receives its
+    share.&nbsp; The sum of distributions need not add to 1.0.</li>
+</ol>
+
+<p>E.g. if the transport D is redistributed over HRUs: A, B and C with their <em>distrib</em>
+parameter having values of a, b and c respectively.&nbsp; The snow transport would be
+distributed as:</p>
+
+<p>a*D/(a + b +c),&nbsp; b*D/(a + b +c) and c*D/(a + b +c).&nbsp; Note that any excess
+from a HRU filling to its vegetation height is deposited in the last HRU, i.e. the one
+having the tallest vegetation.</p>
+
+<p>&nbsp;&nbsp;&nbsp; 3.&nbsp; If the value of <em>distrib</em> is less than 0 for an HRU,
+all snow transport to its capacity is assumed to be caught by this HRU. The next HRU is
+the beginning of a new blowing snow regime.</p>
+
+<p>&nbsp;&nbsp;&nbsp; 4.&nbsp; This module can have a none zero value for transport and
+sublimation even if the vegetation height is greater than the snow cover depth.</p>
+
+<p>&nbsp;&nbsp;&nbsp; 5.&nbsp; Cumulative drift from the last HRU is not removed from the
+HRU and is redistributed within the HRU.</p>
+
+<h3>Typical values fo Zr.</h3>
+
+<table border="1" width="100%">
+  <tr>
+    <td width="14%">landcover</td>
+    <td width="14%">ice</td>
+    <td width="14%">soil</td>
+    <td width="14%">open tundra</td>
+    <td width="14%">sparse shrub tundra</td>
+    <td width="14%">shrub tundra</td>
+    <td width="15%">dense shrub tundra</td>
+    <td width="15%">sparse forest</td>
+  </tr>
+  <tr>
+    <td width="14%">vegetation height (ht)</td>
+    <td width="14%">0.01</td>
+    <td width="14%">0.01</td>
+    <td width="14%">0.08</td>
+    <td width="14%">0.08</td>
+    <td width="14%">1.0</td>
+    <td width="15%">1.0</td>
+    <td width="15%">3.0</td>
+  </tr>
+  <tr>
+    <td width="14%">Zr</td>
+    <td width="14%">0.1</td>
+    <td width="14%">0.1</td>
+    <td width="14%">0.05</td>
+    <td width="14%">0.05</td>
+    <td width="14%">0.05</td>
+    <td width="15%">0.05</td>
+    <td width="15%">0.08</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<h3>Code.</h3>
+
+<p>&nbsp;</p>
+
+<p>float Classsbsm::sublimation(void){</p>
+
+<blockquote>
+  <p>return 137.6*pow(hru_u[hh]/25.0, 5)/1000.0;</p>
+</blockquote>
+
+<p>} </p>
+
+<p>&nbsp;</p>
+
+<p>float Classsbsm::scale(void){</p>
+
+<p>float</p>
+
+<p>cond, // Thermal conductivity of air (W/m/K)</p>
+
+<p>diff, // Diffusivity of water vapour in air (m2/s)</p>
+
+<p>rsat, // Saturation density of water vapour (kg/m3)</p>
+
+<p>tk; // Temperature (K) </p>
+
+<p>float const ls = 2.838e6; // Latent heat of sublimation (J/kg)</p>
+
+<p>float const m = 18.01; // Molecular weight of water (kg/kmole)</p>
+
+<p>float const r = 8313.0; // Universal gas constant (J/kmole/K) </p>
+
+<blockquote>
+  <p>tk = hru_t[hh] + 273.0;</p>
+  <p>diff = 2.06e-5*pow(tk/273.0, 1.75);</p>
+  <p>rsat = m*611.15*exp(22.45*hru_t[hh]/tk)/(r*tk);</p>
+  <p>cond = 0.00063*tk + 0.0673;</p>
+  <p>return ((ls*m/(r*tk)) - 1.0)/(cond*(hru_t[hh]+273.0)) + 1.0/(ls*diff*rsat);</p>
+</blockquote>
+
+<p>} </p>
+
+<p>&nbsp;</p>
+
+<p>void Classsbsm::prob(void){</p>
+
+<p>float</p>
+
+<p>mean // Mean of cummulative normal distribution</p>
+
+<p>,var // Standard deviation</p>
+
+<p>,rho // Snow density (kg/m3)</p>
+
+<p>,sd // Snow depth (m)</p>
+
+<p>,us; </p>
+
+<p>bool dry_snow = hru_t[hh] &lt; 0.0; </p>
+
+<blockquote>
+  <p>mean = 0.365*hru_t[hh] + 0.00706*sqr(hru_t[hh]) + 0.91*log(snow_age[hh]) + 11.0;</p>
+  <p>var = 0.145*hru_t[hh] + 0.00196*sqr(hru_t[hh]) + 4.23; </p>
+  <p>if (!dry_snow) {</p>
+  <blockquote>
+    <p>mean = 21.0;</p>
+    <p>var = 7.0;</p>
+  </blockquote>
+  <p>} </p>
+  <p>rho = 240.;</p>
+  <p>if (SWE[hh] &gt; 145.45)</p>
+  <blockquote>
+    <p>rho = 69.856*log(SWE[hh]) - 74.732;</p>
+  </blockquote>
+  <p>sd = SWE[hh]/rho;</p>
+  <p>us = hru_u[hh];</p>
+  <p>if (sd &lt; Ht[hh])</p>
+  <blockquote>
+    <p>us = us / sqrt(1. + 170.0*2*zr[hh]*(Ht[hh] - sd)); </p>
+  </blockquote>
+  <p>Prob[hh] = 1.0/(1.0 + exp(1.7*(mean - us)/var));</p>
+  <p>&nbsp;</p>
+  <p>if (SWE[hh] &lt;= wet_snow[hh]) {</p>
+  <blockquote>
+    <p>Prob[hh] = 1 / ( 1. + exp(1.7*(21.0 - us)/7.0));</p>
+    <p>if (us &lt;= 7.0) Prob[hh] = 0.0;</p>
+  </blockquote>
+  <p>} </p>
+  <p>if ( sd &lt;= 0.01 ) Prob[hh] = 0.0; </p>
+  <p>if ( dry_snow ){</p>
+  <blockquote>
+    <p>if (us &lt;= 3.0)</p>
+    <p>Prob[hh] = 0.0;</p>
+  </blockquote>
+  <p>}</p>
+  <p>else{</p>
+  <blockquote>
+    <p>if (us &lt;= 7.0)</p>
+    <p>Prob[hh] = 0.0;</p>
+  </blockquote>
+  <p>}</p>
+</blockquote>
+
+<p>}</p>
+
+<p>void Classsbsm::run(void) { </p>
+
+<p>float SumDrift, total, SWE_Max, trans; </p>
+
+<blockquote>
+  <p>for (hh = 0; hh &lt; nhru; hh++) { </p>
+  <p>&nbsp;&nbsp;&nbsp; if(net_snow[hh] &gt; 0.0) { </p>
+  <p>&nbsp;&nbsp;&nbsp; SWE[hh] = SWE[hh] + net_snow[hh]; </p>
+  <p>&nbsp;&nbsp;&nbsp; cumSno[hh] = cumSno[hh] + net_snow[hh]; </p>
+  <p>&nbsp;&nbsp;&nbsp; snow_age[hh] = 1.0; </p>
+  <p>} </p>
+  <p>else </p>
+  <p>&nbsp;&nbsp;&nbsp; snow_age[hh] += dt/3600; </p>
+  <p>if(hru_t[hh] &gt;= 0.0) </p>
+  <p>&nbsp;&nbsp;&nbsp; wet_snow[hh] = SWE[hh]; </p>
+  <p>else </p>
+  <p>&nbsp;&nbsp;&nbsp; wet_snow[hh] = min&lt;float&gt; (SWE[hh], wet_snow[hh]); </p>
+  <p>Drift[hh] = 0.0; </p>
+  <p>Subl[hh] = 0.0; </p>
+  <p>if(hru_u[hh] &gt; 3.0 &amp;&amp; SWE[hh] &gt; 0.0) { </p>
+  <p>&nbsp;&nbsp;&nbsp; prob(); </p>
+  <p>&nbsp;&nbsp;&nbsp; if(Prob[hh] &gt; 0.0) { </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Drift[hh] =
+  Prob[hh]*transport()*dt/fetch[hh]; </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Subl[hh] = Prob[hh]*((1.0 -
+  hru_rh[hh])/scale())* sublimation()*dt; </p>
+  <p>// handle insufficient snow pack </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(Drift[hh] + Subl[hh] &gt; SWE[hh]) {
+  Subl[hh] = SWE[hh] * Subl[hh]/(Subl[hh] + Drift[hh]); Drift[hh] = SWE[hh] - Subl[hh]; } //
+  end if </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cumDrift[hh] += Drift[hh]; </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cumSubl[hh] += Subl[hh]; </p>
+  <p>&nbsp;&nbsp;&nbsp; SWE[hh] = SWE[hh] - Subl[hh] - Drift[hh]; } } </p>
+  <p>} // for </p>
+  <p>// distribute drift </p>
+  <p>long LastN = 0; </p>
+  <p>for (int nn = 0; nn &lt; nhru; ++nn) {</p>
+  <p>if(distrib[nn] &gt;= 0.0 &amp;&amp; nn+1 &lt; nhru) continue; </p>
+  <p>SumDrift = 0.0; </p>
+  <p>for (int hh = LastN; hh &lt;= nn; hh++) </p>
+  <blockquote>
+    <p>if(distrib[nn] != 0.0) </p>
+    <p>&nbsp;&nbsp;&nbsp; SumDrift += Drift[hh]*hru_basin[hh]; </p>
+  </blockquote>
+  <p>if(SumDrift &gt; 0.0){ </p>
+  <p>&nbsp;&nbsp;&nbsp; for (int hh = LastN + 1; hh &lt;= nn; hh++) { </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(hh == nn){ // last HRU or last HRU of
+  group </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWE[hh] +=
+  SumDrift/hru_basin[hh]; </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cumDriftIn[hh] +=
+  SumDrift/hru_basin[hh]; } </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else { </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWE_Max =
+  SWEfromDepth(Ht[hh]); </p>
+  <p>if(SWE_Max &gt; SWE[hh] &amp;&amp; distrib[hh] &gt; 0.0) { </p>
+  <p>&nbsp;&nbsp;&nbsp; total = 0.0; </p>
+  <p>&nbsp;&nbsp;&nbsp; for (int jj = hh; jj &lt;= nn; jj++) </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; total = total + fabs(distrib[jj]); </p>
+  <p>&nbsp;&nbsp;&nbsp; trans = SumDrift*fabs(distrib[hh])/total/hru_basin[hh]; </p>
+  <p>&nbsp;&nbsp;&nbsp; if(SWE_Max &gt; SWE[hh] + trans) </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWE[hh] += trans; </p>
+  <p>&nbsp;&nbsp;&nbsp; else { </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; trans = SWE_Max - SWE[hh]; </p>
+  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWE[hh] = SWE_Max; </p>
+  <p>} </p>
+  <p>SumDrift -= trans*hru_basin[hh]; cumDriftIn[hh] += trans; </p>
+  <p>} // end if } // end if </p>
+  <p>} // end for (hh) LastN = nn; } // end if </p>
+  <p>} // end for (nn) </p>
+  <p>for (int hh = 0; hh &lt; nhru; hh++) {</p>
+  <p>if(SWE[hh] &gt; 0.0) const_cast&lt;long*&gt; (</p>
+  <p>&nbsp;&nbsp;&nbsp; inhibit_evap)[hh] = 1; </p>
+  <p>else </p>
+  <p>&nbsp;&nbsp;&nbsp; const_cast&lt;long*&gt; (inhibit_evap)[hh] = 0; </p>
+  <p>} // for </p>
+  <p>}</p>
+</blockquote>
+</body>
+</html>

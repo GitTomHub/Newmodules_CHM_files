@@ -1,0 +1,82 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>macro_Infiltration (06/31/06)</title>
+</head>
+
+<body>
+
+<h3><b><font face="Arial">Infiltration.</font></b></h3>
+
+<p>This module interfaces existing modules with the module smbal.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>infil (mm&nbsp; <font SIZE="2" FACE="Symbol">D</font>t) - equal th hru_rain . Assumes
+    that all rainfall infitrates into unfrozen soil.</li>
+  <li>snowinfil (mm&nbsp; <font SIZE="2" FACE="Symbol">D</font>t) - calculated from the snow
+    melt.</li>
+  <li>runoff (mm&nbsp; <font SIZE="2" FACE="Symbol">D</font>t) -&nbsp; always zero as
+    everything infiltrates.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>none.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>snowmelt (MSM) (mm&nbsp; <font SIZE="2" FACE="Symbol">D</font>t).</li>
+  <li>hru_rain (obs) (mm&nbsp; <font SIZE="2" FACE="Symbol">D</font>t).</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_observationVariable.htm">Observation Variables</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="modules_new.chm::/module_Macro.htm">Macro Code</a> for MSM model.</h3>
+
+<p>MSM snowmelt is in units of&nbsp; (mm&nbsp; <font SIZE="2" FACE="Symbol">D</font>t) and
+is copied to snowinfil.</p>
+
+<pre>Infiltration
+declvar, infil, NHRU, &quot;Infiltration from rain&quot;, (mm/int)
+declvar, snowinfil, NHRU, &quot;Infiltration from snowmelt&quot;, (mm/int)
+declvar, runoff, NHRU, &quot;runoff from melt&quot;, (mm/int)
+declgetvar, MSM, snowmelt, &quot;(mm/int)&quot;
+declgetvar, obs, hru_rain, &quot;(mm/int)&quot;
+command
+snowinfil[hh] = snowmelt[hh]
+infil[hh] = hru_rain[hh]
+end</pre>
+
+<h3><a href="modules_new.chm::/module_Macro.htm">Macro Code</a> for EBSM model.</h3>
+
+<p>EBSM snowmeltD is in units of (mm day) and is divided by FREQ before copying to
+snowinfil.</p>
+
+<pre>Infiltration
+declvar, infil, NHRU, &quot;Infiltration from rain&quot;, (mm/int)
+declvar, snowinfil, NHRU, &quot;Infiltration from snowmelt&quot;, (mm/int)
+declvar, runoff, NHRU, &quot;runoff from melt&quot;, (mm/int)
+declgetvar, *, snowmeltD, &quot;(mm/d)&quot;
+declgetvar, obs, hru_rain, &quot;(mm/int)&quot;
+command
+snowinfil[hh] = snowmeltD[hh]/FREQ
+infil[hh] = hru_rain[hh]
+end</pre>
+</body>
+</html>

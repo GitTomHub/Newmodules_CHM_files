@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_CanopyClearingGap (09/16/13)</title>
+
+</head>
+
+<body>
+<b>
+</b>
+<h3>CanopyClearingGap.</h3>
+<p>This module defined in ClassCanopyClearingGap, models net
+all-wave radiation at the
+snow surface under a needleleaf forest canopy from the observed
+incoming short-wave
+radiation and the Satterlund (1979) modified form of the Brunt
+equation. The canopy
+interception is modelled in summer using 'sparse' Rutter interception
+model (i.e. Valente
+1997) and in winter a coupled forest snow interception and sublimation
+routine<br>
+after Hedstom &amp; Pomeroy / Parviainen &amp; Pomeroy/Ellis:<br>
+</p>
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>Qsi (W/m2) - incident
+short-wave.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+*basic module and variation 1&nbsp; i.e. CanopyClearingGap or
+CanopyClearingGap#1</li>
+<li>Qli (W/m2) - incident long-wave.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+*basic module and variation 2 &nbsp; i.e. CanopyClearingGap or
+CanopyClearingGap#2</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_observationVariable.htm">Observation
+Variable.</a></h3>
+<ul>
+<li>Ts (°C) - snow surface temperature.</li>
+<li>Qnsn (W/m2) - net all-wave at snow surface.</li>
+<li>Qsisn (W/m2) - incident short-wave at snow surface.</li>
+<li>Qlisn (W/m2) - incident long-wave at snow surface.</li>
+<li>Qlosn (W/m2) - reflected long-wave at snow surface.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>drip_cpy (mm/int) - canopy drip.</li>
+<li>direct_rain (mm/int) - direct rain through canopy.</li>
+<li>net_rain (mm/int) - direct rain + drip.</li>
+<li>cum_net_rain (mm) - cumulative net_rain.</li>
+<li>Subl_Cpy (mm/int) - canopy snow sublimation.</li>
+<li>cum_Subl_Cpy (mm) - cumulative canopy snow sublimation.</li>
+<li>rain_load (mm) - canopy rain load.</li>
+<li>snow_load (mm) - canopy snow load.</li>
+<li>direct_snow (mm/int) - direct snow through canopy.</li>
+<li>SUnload (mm/int) - canopy snow unloaded.</li>
+<li>net_snow (mm/int) - hru_snow less snow interception.</li>
+<li>Cum_net_snow (mm) - cumulative net_snow.</li>
+<li>u_FHt (m/s) - wind speed at canopy top.</li>
+<li>cc () - canopy coverage.</li>
+<li>intcp_evap (mm/int) - evaporation from the canopy.</li>
+<li>cum_intcp_evap (mm) - cumulative canopy evaporation. </li>
+<li>Pevap (mm/int) - Priestley/Taylor canopy evaporation when
+snowcover developed.</li>
+<li>k () - extinction coefficient.</li>
+<li>Tauc () - short-wave transmissivity through the canopy.</li>
+<li>ra (s/m) - resistance.</li>
+<li>Pa (kPa) - atmospheric pressure calculated from the
+elevation.</li>
+<li>Qnsn_var (W/m2) - net all-wave at snow surface.</li>
+<li>Qsisn_var (W/m2) - incident short-wave at snow surface.</li>
+<li>Qlisn_var (W/m2) - reflected long-wave at snow surface.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>CanopyClearing () - canopy/clearing/gap - 0/1/2.</li>
+<li>Ht (m) - canopy height.</li>
+<li>AlbedoCanopy () - initial average HRU snow cover albedo.
+Only use by canopy.</li>
+<li>hru_elev (m) - HRU mean elevation.</li>
+<li>basin_area (km^2) - basin area.</li>
+<li>hru area (km^2) - HRU area.</li>
+<li>Z0snow (m) - roughness length.</li>
+<li>Zref (m) - temperature measurement height.</li>
+<li>Zwind (m) - wind measurement height.</li>
+<li>LAI (m2/m2) - leaf area index.</li>
+<li>inhibit_evap (flag) - 0/1 enable/inhibit.</li>
+<li>Sbar (kg/m^2) - maximum canopy snow interception load.</li>
+<li>Zvent (m) - ventilation wind speed height.</li>
+<li>unload_t (°C) - ice-bulb temperature when canopy snow is
+unloaded as snow. Only use by canopy selection.</li>
+<li>unload_t _water(°C) - ice-bulb temperature when canopy snow
+is unloaded as water. Only use by canopy selection.</li>
+<li>Gap_diameter (m) - diameter of gap. Only use by gap
+selection.</li>
+<li>Surrounding_Ht (m) - height of canopy around gap. Only use
+by gap selection.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>hru_t (°C) - (*) air temperature.</li>
+<li>hru_rh (%) - (*) relative humidity.</li>
+<li>hru_ea (kPa) - (*) vapour pressure.&nbsp; Often
+calculated by an observation filter from t and rh.</li>
+<li>hru_u (m/s) - (*) average wind speed over time step.</li>
+<li>SWE (mm) - (*) snow water equivalent.</li>
+<li>SolAng (radians) - (*) from&nbsp; global or similar
+module.</li>
+<li>cosxs (radians) - (*) from&nbsp; global or similar
+module.</li>
+<li>cosxsflat (radians) - (*) from&nbsp; global or similar
+module.</li>
+<li>hru_rain (mm/int) - HRU rain from module obs.</li>
+<li>hru_snow (mm/int) - HRU snow from module obs.</li>
+<li>hru_evap (*) (mm/int). - Maximum evaporation when there is
+no snowcover.</li>
+<li>QliVt_var (W/m2) - reflected long-wave at snow surface.
+*variation 1 and 3 i.e. CanopyClearingGap#1 or #3</li>
+<li>QsiS_var (W/m2) - incident short-wave at snow
+surface.&nbsp; *variation 2 and 3 i.e. CanopyClearingGap#2 or #3</li>
+</ul>
+<p>&nbsp;</p>
+<h3>Notes.</h3>
+<p>&nbsp;&nbsp;&nbsp; The parameter Ht is used for
+the canopy height (vegetation) which is
+consistent with CRHM..</p>
+<p>&nbsp;&nbsp;&nbsp; A parameter AlbedoCanopy is
+used for the canopy albedo. This may be
+handled using an external module or macro if the value changes with the
+season.. </p>
+<p>&nbsp;&nbsp;&nbsp; The canopy Tauc has been
+corrected to handle the change of radiation
+extinction path length for slope and aspect effects.</p>
+<p>&nbsp;&nbsp;&nbsp; Originally:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Tauc = exp(-k*LAI_)</p>
+<p>&nbsp;&nbsp;&nbsp; Now:</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Tauc = exp(-k*LAI_*1/cosxs)</p>
+</body></html>

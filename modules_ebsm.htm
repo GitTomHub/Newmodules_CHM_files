@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_ebsm (09/29/15)</title>
+
+</head>
+
+<body>
+<b>
+</b>
+<h3><b>ebsm</b> (Gray and Landine, 1987) </h3>
+<p>This module is defined in Classebsm and is an energy-budget
+snowmelt model applicable
+to the Canadian Prairies.</p>
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>QnD (W/m^2 day) - net radiation. Optional.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>snowmeltD (mm/d) - snowmelt.</li>
+<li>cumsnowmelt (mm) - cummulative snowmelt.</li>
+<li>LW_ebsm (mm/d) - liquid water in snowpack. State variable.</li>
+<li>u_ebsm (MJ/m^2*d) - snowpack energy deficit. State variable.</li>
+<li>Qmelt (MJ/m^2*d) - Qmelt = Qn+Qh+Qe+Qp.</li>
+<li>Qn_ebsm (MJ/m^2*d) - net radiation.</li>
+<li>Qh_ebsm (MJ/m^2*d) - sensible heat.</li>
+<li>Qe_ebsm (MJ/m^2*d) - latent heat.</li>
+<li>Qp_ebsm (MJ/m^2*d) - input from rainfall.</li>
+<li>Qe_Subl (mm/day) - latent heat sublimation.</li>
+<li>cumQe_subl(mm) - cummulative latent heat sublimation.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>tfactor (mm/d*/ºC) - degree day melt factor.</li>
+<li>nfactor (mm*m^2/MJ*d) - net radiation factor.</li>
+<li>delay_melt () - inhibits any melt before this date. Only
+used when tfactor and nfactor are both zero. Default value not suitable
+for Southern Hemisphere</li>
+<li>basin_area (km^2) - basin area.</li>
+<li>hru area (km^2) - HRU area.</li>
+<li>Albedo () - areal albedo.</li>
+<li>Qe_subl_SWE () - 0 - add to 'Qmelt' (original version), 1 -
+take Qe_subl from SWE .</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>hru_tmean (obs) (ºC)</li>
+<li>hru_tmax (obs) (ºC)</li>
+<li>hru_tmin (obs) (ºC)</li>
+<li>hru_umean (obs) (m/s)</li>
+<li>hru_rhmean (obs) (%)</li>
+<li>hru_Sun_Act (obs) (hr)</li>
+<li>net_rain (*) (mm <font face="Symbol" size="2">D</font>t)</li>
+<li>QdroD (global) (MJ/m^2)</li>
+<li>QdfoD (global) (MJ/m^2)</li>
+<li>SunMax (global) (h)</li>
+<li>SWE (*) (mm)</li>
+<li>albedo (albedo) ()</li>
+<li>meltflag (albedo) ()</li>
+</ul>
+<p><i>Useage.</i></p>
+<h3>tfactor and nfactor NOT equal to zero</h3>
+<p>For comparison there is an option to use the simplified energy
+budget method proposed
+by Kustas et al.(1994). In this degree-day algorithm the increased
+melting later in the
+season is simulated using a net radiation term.</p>
+<p>Melt = tfactor*t<sub>max</sub> + nfactor*Q<sub>n</sub>D,&nbsp;&nbsp;&nbsp;&nbsp;
+where
+the observation Q<sub>n</sub>D is the net all-wave
+radiation calculated from a module.</p>
+<h3>tfactor and nfactor equal to zero</h3>
+<p>If both parameters tfactor and nfactor are set equal to zero
+for an HRU, the module
+uses the original ebsm.f algorithm otherwise the simplified degree-day
+algorithm is used
+using the values set in tfactor and nfactor.</p>
+<p>Observation QnD is used if available,&nbsp; otherwise Qn
+is calculated as in the
+original algorithm.</p>
+<p>Over snow during melt;</p>
+<p>&nbsp;&nbsp;&nbsp; Qn =
+-0.53+0.47*(QdroD+QdfoD)*(0.52+0.52*sunact/sunmax)*(1.0-Albedo)</p>
+<p>An external observation QnD may be generated using modules
+long, NeedleLeaf and macro
+modules Slope_Qsi.mcr and Convert_Qsn_QnD.mcr.</p>
+</body></html>

@@ -1,0 +1,128 @@
+
+
+
+
+[OPTIONS]
+Auto Index=Yes
+Compatibility=1.1 or later
+Compiled file=Modules_new.chm
+Contents file=Modules_new.hhc
+Default Window=main
+Default topic=AboutModules.htm
+Display compile progress=No
+Error log file=log1
+Full-text search=Yes
+Index file=Modules_new.hhk
+Language=0x1009 English (Canada)
+Title=Basic CRHM Modules
+
+[WINDOWS]
+main="Basic CRHM Modules","Modules_new.hhc","Modules_new.hhk","AboutModules.htm","AboutModules.htm",,,,,0x22520,222,0x1046,[10,10,640,450],0xb0000,,,,,,0
+
+
+[FILES]
+ABOUTModules.HTM
+Clarks_Method.htm
+demo_depression_pond.htm
+ebsm_smbal.htm
+example_dynamic_parameters.htm
+introduction_terminology.htm
+macro_Convert_Qnsn_Qnd.htm
+macro_Infiltration.htm
+macro_Slope_Qsi.htm
+melt_routine_features.htm
+module_variations.htm
+modules_albedo.htm
+modules_albedo_obs.htm
+modules_albedo_param.htm
+modules_Annandale.htm
+modules_Ayers.htm
+modules_basin.htm
+modules_calcsun.htm
+modules_CanopyClearing.htm
+modules_CanopyClearingGap.htm
+modules_crack.htm
+modules_ebsm.htm
+modules_evap.htm
+modules_evap_Resit.htm
+modules_evapD.htm
+modules_evapD_Resist.htm
+modules_evapX.htm
+modules_frostdepth.htm
+modules_frozen.htm
+modules_frozenAyers.htm
+modules_global.htm
+modules_GreenAmpt.htm
+modules_Greencrack.htm
+modules_Ht_obs.htm
+modules_infiltration_summary.htm
+modules_intcp.htm
+modules_introduction.htm
+modules_k_estimate.htm
+modules_Kevin.htm
+modules_lake.htm
+modules_long.htm
+modules_MSM.htm
+modules_needleleaf.htm
+modules_netall.htm
+modules_Netroute.htm
+modules_Netroute_D.htm
+modules_Netroute_M.htm
+modules_Netroute_M_D.htm
+modules_NO_pbsm.htm
+modules_obs.htm
+modules_pbsm.htm
+modules_pbsm_snobal.htm
+modules_PrairieInfiltration.htm
+modules_Qmelt.htm
+modules_Quinton.htm
+modules_QuintonDrift.htm
+modules_REW_Route.htm
+modules_sbsm.htm
+modules_SetSoil.htm
+modules_Slope_Qsi.htm
+modules_snobal.htm
+modules_snobalCRHM.htm
+modules_Soil.htm
+modules_SoilX.htm
+modules_Volumetric.htm
+MSM_smbal.htm
+Notes_units.htm
+Notes_using_albedo_parameter.htm
+Notes_using_daily_values.htm
+Notes_using_evap_evapD.htm
+Route1.jpg
+Route2.jpg
+term_capillary.htm
+term_d_surface.htm
+term_Depth.htm
+term_dmelt.htm
+term_input_variable.htm
+term_layerwater.htm
+term_observation.htm
+term_observationVariable.htm
+term_parameter.htm
+term_Residual.htm
+term_variable.htm
+using_sample_projects.htm
+walmsley_wind .htm
+function_DepthofSnow.htm
+function_f.htm
+function_fdaily.htm
+function_SWE_prob.htm
+module_Macro.htm
+modules_SoilK.html
+modules_XG.html
+modules_Qmelt2.html
+modules_tsurface.html
+modules_glacier.html
+modules_glacier2.html
+
+[ALIAS]
+#include Modules_new.ali
+
+[MAP]
+#include Modules_newhelp.h
+
+[INFOTYPES]
+

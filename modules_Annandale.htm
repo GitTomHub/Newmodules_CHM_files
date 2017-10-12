@@ -1,0 +1,63 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_annandale (07/19/10)</title>
+</head>
+
+<body>
+
+<h3><font size="4"><b>Annandale</b></font></h3>
+<b><font FACE="Arial">
+
+<p></font></b>Defined in ClassAnnandale. The purpose of this module is to estimate
+incoming short wave radiation from daily minimum and maximum temperatures when no other
+radiation observations are available. Annandale et al. (2001) developed a simple
+emipirical method for estimating transmittance from the daily range of air temperature.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>TauA () -&nbsp; transmittance calculated from the Annandale method.</li>
+  <li>hru_SunAct (h) - calculated sunshine hours.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>krs () - location index, interior = 0.16 and coastal = 0.19.</li>
+  <li>hru_elev (m) - HRU elevation.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>hru_tmax (*) (°C) - daily maximum temperature.</li>
+  <li>hru_tmin (*) (°C) - daily minimum temperature.</li>
+  <li>QdroDext (*) (MJ/m^2*d) - daily ExtraTerrestrial direct.</li>
+  <li>QdflatD (*) (MJ/m^2*d) - daily clear-sky Qdro (with diffuse) on horizontal surface.</li>
+  <li>QdflatE (*) (W/m^2) - 'Qdro' on horizontal surface, no atmosheric attenuation.</li>
+  <li>Qdro (*) (W/m^2) - clear-sky direct with GSL and ASL applied.</li>
+  <li>Qdfo (*) (W/m^2) - clear-sky diffuse with GSL and ASL applied.</li>
+  <li>QdfoD (*) (MJ/m^2*d) - daily average clear-sky diffuse.</li>
+  <li>SunMax (*) (h) - maximum sunshine hours.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_observationVariable.htm">Observation Variables</a></h3>
+
+<ul>
+  <li>QsiA (W/m^2) - interval synthesized short-wave derived from Annandale method.</li>
+  <li>QsiD (W/m^2) - daily synthesized short-wave derived from Annandale method.</li>
+  <li>QsiS (W/m^2) - synthesized short-wave on slope derived from global Qdro and Qdfo, and
+    the Annandale method.</li>
+</ul>
+
+<p>&nbsp;</p>
+</body>
+</html>

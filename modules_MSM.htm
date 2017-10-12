@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_MSM (09/26/05)</title>
+</head>
+
+<body>
+
+<h3><font face="Arial"><b>MSM.</b></font></h3>
+
+<p>This module defined in ClassMSM is the minimal snow model.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>t (°C) - air temperature.</li>
+  <li>rh (%) - relative humidity.</li>
+  <li>u (m/s) - average wind speed over time step.</li>
+  <li>Qsi (W/m^2) - incident short-wave.</li>
+  <li>Qli (W/m^2) - incident long-wave.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>alb () - snow albedo.</li>
+  <li>snowmelt (kg/m^2*int) - snowmelt.</li>
+  <li>cumsnowmelt (kg/m^2) - cummulative snowmelt.</li>
+  <li>snowmeltD (kg/m2*d) - daily snowmelt.</li>
+  <li>sursubl (kg/m^2*int) - surface sublimation.</li>
+  <li>T0 (°C) - surface temperature.</li>
+  <li>sursubl (kg/m^2) - cummulative surface sublimation.</li>
+  <li>LE (W/m^2) - latent heat flux .</li>
+  <li>H&nbsp; (W/m^2) - sensible heat flux.</li>
+  <li>Hsm (W/m^2) - snowmelt heat flux.</li>
+  <li>LWn (W/m^2) - net long-wave radiation.</li>
+  <li>SWn (W/m^2) - net short-wave radiation.</li>
+  <li>Pa (kPa) - atmospheric pressure calculated from the elevation.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>a1 (s) - Albedo decay time constant for cold snow.</li>
+  <li>a2 (s) - Albedo decay time constant for melting snow.</li>
+  <li>amin () - Minimum albedo for aged snow.</li>
+  <li>amax () - Maximum albedo for fresh snow.</li>
+  <li>smin (mm) - Minimum snowfall to refresh snow albedo.</li>
+  <li>Z0snow (m) - snow roughnessength.</li>
+  <li>Zref (m) - reference height.</li>
+  <li>basin_area (km^2) - basin area.</li>
+  <li>hru area (km^2) - HRU area.</li>
+  <li>hru_elev (m) - altitude.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>SWE ( *) (mm).</li>
+  <li>net_snow (*) (mm).</li>
+</ul>
+
+<p>&nbsp;</p>
+</body>
+</html>

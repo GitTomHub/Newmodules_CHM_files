@@ -1,0 +1,76 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>dynamic parameters(10/12/06)</title>
+</head>
+
+<body>
+
+<h3>Creating a Macro to dynamically change parameters at model run time.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Normally parameters have an intial value which is held constant
+throughout a model run.&nbsp; This is the correct behaviour for parameters like elevation,
+area etc.&nbsp; However, vegetation height is a variable during the growing season. It
+should be handled as a variable.&nbsp; This is easily accomplished using a <em>macro</em>.
+Two examples follow.&nbsp; The first illustrates how the vegetation height may read from
+an observation file and the second if the height versus time relationship is known.</p>
+
+<p>1) Using an observation file holding vegetation heights.</p>
+
+<p>&nbsp;&nbsp;&nbsp; The following macro reads the observation <em>Heights</em> and
+writes it every interval to the parameter <em>Ht</em>. The variable Ht_Var was created so
+that the heights could be displayed as there is no method of charting parameters in CRHM
+(assumed to be constants).</p>
+
+<p>Ht_file<br>
+declreadobs,Heights, NOBS, &quot;Vegetation height&quot;, (m)<br>
+declparam, Ht, NHRU,0.1, 0.01, 10.0, description, (m)<br>
+declvar, Ht_Var, NHRU, &quot;vegetation height&quot;, (m)<br>
+command<br>
+&nbsp;&nbsp;&nbsp; Ht[hh] = Heights[hh]<br>
+&nbsp;&nbsp;&nbsp; Ht_Var[hh] = Ht[hh]<br>
+end<br>
+</p>
+
+<p>2) Programming vegetation heights.</p>
+
+<p>&nbsp;&nbsp;&nbsp; The following macro is written assuming the crop grows continuously
+from a Julian date to a maximum value.</p>
+
+<p>Ht_Change<br>
+declparam, Ht, NHRU,0.1, 0.01, 100.0, description, (m)<br>
+declparam, Ht_change, NHRU,0.1, 0.01, 1.0, description, (m)<br>
+declparam, Ht_min, NHRU,0.1, 0.01, 3.0, description, (m)<br>
+declparam, Ht_max, NHRU,0.1, 0.01, 3.0, description, (m)<br>
+declparam, Ht_Julian, NHRU,195, 1, 366, description, ()<br>
+declvar, Ht_Var, NHRU, &quot;vegetation height&quot;, (m)<br>
+declvar, Ht_Start, NHRU, &quot;vegetation height&quot;, ()<br>
+command<br>
+&nbsp;&nbsp;&nbsp; if(STEP == 1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ht[hh] = Ht_min[hh]<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; if(JULIAN &gt;= Ht_Julian)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ht_Start[hh] = JULIAN<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(LASTINT)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ht[hh] = Ht[hh] +
+Ht_change[hh]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if( Ht[hh] &gt; Ht_max[hh])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ht[hh] = Ht_max[hh]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; endif<br>
+&nbsp;&nbsp;&nbsp; Ht_Var[hh] = Ht[hh]<br>
+end<br>
+</p>
+
+<h3>Using the Height change macro modules.</h3>
+
+<p> After the macro code is added to the editor answer <em>YES</em> to the query asking if
+the modules should be loaded. The modules must be next added to the current model using
+the normal BUILD/CONSTRUCT screen.&nbsp; After adding the height macro module and during
+the build process, CRHM will ask if the module should be deleted, answer <em>NO</em>.
+&nbsp; This is necessary as CRHM is not able to determine ihow the module is used.<br>
+</p>
+</body>
+</html>

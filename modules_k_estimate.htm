@@ -1,0 +1,81 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Modules_K_Estimate (11/28/12)</title>
+</head>
+
+<body>
+
+<h3><b><font face="Arial">K_Estimate.</font></b></h3>
+
+<p>The rates for lateral flow rate in soil layers and groundwater layer (i.e. subsurface
+and groundwater discharges) as well as vertical flow of excess soil water to groundwater
+(i.e. groundwater recharge) are controlled by several drainage factors: rechr_ssr_K [mm
+day-1], lower_ssr_K [mm day-1], gw_K [mm day-1], sd_ssr_K [mm day-1], sd_gw_K [mm day-1]
+and soil_gw_K [mm day-1]. rechr_ssr_K, lower_ssr_K, gw_K and sd_ssr_K are the drainage
+factors for lateral flows in soil recharge, lower soil, groundwater layers and depressions
+storage, respectively. soil_gw_K and sd_gw_K are the drainage factors for the vertical
+flow from soil and from depression storage to groundwater layer. Darcy's law for
+unsaturated flow is used to calculate these drainage factors. </p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>v_L_upper (m/s) - Darcy's lateral flow velocity in upper soil column (ie. recharge
+    layer).</li>
+  <li>v_L_lower (m/s) - Darcy's lateral flow velocity in lower soil column.</li>
+  <li>v_V_sd (m/s) - Darcy's vertical flow velocity for sd (ie. depression).</li>
+  <li>v_V_soil (m/s) - Darcy's vertical flow velocity for soil column.</li>
+  <li>v_L_gw (m/s) -Darcy's lateral flow velocity for groundwater reservoir.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>Ks_lower (m/s) - saturated hydraulic conductivity for lower soil.</li>
+  <li>Ks_upper (m/s) - saturated hydraulic conductivity for upper soil layer.</li>
+  <li>Ks_gw (m/s) - saturated hydraulic conductivity for groundwater layer.</li>
+  <li>hru_GSL (°) - ground slope - increasing the slope positively, tilts the plane to the
+    north with ASL = 0.</li>
+  <li>porosity (m^3/m^3) - soil porosity.</li>
+  <li>PSD () - pore size distribution.</li>
+  <li>soil_rechr_max (mm) - Maximum value for soil recharge zone (upper portion of soil_moist
+    where losses occur as both evaporation and transpiration). Must be less than or equal to
+    soil_moist.</li>
+  <li>soil_moist_max (mm) - Maximum available water holding capacity of soil profile. Soil
+    profile is surface to bottom of rooting zone.</li>
+  <li>gw_max (mm) - Maximum available water holding capacity of ground water profile.</li>
+  <li>inhibit_evap (flag) - 0/1 enable/inhibit. Is indicator to when there is snowcover.</li>
+</ul>
+
+<p>&nbsp;&nbsp;&nbsp; The following&nbsp; parameters are &quot;declputparam&quot; (i.e.
+the parameter values can be changed by this module.)
+
+<ul>
+  <li>rechr_ssr_K (m/d) - daily ssr drainage from recharge.</li>
+  <li>lower_ssr_K (m/d) - daily ssr drainage from soil column.</li>
+  <li>Sd_ssr_K (m/d) - daily depression storage ssr drainage factor.</li>
+  <li>Sd_gw_K (m/d) - daily depression storage gw drainage.</li>
+  <li>soil_gw_K (m/d) - daily maximum amount of the soil water excess for an HRU that is
+    routed directly to the associated groundwater reservoir each.</li>
+  <li>gw_K (m/d) - daily ground water drainage from gw reservoir.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>soil_rechr (*) (mm).</li>
+  <li>soil_moist (*) (mm).</li>
+  <li>gw&nbsp; (*) (mm).</li>
+</ul>
+
+<p>&nbsp;</p>
+</body>
+</html>

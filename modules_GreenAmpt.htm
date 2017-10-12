@@ -1,0 +1,414 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_GreenAmpt (03/31/10)</title>
+</head>
+
+<body>
+<font FACE="Arial"><b>
+
+<h3>GreenAmpt.</b></font></h3>
+
+<p>This module is defined in ClassGreenAmpt. It handles unfrozen soil infiltration. </p>
+
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>infil (mm/int) - depth of infiltration in time step, <font SIZE="2" FACE="Symbol">D</font>t
+    &#150; expressed as an average depth of water on an HRU.</li>
+  <li>cuminfil (mm) - cumulative infiltration - expressed as an average depth of water on an
+    HRU.</li>
+  <li>runoff (mm/int) - amount of daily runoff &#150; expressed as an equivalent depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+  <li>cumrunoff (mm) - cummulative runoff.</li>
+  <li>meltrunoff (mm/int) - amount of interval melt runoff. . </li>
+  <li>cummeltrunoff (mm) - cumulative interval melt runoff. </li>
+  <li>snowinfil (mm/int) - amount of interval infiltration &#150; expressed as an equivalent
+    depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+  <li>cumsnowinfil (mm) - cumulative interval infiltration </li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>basin_area (km^2) - area of watershed.</li>
+  <li>hru_area(km^2) - area of HRUs.</li>
+  <li>soiltype () -&nbsp; 0 through 12 for
+    water/sand/loamsand/sandloam/loam/siltloam/sasclloam/clayloam/siclloam/sandclay/siltclay/clay/pavement.</li>
+  <li>soil_moist_max (mm) - maximum available water holding capacity of soil profile.</li>
+  <li>soil_moist_init (mm) - initial value of available water in soil profile.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>net_rain (mm/int) (*) - depth of rain received by the ground surface in time step, <font
+    SIZE="2" FACE="Symbol">D</font>t. Variable available from module <em>intcp</em>,&nbsp;
+    etc..</li>
+  <li>snowmeltD (mm/d) (*)</li>
+  <li>soil_moist (mm) - from module <em>Soil, smba</em>l, etc.</li>
+</ul>
+
+<h3>Notes on Green-Ampt.</h3>
+
+<p>The module is used when unlimited infiltration is not possible.</p>
+
+<p>When the surface ponding is negligible,</p>
+
+<blockquote>
+  <p>f (mm/hr)&nbsp; =&nbsp; k*(<font FACE="Symbol">y</font>*<font FACE="Symbol">Dq</font>/F
+  + 1),&nbsp;&nbsp;&nbsp; (eq. 1.)</p>
+</blockquote>
+
+<blockquote>
+  <p>where: </p>
+  <p>k&nbsp;(mm/hr) = saturated hydraulic conductivity.</p>
+</blockquote>
+
+<blockquote>
+  <p><font FACE="Symbol">y</font>&nbsp;(mm)&nbsp;<font FACE="Symbol"> = </font>capillary<font
+  FACE="Symbol"> </font>suction at the wetting front.</p>
+  <p><font FACE="Symbol">Dq</font> = (<font FACE="Symbol">q</font>s -&nbsp; <font
+  FACE="Symbol">q</font>i). change in volumetric soil moisture content.</p>
+</blockquote>
+
+<p>When ponded,</p>
+
+<blockquote>
+  <p>F1 (mm) = k*<font FACE="Symbol">D</font>t + <font FACE="Symbol">y</font>*<font
+  FACE="Symbol">Dq</font> * ln( (F1 + <font FACE="Symbol">y</font>*<font FACE="Symbol">Dq</font>)/(F0
+  + <font FACE="Symbol">y</font>*<font FACE="Symbol">Dq</font>)).
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (eq. 2.)</p>
+  <p>where F0 (mm) = cumulative infiltation at the beginning of the time interval i.e. t,</p>
+  <p>f0 (mm/hr) =&nbsp; infiltration rate at the beginning of the time interval i.e. t,</p>
+  <p>F1 (mm) = cumulative infiltration at the end of the time interval i.e. t+<font
+  FACE="Symbol">D</font>t,</p>
+  <p>f1(mm/hr) =&nbsp; infiltration rate at the end of the time interval i.e. t+<font
+  FACE="Symbol">D</font>t,</p>
+  <p>It (mm/hr) = rainfall intensity during the interval.</p>
+</blockquote>
+
+<p>The cumulative infiltration (Fp) at instant of ponding time is</p>
+
+<blockquote>
+  <p>Fp = k*<font FACE="Symbol">y</font>*<font FACE="Symbol">Dq</font>/(It - k).
+  &nbsp;&nbsp;&nbsp; (eq. 3.)</p>
+</blockquote>
+
+<p>The portion of the interval, after which ponding occurs is&nbsp;<font FACE="Symbol">D</font>t',</p>
+
+<blockquote>
+  <p><font FACE="Symbol">D</font>t' = (Fp - F0)/It.&nbsp;&nbsp;&nbsp; (eq. 4.)</p>
+</blockquote>
+
+<h3>Flow Chart</h3>
+
+<p>Calculate the maximum infiltration rates,&nbsp; f0 and f1 at the beginning and end of
+the time step using equation 1. using F1 = F0+<font FACE="Symbol">D</font>t*It.</p>
+
+<blockquote>
+  <p>Case 1:&nbsp; When f1 is &gt;= rainfall intensity,&nbsp; all the rainfall infiltrates
+  with F1 = F0+<font FACE="Symbol">D</font>t*It.</p>
+  <p>Case 2:&nbsp; When the rainfall intensity &gt; f0,&nbsp; all the rainfall ponds and F
+  is calculated using an iterative solution of equation 2.</p>
+  <p>Case 3:&nbsp; When the rainfall intensity &lt;= f0 but the rainfall intensity &gt; f1,
+  &nbsp; ponding occurs during the interval and the solution consists of&nbsp; solving for
+  Fp using equation 3, then using equation 4 to solve the time into the step during which
+  ponding occurs. Next, using equation 2 with Fp as F0 the cumulative infiltration F1 after
+  the ponding time of (<font FACE="Symbol">D</font>t - <font FACE="Symbol">D</font>t') is
+  calculated.</p>
+</blockquote>
+
+<h3>Assigned Soil Properties</h3>
+
+<p>All, except fcap are specified at 0% saturation from Chow pg 115.</p>
+
+<p>Value for wilt is from Chow.</p>
+
+<p>Values for por, fcap is from Floods in Canada</p>
+
+<p>Soil curves of form K = Ks / (A*Psi^3 + 1 ) </p>
+
+<table border="1" width="542">
+  <tr>
+    <td width="101">Soil Type</td>
+    <td width="103">psi</td>
+    <td width="98">k(mm/h)</td>
+    <td width="96">wilt</td>
+    <td width="79">fcap</td>
+    <td width="95">porosity for Soil</td>
+    <td width="94">porosity for Evap</td>
+    <td width="95">air entry tension</td>
+    <td width="77">pore size</td>
+  </tr>
+  <tr>
+    <td width="101">water</td>
+    <td width="103">{ 0.0</td>
+    <td width="98">999.9</td>
+    <td width="96">0.000</td>
+    <td width="79">0.00</td>
+    <td width="95">1.000</td>
+    <td width="94">1.000</td>
+    <td width="95">0.000</td>
+    <td width="77">0.0</td>
+  </tr>
+  <tr>
+    <td width="101">sand</td>
+    <td width="103">{ 49.5</td>
+    <td width="98">117.8</td>
+    <td width="96">0.020</td>
+    <td width="79">0.10</td>
+    <td width="95">0.437</td>
+    <td width="94">0.395</td>
+    <td width="95">0.121</td>
+    <td width="77">4.05</td>
+  </tr>
+  <tr>
+    <td width="101">loamsand</td>
+    <td width="103">{ 61.3</td>
+    <td width="98">29.9</td>
+    <td width="96">0.036</td>
+    <td width="79">0.16</td>
+    <td width="95">0.437</td>
+    <td width="94">0.41</td>
+    <td width="95">0.09</td>
+    <td width="77">4.38</td>
+  </tr>
+  <tr>
+    <td width="101">sandloam</td>
+    <td width="103">{110.1</td>
+    <td width="98">10.9</td>
+    <td width="96">0.041</td>
+    <td width="79">0.23</td>
+    <td width="95">0.453</td>
+    <td width="94">0.435</td>
+    <td width="95">0.218</td>
+    <td width="77">4.9</td>
+  </tr>
+  <tr>
+    <td width="101">loam</td>
+    <td width="103">{ 88.9</td>
+    <td width="98">3.4</td>
+    <td width="96">0.029</td>
+    <td width="79">0.26</td>
+    <td width="95">0.463</td>
+    <td width="94">0.451</td>
+    <td width="95">0.478</td>
+    <td width="77">5.39</td>
+  </tr>
+  <tr>
+    <td width="101">siltloam</td>
+    <td width="103">{166.8</td>
+    <td width="98">6.5</td>
+    <td width="96">0.045</td>
+    <td width="79">0.38</td>
+    <td width="95">0.501</td>
+    <td width="94">0.485</td>
+    <td width="95">0.786</td>
+    <td width="77">5.3</td>
+  </tr>
+  <tr>
+    <td width="101">saclloam</td>
+    <td width="103">{218.5</td>
+    <td width="98">1.5</td>
+    <td width="96">0.068</td>
+    <td width="79">0.38</td>
+    <td width="95">0.398</td>
+    <td width="94">0.420</td>
+    <td width="95">0.299</td>
+    <td width="77">7.12</td>
+  </tr>
+  <tr>
+    <td width="101">clayloam</td>
+    <td width="103">{208.8</td>
+    <td width="98">1.0</td>
+    <td width="96">0.155</td>
+    <td width="79">0.39</td>
+    <td width="95">0.464</td>
+    <td width="94">0.476</td>
+    <td width="95">0.63</td>
+    <td width="77">8.52</td>
+  </tr>
+  <tr>
+    <td width="101">siclloam</td>
+    <td width="103">{273.3</td>
+    <td width="98">1.0</td>
+    <td width="96">0.039</td>
+    <td width="79">0.40</td>
+    <td width="95">0.471</td>
+    <td width="94">0.477</td>
+    <td width="95">0.356</td>
+    <td width="77">7.75</td>
+  </tr>
+  <tr>
+    <td width="101">sandclay</td>
+    <td width="103">{239.0</td>
+    <td width="98">0.6</td>
+    <td width="96">0.110</td>
+    <td width="79">0.41</td>
+    <td width="95">0.430</td>
+    <td width="94">0.426</td>
+    <td width="95">0.153</td>
+    <td width="77">10.4</td>
+  </tr>
+  <tr>
+    <td width="101">siltclay</td>
+    <td width="103">{292.2</td>
+    <td width="98">0.5</td>
+    <td width="96">0.056</td>
+    <td width="79">0.43</td>
+    <td width="95">0.479</td>
+    <td width="94">0.492</td>
+    <td width="95">0.49</td>
+    <td width="77">10.4</td>
+  </tr>
+  <tr>
+    <td width="101">clay</td>
+    <td width="103">{316.3</td>
+    <td width="98">0.3</td>
+    <td width="96">0.090</td>
+    <td width="79">0.46</td>
+    <td width="95">0.475</td>
+    <td width="94">0.482</td>
+    <td width="95">0.405</td>
+    <td width="77">11.4</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp;</td>
+    <td width="52">psi(mm)</td>
+    <td width="57">k(mm/hr)</td>
+    <td width="44">wilt</td>
+    <td width="42">fcap</td>
+    <td width="45">por</td>
+    <td width="100">A-Soil moist</td>
+    <td width="83">A-Hyd cond</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; water </td>
+    <td width="52">0.0</td>
+    <td width="57">999.9</td>
+    <td width="44">0.000</td>
+    <td width="42">0.00</td>
+    <td width="45">1.100</td>
+    <td width="100">1.000000000</td>
+    <td width="83">1.0000000}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; sand </td>
+    <td width="52">49.5</td>
+    <td width="57">117.8</td>
+    <td width="44">0.020</td>
+    <td width="42">0.10</td>
+    <td width="45">0.437</td>
+    <td width="100">0.000010000</td>
+    <td width="83">0.0002000}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; loamsand </td>
+    <td width="52">61.3</td>
+    <td width="57">29.9</td>
+    <td width="44">0.036</td>
+    <td width="42">0.16</td>
+    <td width="45">0.437</td>
+    <td width="100">0.000006000</td>
+    <td width="83">0.0001000}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; sandloam </td>
+    <td width="52">110.1</td>
+    <td width="57">10.9</td>
+    <td width="44">0.041</td>
+    <td width="42">0.23</td>
+    <td width="45">0.453</td>
+    <td width="100">0.000001124</td>
+    <td width="83">0.0000200}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; loam </td>
+    <td width="52">88.9</td>
+    <td width="57">3.4</td>
+    <td width="44">0.029</td>
+    <td width="42">0.26</td>
+    <td width="45">0.463</td>
+    <td width="100">0.000000900</td>
+    <td width="83">0.0000150}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; siltloam </td>
+    <td width="52">166.8</td>
+    <td width="57">6.5</td>
+    <td width="44">0.045</td>
+    <td width="42">0.38</td>
+    <td width="45">0.501</td>
+    <td width="100">0.000000300</td>
+    <td width="83">0.0000050}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; saclloam </td>
+    <td width="52">218.5</td>
+    <td width="57">1.5</td>
+    <td width="44">0.068</td>
+    <td width="42">0.38</td>
+    <td width="45">0.398</td>
+    <td width="100">0.000000200</td>
+    <td width="83">0.0000030}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; clayloam </td>
+    <td width="52">208.8</td>
+    <td width="57">1.0</td>
+    <td width="44">0.155</td>
+    <td width="42">0.39</td>
+    <td width="45">0.464</td>
+    <td width="100">0.000000150</td>
+    <td width="83">0.0000020}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; siclloam </td>
+    <td width="52">273.3</td>
+    <td width="57">1.0</td>
+    <td width="44">0.039</td>
+    <td width="42">0.40</td>
+    <td width="45">0.471</td>
+    <td width="100">0.000000080</td>
+    <td width="83">0.0000015}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; sandclay </td>
+    <td width="52">239.0</td>
+    <td width="57">0.6</td>
+    <td width="44">0.110</td>
+    <td width="42">0.41</td>
+    <td width="45">0.430</td>
+    <td width="100">0.000000070</td>
+    <td width="83">0.0000010}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; siltclay </td>
+    <td width="52">292.2</td>
+    <td width="57">0.5</td>
+    <td width="44">0.056</td>
+    <td width="42">0.43</td>
+    <td width="45">0.479</td>
+    <td width="100">0.000000010</td>
+    <td width="83">0.0000002}</td>
+  </tr>
+  <tr>
+    <td width="71">&nbsp; clay</td>
+    <td width="52">316.3</td>
+    <td width="57">0.3</td>
+    <td width="44">0.090</td>
+    <td width="42">0.46</td>
+    <td width="45">0.475</td>
+    <td width="100">0.000000006</td>
+    <td width="83">0.0000001} </td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Melt Routine Features (05/31/06</title>
+</head>
+
+<body>
+
+<h3>Melt Routine Features.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; This description of melt routine features will help to clarify the
+differences in operation of the modules, <em>ebsm</em>, <em>MSM</em> and <em>Kevin</em>.</p>
+
+<h3>Temperature Index and Simplified Energy Budget Method.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; If either tfactor or nfactor is non zero this mode is selected.</p>
+
+<h3>Temperature Index.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Units of tfactor are (mm/d*°C). 
+
+<ol>
+  <li><em>ebsm</em> - Daily calculation.&nbsp; Melt = tmax[0]*tfactor (mm/day).&nbsp; Uses
+    daily maximum temperature.</li>
+  <li><em>Kevin</em> - Interval calculation. Melt = hru_t[hh]*tfactor/Freq (mm/int).&nbsp; Is
+    set to zero unless hru_t is &gt; 0°C. Where Freq is the number of intervals in a day.</li>
+</ol>
+
+<h3>Simplified Energy Budget Method proposed by Kustas et al. (1994).</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Units of nfactor are mm/(MJ/m^2)/day.&nbsp; This converts the energy
+input to mm (kg/m2) of melt. 
+
+<ol>
+  <li><em>ebsm</em> - Daily calculation.&nbsp; Melt = QnD*nfactor (mm/day).</li>
+  <li><em>Kevin</em> - Interval calculation. Melt = hru_Qn *WtoMJ*nfactor/Freq (mm <font
+    SIZE="2" FACE="Symbol">D</font>t).</li>
+</ol>
+
+<p>&nbsp;&nbsp;&nbsp; nfactor converts energy to melt.&nbsp; It is the latent heat of
+fusion, 0.3336 MJ/kg. However, it may be adjusted by the thermal quality B = 0.95.</p>
+
+<h3>Simplified Energy Budget Sources. </h3>
+
+<ol>
+  <li>QnD (W/m^2) - may be calculated using modules <em>slope_Qsi, long</em>, <em>albedo,
+    NeedleLeaf</em> and <em>Convert_Qnsn_QnD.</em></li>
+  <li>hru_Qn (MJ/d) - may be calculated using modules <em>slope_Qsi, long</em>, <em>albedo,
+    NeedleLeaf</em> and Convert_Qnsn_hru_Qn.</li>
+</ol>
+
+<h3>Adjusting for Cloud Cover.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Hours of bright sunshine used to be measured at meteorology
+stations.&nbsp; Today that is rarely done.&nbsp; Earlier algorithms for calculating short
+wave and long wave radiation used the ratio of actual sunshine hours to the maximum
+possible in the day (n/N).&nbsp; The module ebsm uses this ratio.&nbsp; When the sunshine
+hours are not measured the module <em>calcsun</em> can estimate (n/N) from the measured
+incoming short-wave Qsi and the clear sky Qsi calculated by the module <em>global</em>.</p>
+
+<h3>Adjusting Calculated Incoming Short-wave on a Slope for Cloud Cover.</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Since radiation measurements are not normally made on a slope,
+&nbsp; it is necessary to calculated the incoming short-wave using the module global and
+then reducing the value for cloud cover.&nbsp; This is done by adjusting the value using
+the ratio of Qsi measured on the level divided by the calculated Qsi for the level. &nbsp;
+The module MSM uses these inputs.</p>
+
+<h3><em>ebsm</em>&nbsp; (tfactor and nfactor both zero).</h3>
+
+<p>&nbsp;&nbsp;&nbsp; Qm = Qsn + Qnl + Qh + Qe + Qg + Qp - du/dt</p>
+
+<p>During melt Qn = Qsn + Qsl is a linear function of the daily net short-wave radiation.</p>
+
+<p>&nbsp;&nbsp;&nbsp; Qn = -0.53+0.47*(QdroD +
+QdfoD)*(0.52+0.52*sunact/sunmax)*(1.0-Albedo).</p>
+
+<h3><em>MSM</em>&nbsp; (tfactor and nfactor both zero).</h3>
+
+<p>&nbsp;&nbsp;&nbsp; to be completed.</p>
+
+<h3><em>Kevin</em>&nbsp; (tfactor and nfactor both zero).</h3>
+
+<p>&nbsp;&nbsp;&nbsp; to be completed.</p>
+</body>
+</html>

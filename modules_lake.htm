@@ -1,0 +1,92 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_lake (12/30/11)</title>
+</head>
+
+<body>
+
+<h3><b><font face="Arial">lake e</font></b>vaporation (Meyer Formula with revisions by
+PFRA) </h3>
+
+<p>This module defined in Classlake, calculates the monthly evaporation and distributes it
+uniformly over every interval of the month.&nbsp; </p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>hru_evap (mm/int) - average depth of evaporation from an HRU in a time step, <font
+    SIZE="2" FACE="Symbol">D</font>t.&nbsp; </li>
+  <li>hru_cum_evap (mm) - cumulative evaporation &#150; calculated as the sum of interval
+    estimates of hru_evap.</li>
+  <li>lake_evap_month (mm) - monthly evaporation from rh.&nbsp; </li>
+  <li>hru_actet (mm/int) - actual evapotranspiration over the HRU.&nbsp; Evaporation and
+    evapotranspiration are limited by the amount of soil moisture available.</li>
+  <li>hru_cum_actet (mm) - cumulative actual evapotranspiration over the HRU.</li>
+  <li>Va (mm) - water vapour pressure, Vw*rh (Meyer).</li>
+  <li>Vw (mm) - air vapour pressure (Meyer).</li>
+  <li>hru_t_mean (°C) - avereage monthly temperature.</li>
+  <li>hru_rh_mean ( ) - avereage monthly relative humidity.</li>
+  <li>hru_u_mean (m/s) - avereage monthlywind speed.</li>
+  <li>hru_t_acc (°C*N) - accumulated monthly temperature.</li>
+  <li>hru_rh_acc ( N) - accumulated monthly relative humidity.</li>
+  <li>hru_u_acc (m/s*N) -&nbsp; accumulated monthly wind speed.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>Meyer_C () - Meyer coefficient.</li>
+  <li>Meyer_B () - Meyer monthly intercept coefficient.</li>
+  <li>basin_area (km^2) - basin area.</li>
+  <li>hru area (km^2) - HRU area.</li>
+  <li>start_open_water () - Julian date of start of lake evaporation.</li>
+  <li>end_open_water () - Julian date of end of lake evaporation.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<p>&nbsp;&nbsp;&nbsp; The source of the variable is given in brackets after the name.
+&nbsp; A full description of the variable may be found there.
+
+<ul>
+  <li>hru_t (obs) (°C)</li>
+  <li>hru_rh (obs) ()</li>
+  <li>hru_u (obs) (m/s)</li>
+</ul>
+
+<h3>Equations.</h3>
+
+<p>hru_t_Mmean = hru_t_acc/N_intervals; // where N_intervals is the number of time steps
+in the month.<br>
+hru_rh_Mmean = hru_rh_acc/N_intervals;<br>
+hru_u_Mmean = hru_u_acc/N_intervals; <br>
+<br>
+float Tw = 0.6*hru_t_Mmean + Meyer_B[ThisMonth-1];<br>
+<br>
+Vw = pow(10,(-7.903*(373.16/(Tw+273.16)-1)+(5.028*log10(373.16/(Tw+273.16)))<br>
+-(0.0000001382*(pow(10, (11.34*(1-(373.16/(Tw+273.16)))))-1))<br>
++(0.008133*pow(10, (-3.491*((373.16/(Tw+273.16))-1)))))+3.006);<br>
+<br>
+Va = Vw*hru_rh_Mmean/100.0;<br>
+<br>
+lake_evap_month = 0.75002*Meyer_C*(Vw-Va)*(1+0.06214*hru_u_Mmean);</p>
+
+<p>hru_evap = lake_evap_month/N_intervals; <br>
+hru_cum_evap += hru_evap;</p>
+
+<h3>Note.</h3>
+
+<p> The months containing the Julian date of start of evaporation and end of operation
+must be complete months for the correct calculation of the monthly evaporation. <br>
+<br>
+</p>
+</body>
+</html>

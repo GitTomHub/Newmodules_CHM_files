@@ -1,0 +1,53 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>macro_Convert_Qnsn_Qnd (06/12/09)</title>
+</head>
+
+<body>
+
+<h3><b><font face="Arial">Convert_Qnsn_Qnd.</font></b></h3>
+
+<p>This module interfaces the module NeedleLeaf with the module ebsm.</p>
+
+<h3><a href="Modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>Qnsn (W/m^2) - snow surface net all-wave.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>none.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>none.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>none.</li>
+</ul>
+
+<h3><a href="Modules_new.chm::/term_observationVariable.htm">Observation Variables</a></h3>
+
+<ul>
+  <li>Qnd (MJ/d) - daily net radiation.</li>
+</ul>
+
+<h3><a href="modules_new.chm::/module_Macro.htm">Macro Code</a></h3>
+
+<pre>Convert_Qnsn_QnD
+declreadobs, Qnsn, NOBS, description, (W/m^2)
+declobs,QnD#, NHRU, description, (MJ/d)
+command
+if(STEP%FREQ == 1) QnD#[hh] = Qnsn[hh]*0.0864/FREQ else QnD#[hh] = QnD#[hh] + Qnsn[hh]*0.0864/FREQ endif
+end</pre>
+</body>
+</html>

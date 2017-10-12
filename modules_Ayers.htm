@@ -1,0 +1,115 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>modules_Ayers (06/22/11)</title>
+</head>
+
+<body>
+<font FACE="Arial"><b>
+
+<h3>Ayers .</b></font></h3>
+
+<p>This module is defined in ClassAyers . It handles only unfrozen soil infiltration.</p>
+
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+
+<ul>
+  <li>none</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_variable.htm">Variables</a></h3>
+
+<ul>
+  <li>infil (mm/int) - depth of infiltration in time step, <font SIZE="2" FACE="Symbol">D</font>t
+    &#150; expressed as an average depth of water on an HRU.</li>
+  <li>cuminfil (mm) - cumulative infiltration - expressed as an average depth of water on an
+    HRU.</li>
+  <li>runoff (mm/int) - amount of daily runoff &#150; expressed as an equivalent depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+  <li>cumrunoff (mm) - cummulative runoff.</li>
+  <li>meltrunoff (mm/int) - amount of interval melt runoff. . </li>
+  <li>cummeltrunoff (mm) - cumulative interval melt runoff. </li>
+  <li>snowinfil (mm/int) - amount of interval infiltration &#150; expressed as an equivalent
+    depth (m<sup>3</sup>/m<sup>2</sup>).</li>
+  <li>cumsnowinfil (mm) - cumulative interval infiltration </li>
+  <li>melt(mm/int) - interval melt equal to snowmeltD/Freq.</li>
+  <li>&nbsp;</li>
+</ul>
+
+<h3><a href="modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+
+<ul>
+  <li>basin_area (km^2) - area of watershed.</li>
+  <li>hru_area(km^2) - area of HRUs.</li>
+  <li>texture () -&nbsp; 1 through 4 for texture:- 1 - coarse/medium over coarse, 2 - medium
+    over medium, 3 - medium/fine over fine, 4 - soil over shallow bedrock..</li>
+  <li>groundcover () - 1 through 6 for groundcover: 1 - bare soil, 2 - row crop, 3 - poor
+    pasture, 4 - small grains, 5 - good pasture, 6 - forested..</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h3><a href="modules_new.chm::/term_input_variable.htm">Variable Inputs</a></h3>
+
+<ul>
+  <li>net_rain (mm/int) (*) - amount of rain received by the ground surface in time step, <font
+    SIZE="2" FACE="Symbol">D</font>t. Variable available from module <em>intcp</em>, etc..</li>
+  <li>snowmeltD (mm/d) (*)</li>
+</ul>
+
+<h3>Notes on <font FACE="Arial"><b>Ayers</b></font>.</h3>
+
+<p>textureproperties[texture] [groundcover] in&nbsp; mm/hour.<br>
+</p>
+
+<table border="1" width="724">
+  <tr>
+    <td width="79">bare soil</td>
+    <td width="117">row crop</td>
+    <td width="117">poor pasture</td>
+    <td width="117">small grains</td>
+    <td width="116">good pasture</td>
+    <td width="129">forested</td>
+    <td width="240">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="79">7.6</td>
+    <td width="117">12.7</td>
+    <td width="117">15.2</td>
+    <td width="117">17.8</td>
+    <td width="116">25.4</td>
+    <td width="129">76.2 </td>
+    <td width="240">coarse over coarse</td>
+  </tr>
+  <tr>
+    <td width="79">2.5</td>
+    <td width="117">5.1</td>
+    <td width="117">7.6</td>
+    <td width="117">10.2</td>
+    <td width="116">12.7</td>
+    <td width="129">15.2</td>
+    <td width="240">medium over medium</td>
+  </tr>
+  <tr>
+    <td width="79">1.3</td>
+    <td width="117">1.8</td>
+    <td width="117">2.5</td>
+    <td width="117">3.8</td>
+    <td width="116">5.1</td>
+    <td width="129">6.4</td>
+    <td width="240">medium/fine over fine</td>
+  </tr>
+  <tr>
+    <td width="79">0.5</td>
+    <td width="117">0.5</td>
+    <td width="117">0.5</td>
+    <td width="117">0.5</td>
+    <td width="116">0.5</td>
+    <td width="129">0.5 </td>
+    <td width="240">soil over shallow bedrock</td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+</body>
+</html>

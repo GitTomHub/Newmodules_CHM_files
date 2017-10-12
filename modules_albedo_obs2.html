@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_albedo_obs2 (11/18/14)</title>
+
+</head>
+
+<body>
+<h3><font face="Arial"><b>albedo</b></font>_obs2 (Gray
+and Landine, 1987) </h3>
+<p>This module is defined in Classalbedoobs2 and estimates the snow
+albedo throughout the
+winter and into the melt period. It also estimates the beginning of
+melt which initiates
+the snowmelt in the module ebsm. The algorithm developed uses daily
+values of net
+radiation, maximum and minimum daily temperatures, snowfall and
+snow-cover SWE. It has been extended to read albedo observations when available..</p>
+<h3><a href="modules_new.chm::/term_observation.htm">Observations</a></h3>
+<ul>
+<li>Albedo_obs () - average albedo over the time
+interval.&nbsp; Optional.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_variable.htm">Variables</a></h3>
+<ul>
+<li>albedo () - snowcover albedo. State variable.</li>
+<li>meltflag () - indicates start of melt. 0/1 for false/true.
+State variable.</li>
+<li>winter () - indicates summer and winter events. 0/1. State
+variable.</li><li>net_snowD (mm/d) - daily snow fall.</li><li>newsnowcnt (d) - snow age count. Name is confusing as the value is the number of days since the last snow fall.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_parameter.htm">Parameters</a></h3>
+<ul>
+<li>Albedo_bare () - albedo for bare soil. Advance parameter.</li>
+<li>Albedo_snow () - albedo for fresh snow. Advance parameter.</li>
+<li>hru_lat (°) - latitude. Adjusts empirical Julian constants
+for Northern/Southern Hemisphere.</li>
+</ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Variable
+Inputs</a></h3>
+<ul>
+<li>hru_tmax (obs)</li>
+<li>hru_tmin (obs)</li>
+<li>hru_newsnow (obs)()</li>
+<li>QdroD (global) (MJ/m^2*d)</li>
+<li>SWE (pbsm)(mm)</li>
+<li>net_snow (intcp)(mm/int)</li>
+</ul>
+<h3>Notes</h3>
+<p>&nbsp;&nbsp;&nbsp; winter</p>
+<blockquote>
+<p>The logical flag <em>winter</em> differentiates
+the major spring melt from fall and late spring snowfalls and
+associated melt events.&nbsp; <em>Winter</em> is set
+true between Julian days 300 and 2 when the SWE of the last HRU is
+greater than 5 mm.&nbsp; <em>Winter</em> is also set
+true when the daily maximum temperature is less than -6°C and the
+diagnostic variable Qnc is less than 1.0.&nbsp; <em>Winter</em>
+is set false when any HRU has no snowcover, i.e. SWE = 0.0.</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp; meltflag</p>
+<blockquote>
+<p>The logical flag <em>meltflag</em> indicates
+the days when melt is possible.&nbsp; It is always true when there
+is snowcover and <em>winter</em> is false. Otherwise it is
+only set when one of the melt criteria is met,</p>
+<ol>
+<li>the daily minimum is greater than -4.0°C</li>
+<li>Qnc &gt; 1.0 AND the daily maximum &gt; 0.0°C</li>
+<li>Qnc &gt; -0.5 AND the daily maximum &gt; MT</li>
+</ol>
+<p>where Qnc = -0.371 + 5.22*QdroD[hh]*(1 - A[hh])&nbsp;
+and is a measure of incoming short-wave radiation,</p>
+<p>and MT = -0.064*jday + 6.69 and is a probabiliy index which
+increases as the radiative components increase as the year progresses.</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp; newsnowcount</p>
+<blockquote>
+<p>This counter is set to 0 after every snowfall and is
+incremented every day afterwards until another snowfall occurs.</p>
+</blockquote>
+<h3>Albedo relationships.</h3>
+<blockquote>
+<p>At the onset of winter the albedo is set to 0.8.&nbsp;
+After a snowfall of greater than 5 cm depth (equivalent to a change in
+SWE of 0.25 mm, assuming a snow density of 0.005 kg/m3)</p>
+</blockquote>
+</body></html>

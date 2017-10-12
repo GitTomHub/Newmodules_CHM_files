@@ -1,0 +1,46 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>function_fdaily(04/13/06)</title>
+</head>
+
+<body>
+
+<h3>fdaily(u, Ht)</h3>
+
+<ul>
+  <li>Calculates the daily Drying Power for module <em>evap</em>.</li>
+</ul>
+
+<h3>Units</h3>
+
+<ul>
+  <li>(mm/kPa/day)</li>
+</ul>
+
+<h3>Inputs</h3>
+
+<ul>
+  <li>u (m/s) - wind speed.</li>
+  <li>Ht (m) - crop height.</li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+  <li>return ( a + b*u)</li>
+</ul>
+
+<blockquote>
+  <p>where </p>
+  <p>Z0 = Ht*100.0/7.6 (cm)</p>
+  <p>a = 8.19 + 0.22*Z0</p>
+  <p>b = 1.16 + 0.08*Z0</p>
+</blockquote>
+
+<h3>Reference</h3>
+
+<p>&nbsp;</p>
+</body>
+</html>
