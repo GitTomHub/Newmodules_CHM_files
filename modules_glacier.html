@@ -1,13 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_glacier (04/19/16)</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_glacier (10/12/17)</title>
 
 </head>
 <body>
 <b>
 </b>
 <h3><b>glacier</b> </h3>
-<p>This module is defined in Classglacier and is an energy-budget firn
+<p>This module is defined in Classglacier and is an energy-budget
+firn
 and ice melt model loosely based on work done by&nbsp; (Gray and
 Landine, 1987) for the Canadian Prairies. However, it has variations
 allowing it to input the melt input energy from other CRHM modules. The
@@ -60,11 +61,12 @@ by Clark.</li>
 <li>icemelt (mm/d) - daily ice&nbsp;melt.</li>
 <li>icemelt_delayed (mm/d) - daily ice&nbsp;melt delayed by
 Clark.</li>
-<li>cumicemelt (mm) - cummulative ice&nbsp;melt.</li><li>net_rain_org (mm/int) - contents of net_rain saved before the addition of &nbsp;SWE, firn and ice melt to original contents.</li>
+<li>cumicemelt (mm) - cummulative ice&nbsp;melt.</li>
+<li>net_rain_org (mm/int) - contents of net_rain saved before
+the addition of &nbsp;SWE, firn and ice melt to original contents.</li>
 <li>LW_ebsm (mm/d) - liquid water in snowpack. State variable.</li>
 <li>u_ebsm (MJ/m^2*d) - snowpack energy deficit. State variable.</li>
 <li>Gmelt (MJ/m^2*d) - Qmelt = Qn+Qh+Qe+Qp.</li>
-
 <li>Gn_ebsm (MJ/m^2*d) - net radiation. Changed from Gn_ebsm to
 avoid name conflict.</li>
 <li>Gh_ebsm (MJ/m^2*d) - sensible heat.&nbsp;Changed from
@@ -128,7 +130,8 @@ Inputs</a></h3>
 <li>hru_umean (obs) (m/s)</li>
 <li>hru_rhmean (obs) (%)</li>
 <li>hru_Sun_Act (obs) (hr)</li>
-<li>net_rain (*) (mm/int) to simplify interfacing with an infiltration
+<li>net_rain (*) (mm/int) to simplify interfacing with an
+infiltration
 routine, glacier adds SWE, firn and ice melt to net_rain. Original
 net_rain contents are save in net_rain_org.</li>
 <li>QdroD (global) (MJ/m^2)</li>
@@ -140,6 +143,18 @@ net_rain contents are save in net_rain_org.</li>
 Variation &nbsp;glacier#1</li>
 <li>Pa (kPa) - atmospheric pressure.</li>
 </ul>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Handling
+of Layers</a></h3>
+When a project is built the number of &nbsp;layers is set in NLAY.<br>
+In the module code the variable nlay is set to the value of NLAY.<br>
+The
+module "glacier" uses layers for variables, 'firn_dens', 'firn_h' and
+'firn_yr' and parameters 'firn_dens_init', 'firn_h_init'.<br>
+The number of &nbsp;firn layers is established from the first zero
+value of 'firn_h' and saved in the variable 'nfirn'.<br>
+'nfirn'
+has to be 2 greater than 'nlay' to allow for the firn to be split at
+least once during densification and an extra zero layer.
 <p><i>Useage.</i></p>
 <p>Qn
 is calculated as in the

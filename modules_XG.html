@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_XG (04/14/16)</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0"><title>modules_XG (10/12/17)</title>
 
 </head>
 <body>
@@ -134,8 +134,13 @@ variations
 <li>SWE (kg/m^2) - Snow water
 equivalent.((variation #1 and variation #2)).</li>
 </ul>
-<h3></h3>
-<h3></h3>
+<h3><a href="Modules_new.chm::/term_input_variable.htm">Handling
+of Layers</a></h3>
+When a project is built the number of &nbsp;layers is set in NLAY.<br>
+In the module 'XG' the.first two locations are used for the active
+layers Zdf and Zdt. The last location is always 0.0, i.e. end of stack.<br>
+Therfore the number of layers (NLAY) should 4 or greater to give 1 or
+more fronts
 <h3>Notes.</h3>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 ftc_lay = (1.0 - por_lay)*km + h2o_lay*kw + (por_lay - h2o_lay)*ka<br>
